@@ -4,6 +4,8 @@ import qs from 'qs';
 import cheerio from 'cheerio';
 const ci = cheerio;
 
+axios.defaults.withCredentials = true;
+
 const gameworld = 'com2';
 
 var msid;
@@ -13,6 +15,10 @@ var sessionID;
 async function main() {
 	await login();
 	// client is logged in
+	//let post_data = {controller:'player',action:'getAll',params:{deviceDimension:'1680:1050'},session:sessionID};
+	//let data = await axios.post(`https://com2.kingdoms.com/api/?c=player&a=getAll&t${Date.now()}`, post_data);
+
+	//console.log(data);
 }
 
 async function login(){
@@ -55,12 +61,21 @@ async function login(){
 	sessionID = cookies.request.path.substring(cookies.request.path.lastIndexOf('=') + 1);
 	console.log('sessionID: ' + sessionID);
 
+	// TODO get new token
+
 	// opens gameworld
 	let worldURL = `https://${gameworld}.kingdoms.com/api/login.php?token=${token}&msid=${msid}&msname=msid`;
-	let worldRes = await axios.get(worldURL);
+	await axios.get(worldURL);
+
 	let secondWorld = `https://${gameworld}.kingdoms.com/?g_msid=${msid}&tkSessionId=${sessionID}`;
-	worldRes = await axios.get(secondWorld);
-	$ = ci.load(worldRes.data);
+	let world_data = await axios.get(secondWorld);
+	$ = ci.load(world_data.data);
+	//console.log($.html());
+	
+	let newtokenURL = 'https://mellon-t5.traviangames.com/game-world/join/gameWorldId/698';
+	let newtokenres = await axios.get(newtokenURL);
+	$ = ci.load(newtokenres.data);
+	//console.log($.html());
 }
 
 		
