@@ -1,3 +1,7 @@
+# ignore credentials
+test.html
+cred.txt
+
 # Logs
 logs
 *.log

@@ -1,0 +1,38 @@
+{
+  "name": "king-bot-api",
+  "version": "0.0.1",
+  "description": "Advanced Bot for Travian Kingdoms",
+  "main": "index.js",
+  "module": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scriptworld-git/king-bot-api.git"
+  },
+  "keywords": [
+    "bot",
+    "travian",
+    "kingdoms",
+    "advanced",
+    "api"
+  ],
+  "author": "felix.scriptworld",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/scriptworld-git/king-bot-api/issues"
+  },
+  "homepage": "https://github.com/scriptworld-git/king-bot-api#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "esm": "^3.0.84",
+    "qs": "^6.5.2",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}
