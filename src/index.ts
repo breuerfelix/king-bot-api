@@ -1,5 +1,5 @@
 import api from './api';
-import read_credentials from './settings';
+import settings from './settings';
 
 class kingbot{
 	constructor(){
@@ -7,7 +7,7 @@ class kingbot{
 	}
 
 	async login(gameworld: string): Promise<void>{
-		let cred: any = read_credentials();
+		let cred: any = settings.read_credentials();
 		await api.login(cred.email, cred.password, gameworld);
 	}
 
