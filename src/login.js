@@ -56,9 +56,10 @@ async function login_to_gameworld(axios, email, password, gameworld){
 	let sessionLink = cookies.headers.location;
 	session = sessionLink.substring(sessionLink.lastIndexOf('=') + 1);
 	console.log('sessionID: ' + session);
-	
-	let lastLobbyURL = 'https://lobby.kingdoms.com/' + sessionLink;
-	await axios.get(lastLobbyURL);
+
+	// last lobby session link, there are no information to get from for now
+	//let lastLobbyURL = 'https://lobby.kingdoms.com/' + sessionLink;
+	//await axios.get(lastLobbyURL);
 
 	let gameworldID = await get_gameworld_id(axios, session, gameworld);
 
@@ -90,9 +91,10 @@ async function login_to_gameworld(axios, email, password, gameworld){
 	sessionLink = res.headers.location;
 	session = sessionLink.substring(sessionLink.lastIndexOf('=') + 1);
 	console.log('new sessionID: ' + session);
-	
-	let gameworldURL = `https://${gameworld}.kingdoms.com/` + sessionLink;
-	await axios.get(gameworldURL);
+
+	// last session link, there are no information to get from for now
+	//let gameworldURL = `https://${gameworld}.kingdoms.com/` + sessionLink;
+	//await axios.get(gameworldURL);
 
 	return { msid, session, token };
 }
