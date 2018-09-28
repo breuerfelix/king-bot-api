@@ -6,12 +6,12 @@ class kingbot{
 
 	}
 
-	async login(gameworld){
-		let cred = read_credentials();
+	async login(gameworld: string): Promise<void>{
+		let cred: any = read_credentials();
 		await api.login(cred.email, cred.password, gameworld);
 	}
 
-	async test(){
+	async test(): Promise<void>{
 		api.get_all();
 	}
 }

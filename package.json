@@ -6,7 +6,7 @@
   "module": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "tsc && node index.js"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,11 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.4"
+    "@types/cheerio": "^0.22.9",
+    "@types/node": "^10.11.2",
+    "@types/qs": "^6.5.1",
+    "nodemon": "^1.18.4",
+    "typescript": "^3.2.0-dev.20180927",
+    "typescript-eslint-parser": "^19.0.1"
   }
 }
