@@ -1,6 +1,7 @@
 # ignore credentials
 test.html
 cred.txt
+dist/
 
 # Logs
 logs

@@ -1,4 +1,4 @@
-import kingbot from './src';
+import kingbot from './dist';
 
 async function main(){
 	await kingbot.login('com2');
