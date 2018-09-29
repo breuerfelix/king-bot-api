@@ -2,6 +2,7 @@
 test.html
 cred.txt
 dist/
+dev_main.js
 
 # Logs
 logs
