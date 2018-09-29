@@ -19,6 +19,7 @@ app.get('*', function (req, res) {
 app.post('/api/', function(req, res) {
 	var payload = req.body;
 	var url = req.url;
+	// substring the /api prefix
 	url = url.substring(4);
 
 	var { token, session, msid } = api.default;
