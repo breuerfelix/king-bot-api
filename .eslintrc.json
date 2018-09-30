@@ -12,6 +12,7 @@
     "rules": {
 	"no-unused-vars": "warn",
 	"no-undef": "off",
+	"no-constant-condition": "off",
         "indent": [
             "error",
 	    "tab"
