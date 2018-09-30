@@ -1,5 +1,4 @@
 # ignore credentials
-test.html
 cred.txt
 dist/
 dev_main.js
