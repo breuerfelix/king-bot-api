@@ -7,8 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && node index.js",
-    "server": "node dev_server.js",
-    "dev": "tsc && DEV=true node dev_index.js"
+    "server": "node dev/dev_server.js",
+    "dev": "tsc && DEV=true node dev/dev_index.js"
   },
   "repository": {
     "type": "git",
@@ -30,12 +30,13 @@
   "dependencies": {
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
+    "deepmerge": "^2.1.1",
     "esm": "^3.0.84",
-    "qs": "^6.5.2",
-    "request": "^2.88.0"
+    "qs": "^6.5.2"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.9",
+    "@types/deepmerge": "^2.1.0",
     "@types/node": "^10.11.2",
     "@types/qs": "^6.5.1",
     "body-parser": "^1.18.3",
