@@ -6,6 +6,7 @@ const ci = cheerio;
 const lobby_endpoint: string = 'https://lobby.kingdoms.com/api/index.php';
 
 async function login_to_gameworld(axios: AxiosInstance, email: string, password: string, gameworld: string): Promise<any>{
+	console.log('showing session keys in console...');
 	let res: AxiosResponse, options: AxiosRequestConfig, url: string, msid: string, token: string, session: string;
 	gameworld = gameworld.toLowerCase();
 
