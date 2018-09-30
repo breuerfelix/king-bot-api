@@ -1,7 +1,7 @@
 var express = require('express');
-var kingbot = require('./dist');
-var api = require('./dist/api');
 var bodyParser = require('body-parser');
+var kingbot = require('../dist');
+var api = require('../dist/api');
 
 const port = 3030;
 
@@ -12,8 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('*', function (req, res) {
-	console.log(req);
-	res.send('hello world');
+	res.send('king-bot-api development server runnind here !');
 });
 
 app.post('/api/', function(req, res) {
@@ -29,6 +28,6 @@ app.post('/api/', function(req, res) {
 	api.default.post(url, payload).then(function(response) { res.send(response.data); }).catch(function(err){ res.send(err); });
 });
 
-kingbot.default.login('com2').then(() => {
+kingbot.default.login('com5').then(() => {
 	app.listen(port, () => console.log(`dev server listen on port: ${port}!`));
 });
