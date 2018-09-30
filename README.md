@@ -20,12 +20,13 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 
 1. install latest version of [nodeJS](https://nodejs.org/)
 2. clone or download this repository
-3. create a file named `cred.txt`
-4. insert credentials
-    1. `your_email@mail.com;your_password`
+3. open project in console
+4. install all dependencies
+    1. `$ npm install`
 5. edit `main.js`
-6. `$ npm start`
-
+    1. look up `sample_main.js` for help
+6. start the bot
+    1. `$ npm start`
 
 
 ## features
