@@ -1,9 +1,11 @@
 import axios, { AxiosInstance } from 'axios';
+import { clash_obj } from './util';
 import login_to_gameworld from './login';
 import settings from './settings';
+import state from './state';
 
 class api {
-	ax: AxiosInstance;
+	private ax: AxiosInstance;
 
 	// set default so dev server can replace later
 	session: string = 'insert_session';
@@ -30,8 +32,8 @@ class api {
 		this.ax.defaults.baseURL = `https://${gameworld.toLowerCase()}.kingdoms.com/api`;
 	}
 
-	async get_all() {
-		let session: string = this.session;
+	async get_all(): Promise<object> {
+		const session: string = this.session;
 
 		const payload = {
 			controller: 'player',
@@ -40,8 +42,55 @@ class api {
 			session
 		};
 
-		let response = await this.ax.post(`/?c=player&a=getAll&t${Date.now()}`, payload);
-		console.log(response.data);
+		const response = await this.ax.post(`/?c=player&a=getAll&t${Date.now()}`, payload);
+
+		this.merge_data(response.data);
+
+		return response.data;
+	}
+
+	async get_cache(params: string[]): Promise<object> {
+		const session: string = this.session;
+		
+		const payload = {
+			controller: 'cache',
+			action: 'get',
+			params: {
+				names: params
+			},
+			session
+		};
+
+		const response = await this.ax.post(`/?c=cache&a=get&t${Date.now()}`, payload);
+
+		this.merge_data(response.data);
+
+		return response.data;
+	}
+
+	async send_farmlists(lists: string[], village_id: string): Promise<object> {
+		const session: string = this.session;
+
+		const payload = {
+			action: 'startFarmListRaid',
+			controller: 'troops',
+			params: {
+				listIds: lists,
+				villageId: village_id
+			},
+			session
+		};
+
+		const response = await this.ax.post(`/?c=troops&a=startFarmListRaid&t${Date.now()}`, payload);
+
+		this.merge_data(response.data);
+
+		return response.data;
+	}
+
+	// merges data into state object
+	merge_data(data: any): void {
+		state.set_state(clash_obj(data, 'cache', 'response'));
 	}
 
 	// for dev server
