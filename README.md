@@ -60,21 +60,6 @@ interval of sending the lists _in seconds_
 
 # development
 
-start a local server which logs into the gameworld, stays logged in, and forwards your request.  
-this is for faster testing since you don't always have to do the login handshake.  
-paste in the correct gameworld in `dev_server.js`.
-
-```bash
-$ npm run server
-```  
-
-write your test script in `dev_main.js`.  
-remember: you don't have to login anymore !  
-
-```bash
-$ npm run dev
-```
-
 you can also create a file names `cred.txt` in the root folder which contains your login credentials:
 ```csv
 your_email@mail.com;your_password
