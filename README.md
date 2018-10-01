@@ -16,7 +16,7 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
     - [send farmlists](#send-farmlists)
 - [development](#development)
 
-## getting-started
+# getting-started
 
 1. install latest version of [nodeJS](https://nodejs.org/)
 2. clone or download this repository
@@ -29,24 +29,24 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
     1. `$ npm start`
 
 
-## features
+# features
 
 just an overview with an example and the function signature for all features.  
 for details check each chapter.
 
 ```typescript
-kingbot.start_farming([ 'Startup farm list', 'rocking farms' ], '-02- Rome', 600);
+kingbot.start_farming([ 'startup farm list', 'rocking farms' ], '-02- rome', 600);
 async function start_farming(farmlists: string[], village: string, interval: number);
 ```
 
 you can stack each feature as often as you wish with different parameters.
 
-### send farmlists
+## send farmlists
 
 the bot will simply just send the farmlists out of the named village in a given interval.
 
 ```typescript
-kingbot.start_farming([ 'Startup farm list', 'rocking farms' ], '-02- Rome', 600);
+kingbot.start_farming([ 'startup farm list', 'rocking farms' ], '-02- rome', 600);
 ```
 
 **farmlists:** _(non case-sensitiv)_  
@@ -58,7 +58,7 @@ name of the village from where the lists are going to be send
 **interval:**  
 interval of sending the lists _in seconds_
 
-## development
+# development
 
 start a local server which logs into the gameworld, stays logged in, and forwards your request.  
 this is for faster testing since you don't always have to do the login handshake.  
