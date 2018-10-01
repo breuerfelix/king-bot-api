@@ -29,7 +29,6 @@ class kingbot {
 		
 		console.log(`start login to gameworld ${gameworld} with account ${email} ...`);
 		await api.login(email, password, gameworld);
-		log(`logged into gameworld ${gameworld} with account ${email}`);
 	}
 
 	async init_data(): Promise<void> {
