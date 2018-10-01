@@ -40,9 +40,6 @@
     "@types/lowdb": "^1.0.5",
     "@types/node": "^10.11.2",
     "@types/qs": "^6.5.1",
-    "body-parser": "^1.18.3",
-    "express": "^4.16.3",
-    "nodemon": "^1.18.4",
     "typescript": "^3.2.0-dev.20180927",
     "typescript-eslint-parser": "^19.0.1"
   }
