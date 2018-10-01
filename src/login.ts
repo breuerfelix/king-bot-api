@@ -1,6 +1,7 @@
 import qs from 'qs';
 import cheerio from 'cheerio';
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { clash_obj } from './util';
 
 const ci = cheerio;
 const lobby_endpoint: string = 'https://lobby.kingdoms.com/api/index.php';
@@ -136,19 +137,22 @@ function validate_cookie_status(status: number): boolean{
 
 async function get_gameworld_id(axios: AxiosInstance, session: string, gameworld_string: string): Promise<string>{
 	const payload: object = {
-		controller: 'player',
-		action: 'getAll',
-		params: {},
+		action: 'get',
+		controller: 'cache',
+		params: {
+			names: [ 'Collection:Avatar:' ]
+		},
 		session
-	}
+	};
 
-	let res: AxiosResponse = await axios.post(lobby_endpoint, payload);
+	const res: AxiosResponse = await axios.post(lobby_endpoint, payload);
 
-	// TODO what if this info isnt cached ? search for name string
-	let gameworlds: any[] = res.data.cache[5].data.cache;
+	let gameworlds: any = clash_obj(res.data, 'cache');
+	gameworlds = gameworlds[0].data;
+
 	let gameworld_id: string = '';
 
-	gameworlds.forEach(x => {
+	gameworlds.forEach((x: any) => {
 		if(x.data.worldName.toLowerCase() === gameworld_string)
 			gameworld_id = x.data.consumersId;
 	});
