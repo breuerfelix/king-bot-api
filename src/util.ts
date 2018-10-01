@@ -6,18 +6,23 @@ export function log(obj: any): void {
 
 export const sleep = (ms: number) => new Promise(res => setTimeout(res, ms * 1000));
 
-export function clash_obj(merge_obj: any, ident: string, ident2: string): any {
+export function clash_obj(merge_obj: any, ident: string, ident2: string = ''): any {
 	let rv: any = {};
 
 	if(!merge_obj) return merge_obj;
 
+	// TODO prettify this function a little bit
 	// merges response and cache together, response overwrites cache
-	if(merge_obj[ident] && merge_obj[ident2]) {
-		merge_obj = merge(merge_obj[ident], merge_obj[ident2]);
-	} else if(merge_obj[ident]) {
-		merge_obj = merge_obj[ident];
-	} else if(merge_obj[ident2]) {
-		merge_obj = merge_obj[ident2];
+	if(ident2) {
+		if(merge_obj[ident] && merge_obj[ident2]) {
+			merge_obj = merge(merge_obj[ident], merge_obj[ident2]);
+		} else if(merge_obj[ident]) {
+			merge_obj = merge_obj[ident];
+		} else if(merge_obj[ident2]) {
+			merge_obj = merge_obj[ident2];
+		}
+	} else {
+		if(merge_obj[ident]) merge_obj = merge_obj[ident];
 	}
 
 	if(Array.isArray(merge_obj)) {

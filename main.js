@@ -1,6 +1,6 @@
 import kingbot from './dist';
 
-const gameworld = '';
+const gameworld = 'com5';
 const email = '';
 const password = '';
 
