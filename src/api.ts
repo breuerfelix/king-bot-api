@@ -1,8 +1,9 @@
 import axios, { AxiosInstance } from 'axios';
 import { clash_obj } from './util';
-import login_to_gameworld from './login';
+import manage_login from './login';
 import settings from './settings';
 import state from './state';
+import database from './database';
 
 class api {
 	private ax: AxiosInstance;
@@ -21,12 +22,13 @@ class api {
 	}
 
 	async login(email: string, password: string, gameworld: string) {
-		let rv = await login_to_gameworld(this.ax, email, password, gameworld);
+		await manage_login(this.ax, email, password, gameworld);
 
 		// assign login credentials
-		this.session = rv.session;
-		this.token = rv.token;
-		this.msid = rv.msid;
+		const { session_gameworld, token_gameworld, msid } = database.get('account').value();
+		this.session = session_gameworld;
+		this.token = token_gameworld;
+		this.msid = msid;
 
 		// set base url
 		this.ax.defaults.baseURL = `https://${gameworld.toLowerCase()}.kingdoms.com/api`;
