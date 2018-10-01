@@ -94,16 +94,6 @@ class api {
 	merge_data(data: any): void {
 		state.set_state(clash_obj(data, 'cache', 'response'));
 	}
-
-	// for dev server
-	async post(url: string, payload: object) {
-		return await this.ax.post(url, payload);
-	}
-
-	// for dev server
-	async get(url: string) {
-		return await this.ax.get(url);
-	}
 }
 
 export default new api();

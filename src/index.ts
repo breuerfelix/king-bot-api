@@ -63,13 +63,6 @@ class kingbot {
 			await sleep(interval);
 		}
 	}
-
-	// method for testing in dev mode
-	async test(): Promise<void> {
-		await this.init_data();
-		//await api.get_all();
-		this.start_farming([ 'Startup farm list' ], '-01-', 10);
-	}
 }
 
 export default new kingbot();
