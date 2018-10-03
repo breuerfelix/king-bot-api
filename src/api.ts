@@ -8,10 +8,9 @@ import database from './database';
 class api {
 	private ax: AxiosInstance;
 
-	// set default so dev server can replace later
-	session: string = 'insert_session';
-	token: string = 'insert_token';
-	msid: string = 'insert_msid';
+	session: string = '';
+	token: string = '';
+	msid: string = '';
 
 	constructor() {
 		this.ax = axios.create();
@@ -70,22 +69,38 @@ class api {
 		return response.data;
 	}
 
-	async send_farmlists(lists: string[], village_id: string): Promise<object> {
-		const session: string = this.session;
+	async send_farmlists(lists: number[], village_id: number): Promise<object> {
+		const params = {
+			listIds: lists,
+			villageId: village_id
+		};
+
+		return await this.post('startFarmListRaid', 'troops', params);
+	}
+
+	async upgrade_building(buildingType: number, locationId: number, villageId: number): Promise<void> {
+		const params = {
+			buildingType,
+			locationId,
+			villageId
+		};
+
+		return await this.post('upgrade', 'building', params);
+	}
+
+	async post(action: string, controller: string, params: object, merge: boolean = true): Promise<any> {
+		const session = this.session;
 
 		const payload = {
-			action: 'startFarmListRaid',
-			controller: 'troops',
-			params: {
-				listIds: lists,
-				villageId: village_id
-			},
+			action,
+			controller,
+			params,
 			session
 		};
 
-		const response = await this.ax.post(`/?c=troops&a=startFarmListRaid&t${Date.now()}`, payload);
-
-		this.merge_data(response.data);
+		const response = await this.ax.post(`/?t${Date.now()}`);
+		
+		if(merge) this.merge_data(response.data);
 
 		return response.data;
 	}
