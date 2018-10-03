@@ -1,6 +1,7 @@
 import merge from 'deepmerge';
 import api from './api';
 import { log } from './util';
+import { Ivillage, Ifarmlist } from './interfaces';
 
 class state {
 
@@ -17,7 +18,7 @@ class state {
 
 	find(ident: string, contains: boolean = false): any {
 		const found_obj = this.state.find(x => {
-			return contains ? x.name.includes(ident) : x.name === ident;
+			return contains ? x.name.includes(ident) : x.name == ident;
 		});
 
 		return found_obj.data;
@@ -27,10 +28,10 @@ class state {
 		await api.get_cache([ this.farmlist_ident ]);
 	}
 
-	get_farmlist(name: string): any {
+	get_farmlist(name: string): Ifarmlist | null {
 		const lists = this.find(this.farmlist_ident);
 
-		const farmlist = lists.find((x: any) => x.data.listName.toLowerCase() === name.toLowerCase());
+		const farmlist = lists.find((x: any) => x.data.listName.toLowerCase() == name.toLowerCase());
 
 		if(!farmlist) {
 			log(`couldn't find farmlist ${name} !`);
@@ -40,10 +41,10 @@ class state {
 		return farmlist.data;
 	}
 
-	get_village(name: string): any {
+	get_village(name: string): Ivillage | null {
 		const villages = this.find(this.village_ident + 'own');
 
-		const village = villages.find((x: any) => x.data.name.toLowerCase() === name.toLowerCase());
+		const village = villages.find((x: any) => x.data.name.toLowerCase() == name.toLowerCase());
 
 		if(!village) {
 			log(`couldn't find village ${name} !`);
