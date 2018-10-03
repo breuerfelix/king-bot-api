@@ -33,6 +33,7 @@ export interface Ifarmlist_entry {
 }
 
 export interface Iunits {
+	[index: number]: number
 	1: number;
 	2: number;
 	3: number;
@@ -42,6 +43,7 @@ export interface Iunits {
 }
 
 export interface Icoordinates {
+	[index: string]: number
 	x: number;
 	y: number;
 }
@@ -89,7 +91,33 @@ export interface Ivillage {
 	estimatedWarehouseLevel: number;
 }
 
+export interface Ibuilding {
+
+}
+
+export interface Ibuilding_queue {
+	villageId: number
+	tribeId: number
+	freeSlots: {
+		[index: number]: number
+		1: number // buildings
+		2: number // resources
+		4: number
+	}
+	queues: {
+		[index: number]: any[]
+		1: any[] // buildings
+		2: any[] // resources
+		4: any[]
+		5: any[]
+	}
+	canUseInstantConstruction: boolean
+	canUseInstantConstructionOnlyInVillage: boolean
+
+}
+
 export interface Iresources {
+	[index: number]: number
 	1: number;
 	2: number;
 	3: number;
