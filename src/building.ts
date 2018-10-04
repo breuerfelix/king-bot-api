@@ -69,7 +69,13 @@ class building_queue {
 				console.log('free' + village)
 			}
 
+			// calculate 
+			for(let village in this.loop_data) {
+
+			}
+
 			break;
+			sleep();
 		}
 	}
 }
