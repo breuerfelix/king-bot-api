@@ -36,7 +36,12 @@ class kingbot {
 		// await state.refetch_all();
 	}
 
-	async start_farming(farmlists: string[], village_name: string, interval: number): Promise<void> {
+	async start_farming(farmlists: string[], village_name: string | string[], interval: number): Promise<void> {
+		if(Array.isArray(village_name)) {
+			for(let village of village_name) this.start_farming(farmlists, village, interval);
+			return;
+		}
+
 		// fetch farmlists
 		await api.get_cache([ state.farmlist_ident ]);
 

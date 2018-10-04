@@ -36,7 +36,7 @@ for details check each chapter.
 
 ```typescript
 kingbot.start_farming([ 'startup farm list', 'rocking farms' ], '-02- rome', 600);
-async function start_farming(farmlists: string[], village: string, interval: number);
+async function start_farming(farmlists: string[], village: string | string[], interval: number);
 ```
 
 you can stack each feature as often as you wish with different parameters.
@@ -47,13 +47,15 @@ the bot will simply just send the farmlists out of the named village in a given 
 
 ```typescript
 kingbot.start_farming([ 'startup farm list', 'rocking farms' ], '-02- rome', 600);
+kingbot.start_farming([ 'startup farm list', 'rocking farms' ], [ '-02- rome', '-03- paris' ], 600);
 ```
 
 **farmlists:** _(non case-sensitiv)_  
 names of the farmlists which should be send together
 
 **village:** _(non case-sensitiv)_  
-name of the village from where the lists are going to be send
+name of the village from where the lists are going to be send  
+could also be an array of villages
 
 **interval:**  
 interval of sending the lists _in seconds_
