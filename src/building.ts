@@ -63,6 +63,8 @@ class building_queue {
 
 				// skip if resource slot is used
 				if(queue_data.freeSlots[2] == 0) continue;
+				
+				
 
 				console.log('free' + village)
 			}
