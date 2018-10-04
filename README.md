@@ -55,7 +55,7 @@ names of the farmlists which should be send together
 
 **village:** _(non case-sensitiv)_  
 name of the village from where the lists are going to be send  
-could also be an array of villages
+could also be an array of villages if you need same lists in same interval for different villages
 
 **interval:**  
 interval of sending the lists _in seconds_
