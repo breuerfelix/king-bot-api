@@ -1,9 +1,9 @@
-import lowdb from 'lowdb';
-import FileSync from 'lowdb/Adapters/FileSync';
+import lowdb, { AdapterSync } from 'lowdb';
+const FileSync = require('lowdb/Adapters/FileSync');
 
 import settings from './settings';
 
-const adapter = new FileSync(settings.assets_folder + settings.database_name);
+const adapter: AdapterSync = new FileSync(settings.assets_folder + settings.database_name);
 
 const database = lowdb(adapter);
 
