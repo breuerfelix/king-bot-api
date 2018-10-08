@@ -1,5 +1,5 @@
 import lowdb, { AdapterSync } from 'lowdb';
-const FileSync = require('lowdb/Adapters/FileSync');
+const FileSync = require('lowdb/adapters/FileSync');
 
 import settings from './settings';
 
