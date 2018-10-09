@@ -5,7 +5,7 @@ import { sleep } from './util';
 import api from './api';
 
 class building_queue {
-	building_type: Iresource_type = {
+	building_type: { [index: number]: number, wood: number, clay: number, iron: number, crop: number } = {
 		wood: 1,
 		clay: 2,
 		iron: 3,
@@ -13,12 +13,12 @@ class building_queue {
 	}
 
 	running: boolean = false;
-	loop_data: { [index: number]: { [index: number]: number } } = {};
+	loop_data: { [index: number]: [{ [index: number]: number }] } = {};
 
 	building_ident: string = 'Collection:Building:';
 	building_queue_ident: string = 'BuildingQueue:';
 
-
+	// reads in loop data
 	upgrade_res(resources: Iresource_type, village_name: string): void {
 		const village: Ivillage | null = state.get_village(village_name);
 
@@ -27,15 +27,14 @@ class building_queue {
 			return;
 		}
 
-		if(this.loop_data[village.villageId]) log('village already found, overwriting data');
-
 		const data: { [index: number]: number } = {};
-
+		
 		for(let t in resources) {
 			data[this.building_type[t]] = resources[t];
 		}
 
-		this.loop_data[village.villageId] = data;
+		if(this.loop_data[village.villageId]) this.loop_data[village.villageId].push(data);
+		else this.loop_data[village.villageId] = [data];
 
 		if(!this.running){
 			this.running = true;
@@ -43,9 +42,10 @@ class building_queue {
 		}
 	}
 	
+	// runs actual resource loop data
 	async run(): Promise<void> {
 		// sleep timer so the loop data gets filled up with all villages
-		await sleep(3);
+		await sleep(2);
 		
 		while(true) {
 			let params: string[] = [];
@@ -64,28 +64,31 @@ class building_queue {
 				// skip if resource slot is used
 				if(queue_data.freeSlots[2] == 0) continue;
 				
-				
+				// village got free res slot
+				console.log('village is free: ' + village)
+				for(let queue of this.loop_data[village]) {
+					console.log(queue)
+				}
 
-				console.log('free' + village)
 			}
 
-			// calculate 
+			// calculate sleep time
 			for(let village in this.loop_data) {
 
 			}
 
 			break;
-			sleep();
+			sleep(10);
 		}
 	}
 }
 
 export interface Iresource_type {
 	[index: number]: number
-	clay?: number
-	iron?: number
-	wood?: number
-	crop?: number
+	clay?: number[]
+	iron?: number[]
+	wood?: number[]
+	crop?: number[]
 }
 
 export default new building_queue();
