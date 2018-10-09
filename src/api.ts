@@ -16,9 +16,6 @@ class api {
 	constructor() {
 		this.ax = axios.create();
 		this.ax.defaults.withCredentials = true;
-
-		//set base url to localhost if in dev mode
-		if(settings.dev_mode) this.ax.defaults.baseURL = 'http://localhost:3030/api';
 	}
 
 	async login(email: string, password: string, gameworld: string) {
