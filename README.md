@@ -23,11 +23,15 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 3. open project in console
 4. install all dependencies
     1. `$ npm install`
+1. build the project
+    1. `$ npm run build`
 5. edit `main.js`
     1. look up `sample_main.js` for help
 6. start the bot
     1. `$ npm start`
 
+after changing `main.js` you can exit the script and then restart the bot with `$ npm start`.  
+if you downloaded a new project version you have to `$ npm install && npm run build` again before starting the bot.
 
 # features
 
