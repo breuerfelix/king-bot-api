@@ -5,6 +5,13 @@ all notable changes to this project will be documented in this file.
 the format is based on [keep a changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## 2018-10-09
+
+### added
+
+-   faster start by removing build function
+
 ## 2018-10-04
 
 ### added
