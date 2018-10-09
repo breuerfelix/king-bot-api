@@ -30,8 +30,8 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 6. start the bot
     1. `$ npm start`
 
-after changing `main.js` you can exit the script and then restart the bot with `$ npm start`.  
-if you downloaded a new project version you have to `$ npm install && npm run build` again before starting the bot.
+after changing `main.js` only use `$ npm start` to restart the bot.  
+when downloading a new project version you have to `$ npm install && npm run build` again before starting the bot.
 
 # features
 
