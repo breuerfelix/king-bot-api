@@ -1,6 +1,6 @@
 # king-bot-api <!-- omit in toc -->
 
-this is a really high performance based bot for [travian kingdoms](https://www.kingdoms.com/) written in javascript.  
+this is a really high performance based bot for [travian kingdoms](https://www.kingdoms.com/) written in typescript.  
 it's designed to run in a console for better server support.
 
 feel free to join the [official discord channel](https://discord.gg/5n2btF7) or **[contact me! (:](mailto:f.breuer@scriptworld.net)**
