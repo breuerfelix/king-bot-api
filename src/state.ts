@@ -28,7 +28,7 @@ class state {
 		await api.get_cache([ this.farmlist_ident ]);
 	}
 
-	get_farmlist(name: string): Ifarmlist | null {
+	get_farmlist(name: string): Ifarmlist {
 		const lists = this.find(this.farmlist_ident);
 
 		const farmlist = lists.find((x: any) => x.data.listName.toLowerCase() == name.toLowerCase());
@@ -41,7 +41,7 @@ class state {
 		return farmlist.data;
 	}
 
-	get_village(name: string): Ivillage | null {
+	get_village(name: string): Ivillage {
 		const villages = this.find(this.village_ident + 'own');
 
 		const village = villages.find((x: any) => x.data.name.toLowerCase() == name.toLowerCase());
