@@ -91,8 +91,30 @@ export interface Ivillage {
 	estimatedWarehouseLevel: number;
 }
 
-export interface Ibuilding {
+export interface Ibuilding_collection {
+	name: string
+	data: Ibuilding
+}
 
+export interface Ibuilding {
+	buildingType: number
+	villageId: number 
+	locationId: number
+	lvl: number
+	lvlNext: number
+	isMaxLvl: boolean
+	lvlMax: number
+	upgradeCosts: Iresources
+	nextUpgradeCosts: { [index: number]: Iresources }
+	upgradeTime: number
+	nextUpgradeTimes: { [index: number]: number }
+	upgradeSupplyUsage: number
+	upgradeSupplyUsageSums: { [index: number]: number }
+	category: number
+	sortOrder: number
+	rubble: [] // TODO implement
+	rubbleDismantleTime: [] // TODO implement
+	effect: number[]
 }
 
 export interface Ibuilding_queue {
@@ -118,8 +140,8 @@ export interface Ibuilding_queue {
 
 export interface Iresources {
 	[index: number]: number
-	1: number;
-	2: number;
-	3: number;
-	4: number;
+	1: number
+	2: number
+	3: number
+	4: number
 }
