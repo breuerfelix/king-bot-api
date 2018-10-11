@@ -80,9 +80,9 @@ class api {
 
 	async upgrade_building(buildingType: number, locationId: number, villageId: number): Promise<void> {
 		const params = {
-			buildingType,
+			villageId,
 			locationId,
-			villageId
+			buildingType
 		};
 
 		return await this.post('upgrade', 'building', params);
