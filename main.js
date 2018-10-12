@@ -10,7 +10,7 @@ async function main(){
 
 	// place bot action below
 	//kingbot.start_farming(['test'], 'test', 100);
-	kingbot.upgrade_resources({ clay: [10, 5], wood: [5] }, '-01-');
+	kingbot.upgrade_resources({ clay: [10, 5, 7, 4, 50, 45, 13, 2], wood: [5] }, '-01-');
 	kingbot.upgrade_resources({ clay: [13, 6], wood: [7] }, '-01-');
 }
 
