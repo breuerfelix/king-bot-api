@@ -63,6 +63,7 @@ class building_queue {
 
 			for(const village in this.loop_data) {
 				const village_obj: Ivillage = state.get_village(village);
+				console.log(village_obj)
 
 				const queue_data: Ibuilding_queue = state.find(this.building_queue_ident + village_obj.villageId);
 				// skip if resource slot is used
@@ -86,12 +87,11 @@ class building_queue {
 
 						// sort array lowest number will be first
 						const sorted_queue: number[] = queue[res].sort((x1, x2) => x1 - x2);
-						console.log(sorted_queue)
 
 						let lowest_building: Ibuilding = this.lowest_building_by_type(res, village_data);
 
+						// build until all res fields are this lvl
 						if(lowest_building.lvl < sorted_queue[0]) {
-							// build until all res fields are this lvl
 							if(this.able_to_build(lowest_building, village_obj)) {
 								upgrade_building = lowest_building;
 								break;
@@ -100,15 +100,18 @@ class building_queue {
 							// if not possible to build just go to next res type
 							continue;
 						}
-	
-						// if lvl is equal or greater switch to next type
-	
-						// else try upgrade this type
-	
-						// if not possible goto second lowest prod and repeat
 
-						//queue[res] = queue[res].sort((x1, x2) => x1 - x2);
-						//const queue: number[] = qu.sort((x1, x2) => x1 - x2);
+						//alles TODO !
+						// neue queue splice den ersten weg
+						for(let i: number = 1; i < sorted_queue.length; i++) {
+
+							// alle buildings ausser die vorherigen und kleiner als das eigene level
+							// liste mit allen die kleiner sind als das jetztige level, und zurueck iterieren und das level rausstreichen
+
+							//das erste der uebrig gebliebenen nehmen
+						}
+
+						if(upgrade_building) break;
 					}
 					
 					if(upgrade_building) break;
