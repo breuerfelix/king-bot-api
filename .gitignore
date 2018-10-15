@@ -3,6 +3,7 @@ cred.txt
 dist/
 dev_main.js
 .DS_Store
+custom_main.js
 
 # Logs
 logs

@@ -6,7 +6,7 @@ class settings {
 	database_name: string = '/database.json';
 
 	read_credentials(){
-		const filename: string = './cred.txt';
+		const filename: string = this.assets_folder + '/cred.txt';
 
 		if(!fs.existsSync(filename)) return null;
 
