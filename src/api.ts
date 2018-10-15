@@ -48,9 +48,7 @@ class api {
 
 		const response = await this.ax.post(`/?c=cache&a=get&t${get_date()}`, payload);
 
-		this.merge_data(response.data);
-
-		return response.data;
+		return this.merge_data(response.data);
 	}
 
 	async send_farmlists(lists: number[], village_id: number): Promise<object> {
@@ -98,14 +96,16 @@ class api {
 
 		const response = await this.ax.post(`/?t${get_date()}`, payload);
 		
-		if(merge) this.merge_data(response.data);
+		if(merge) return this.merge_data(response.data);
 
-		return response.data;
+		return clash_obj(response.data, 'cache', 'response');
 	}
 
 	// merges data into state object
-	merge_data(data: any): void {
-		state.set_state(clash_obj(data, 'cache', 'response'));
+	merge_data(data: any): any {
+		const clash: any = clash_obj(data, 'cache', 'response');
+		state.set_state(clash);
+		return clash;
 	}
 }
 
