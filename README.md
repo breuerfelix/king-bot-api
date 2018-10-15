@@ -39,6 +39,11 @@ for details check each chapter.
 ```typescript
 kingbot.start_farming([ 'startup farm list', 'rocking farms' ], '-02- rome', 600);
 async function start_farming(farmlists: string[], village: string, interval: number);
+
+kingbot.add_building_queue({ crop: [4, 4, 3], iron: [5] }, '-01-');
+async add_building_queue(resources: Iresource_type, village: string);
+
+kingbot.finish_earlier();
 ```
 
 you can stack each feature as often as you wish with different parameters.
@@ -95,14 +100,14 @@ this feature is made if you settled a new village so you can specify how you wan
 
 ## finish 5 min earlier
 
-as you might already now, it's possible to upgrade a buidling or resource 5 minutes earlier for free.
+as you might already now, it's possible to upgrade a buidling or resource field 5 minutes earlier for free.
 
 ```typescript
 kingbot.finish_earlier();
 ```
 
 this will auto finish building or resource fields below 5 minutes rest time.  
-it will scan you queue every minute and wake up one second after the five minute line is crossed to finish it instantly.
+it will scan your queue every minute and wake up one second after the five minute line is crossed to finish it instantly.
 
 # development
 
