@@ -1,6 +1,6 @@
 import { Ivillage, Ibuilding, Ibuilding_collection, Ibuilding_queue } from './interfaces';
 import state from './state';
-import { log, get_date } from './util';
+import { log, get_date, clash_obj, find } from './util';
 import { sleep } from './util';
 import api from './api';
 
@@ -59,13 +59,13 @@ class building_queue {
 			}
 
 			// fetch latest data needed
-			await api.get_cache(params);
+			let response = await api.get_cache(params);
 
 			let sleep_time: number = null;
 
-			for(let data of state.find(own_ident)) {
+			for(let data of find(response, own_ident)) {
 				const village: Ivillage = data.data;
-				const queue: Ibuilding_queue = state.find(this.building_queue_ident + village.villageId);
+				const queue: Ibuilding_queue = find(response, this.building_queue_ident + village.villageId);
 
 				const queues: number[] = [1, 2];
 
@@ -97,6 +97,7 @@ class building_queue {
 			if(sleep_time) sleep_time = sleep_time - five_minutes + 1;
 			
 			if(!sleep_time || sleep_time <= 0) sleep_time = 60;
+			if(sleep_time > 300) sleep_time = 300;
 
 			await sleep(sleep_time);
 		}
@@ -105,7 +106,7 @@ class building_queue {
 	// runs actual resource loop data
 	async run(): Promise<void> {
 		// sleep timer so the loop data gets filled up with all villages
-		await sleep(2);
+		await sleep(5);
 		
 		while(true) {
 			let params: string[] = [];
@@ -118,14 +119,14 @@ class building_queue {
 			}
 
 			// fetch latest data needed
-			await api.get_cache(params);
+			let response = await api.get_cache(params);
 
 			let sleep_time: number = null;
 
 			for(const village in this.loop_data) {
 				const village_obj: Ivillage = state.get_village(village);
 
-				const queue_data: Ibuilding_queue = state.find(this.building_queue_ident + village_obj.villageId);
+				const queue_data: Ibuilding_queue = find(response, this.building_queue_ident + village_obj.villageId);
 
 				// skip if resource slot is used
 				if(queue_data.freeSlots[2] == 0) {
@@ -142,7 +143,7 @@ class building_queue {
 				}
 				
 				// village got free res slot
-				const village_data: Ibuilding_collection[] = state.find(this.building_collection_ident + village_obj.villageId);
+				const village_data: Ibuilding_collection[] = find(response, this.building_collection_ident + village_obj.villageId);
 
 				// sort resource type by it's production
 				const sorted_res_types: number[] = [];
@@ -249,6 +250,7 @@ class building_queue {
 
 			// set save sleep time
 			if(!sleep_time || sleep_time <= 0) sleep_time = 60;
+			if(sleep_time > 300) sleep_time = 300;
 
 			await sleep(sleep_time);
 		}
