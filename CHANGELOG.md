@@ -17,6 +17,18 @@ and this project adheres to [semantic versioning](https://semver.org/spec/v2.0.0
 
 -   upgrade resource fields
 
+## 2018-10-09
+
+### added
+
+-   faster start by removing build function
+
+## 2018-10-04
+
+### added
+
+-   able to add multiple villages to one start farming statement
+
 ## 2018-10-01
 
 ### added

@@ -6,8 +6,9 @@
   "module": "main.js",
   "scripts": {
     "test": "tsc",
-    "start": "tsc && node index.js",
-    "dev": "tsc && DEV=true node dev/dev_index.js"
+    "start": "node index.js",
+    "build": "tsc",
+    "dev": "tsc && node index.js"
   },
   "repository": {
     "type": "git",
