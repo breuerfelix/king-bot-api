@@ -2,13 +2,8 @@ import fs from 'fs';
 
 class settings {
 
-	dev_mode: boolean = false;
 	assets_folder: string = './assets';
 	database_name: string = '/database.json';
-
-	constructor(){
-		if(process.env.DEV == 'true') this.dev_mode = true;
-	}
 
 	read_credentials(){
 		const filename: string = './cred.txt';
