@@ -65,8 +65,12 @@ class kingbot {
 		}
 	}
 
-	upgrade_resources(resources: Iresource_type, village: string): void {
+	add_building_queue(resources: Iresource_type, village: string): void {
 		building_queue.upgrade_res(resources, village);
+	}
+
+	finish_earlier(): void {
+		building_queue.upgrade_earlier();
 	}
 }
 
