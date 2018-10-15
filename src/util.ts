@@ -10,6 +10,15 @@ export function get_date(): number {
 	return Math.floor(Date.now() / 1000);
 } 
 
+export function find(data: any, ident: string, contains: boolean = false): any {
+	const found_obj = data.find((x: any) => {
+		return contains ? x.name.includes(ident) : x.name == ident;
+	});
+
+	return found_obj.data;
+}
+
+
 export function clash_obj(merge_obj: any, ident: string, ident2: string = ''): any {
 	let rv: any = {};
 
