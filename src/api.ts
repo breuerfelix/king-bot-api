@@ -31,7 +31,7 @@ class api {
 	}
 
 	async get_all(): Promise<object> {
-		return await this.post('getAll', 'player', {});
+		return await this.post('getAll', 'player', {}, true);
 	}
 
 	async get_cache(params: string[]): Promise<object> {
@@ -84,7 +84,7 @@ class api {
 
 	}
 
-	async post(action: string, controller: string, params: object, merge: boolean = true): Promise<any> {
+	async post(action: string, controller: string, params: object, merge: boolean = false): Promise<any> {
 		const session = this.session;
 
 		const payload = {
