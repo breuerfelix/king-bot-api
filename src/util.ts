@@ -6,6 +6,10 @@ export function log(obj: any): void {
 
 export const sleep = (ms: number) => new Promise(res => setTimeout(res, ms * 1000));
 
+export function get_date(): number {
+	return Math.floor(Date.now() / 1000);
+} 
+
 export function clash_obj(merge_obj: any, ident: string, ident2: string = ''): any {
 	let rv: any = {};
 
