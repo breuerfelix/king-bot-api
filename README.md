@@ -14,6 +14,8 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 - [getting-started](#getting-started)
 - [features](#features)
     - [send farmlists](#send-farmlists)
+    - [upgrade resource fields](#upgrade-resource-fields)
+    - [finish 5 min earlier](#finish-5-min-earlier)
 - [development](#development)
 
 # getting-started
@@ -57,6 +59,50 @@ name of the village from where the lists are going to be send
 
 **interval:**  
 interval of sending the lists _in seconds_
+
+## upgrade resource fields
+
+with this feature you are able to build up a queue for your resource fields in a village.  
+this queue can be stacked up unlimited and be as detailed as you wish.
+
+```typescript
+kingbot.add_building_queue({ crop: [4, 4, 3], iron: [5] }, '-01-');
+kingbot.add_building_queue({ crop: [6, 5, 5, 4], clay: [5, 4] }, '-01-');
+kingbot.add_building_queue({ clay: [10, 6], wood: [7], iron: [6] }, '-01-');
+kingbot.add_building_queue({ clay: [6], wood: [7], iron: [6], crop: [10, 7, 7, 5] }, '-01-');
+```
+
+**object:**  
+queue object, explained below
+
+**village:** _(non case-sensitiv)_  
+name of the village where to apply the queue
+
+all 4 resource types are available to use: `crop, iron, clay, wood`.  
+they all take an array of numbers as a value.  
+our example will be `kingbot.add_building_queue({ crop: [4, 4, 3], iron: [5] }, '-01-');`:  
+the bot will upgrade __all__ crop fields to lvl 3 since its the lowest number in the array.  
+it will also upgrade __all__ iron fields to lvl 5.  
+after upgrading the crop and iron fields it will upgrade 2 crop fields to level 4 before jumping to your next `add_building_queue` statement.
+
+when the bot has to upgrade crop and iron fields in this example it will always try to upgrade the type with the lowest production per hour.  
+crop production will be count * 2 since its not as important as the other resource types.
+
+when all crop and iron level requirements are done, it will go on the with the next queue statement you wrote with the same village.  
+it is able to handle multiple qeueues each village.
+
+this feature is made if you settled a new village so you can specify how you want the fields to be build and just let the bot handle all of that stuff.
+
+## finish 5 min earlier
+
+as you might already now, it's possible to upgrade a buidling or resource 5 minutes earlier for free.
+
+```typescript
+kingbot.finish_earlier();
+```
+
+this will auto finish building or resource fields below 5 minutes rest time.  
+it will scan you queue every minute and wake up one second after the five minute line is crossed to finish it instantly.
 
 # development
 

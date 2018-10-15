@@ -1,6 +1,6 @@
 import { Ivillage, Ibuilding, Ibuilding_collection, Ibuilding_queue } from './interfaces';
 import state from './state';
-import { log } from './util';
+import { log, get_date } from './util';
 import { sleep } from './util';
 import api from './api';
 
@@ -14,6 +14,7 @@ class building_queue {
 
 	running: boolean = false;
 	loop_data: { [index: string]: [{ [index: number]: number[] }] } = {};
+	finish_earlier: boolean = false;
 
 	building_collection_ident: string = 'Collection:Building:';
 	building_ident: string = 'Building:';
@@ -42,6 +43,64 @@ class building_queue {
 			this.run();
 		}
 	}
+
+	async upgrade_earlier(): Promise<void> {
+		this.finish_earlier = true;
+		const own_ident: string = state.village_ident + 'own';
+		const five_minutes: number = 5 * 60;
+
+		while(true) {
+			let params: string[] = [];
+
+			for(let data of state.find(own_ident)) {
+				const village: Ivillage = data.data;
+				params.push(own_ident);
+				params.push(this.building_queue_ident + village.villageId);
+			}
+
+			// fetch latest data needed
+			await api.get_cache(params);
+
+			let sleep_time: number = null;
+
+			for(let data of state.find(own_ident)) {
+				const village: Ivillage = data.data;
+				const queue: Ibuilding_queue = state.find(this.building_queue_ident + village.villageId);
+
+				const queues: number[] = [1, 2];
+
+				// for building and resource queue
+				for(let qu of queues) {
+					const actual_queue: any[] = queue.queues[qu];
+
+					if(!actual_queue) continue;
+					if(!actual_queue[0]) continue;
+
+					const first_item: any = actual_queue[0];
+					const finished: number = first_item.finished;
+					const now: number = get_date();
+
+					const rest_time: number = finished - now;
+
+					// finish building instant
+					if(rest_time <= five_minutes) {
+						await api.finish_now(village.villageId, qu);
+						console.log(`finished building earlier for free in village ${village.name}`);
+						continue;
+					}
+
+					if(!sleep_time) sleep_time = rest_time;
+					else if(rest_time < sleep_time) sleep_time = rest_time;
+				}
+			}
+
+			if(sleep_time) sleep_time = sleep_time - five_minutes + 1;
+			
+			if(!sleep_time || sleep_time <= 0) sleep_time = 60;
+
+			await sleep(sleep_time);
+		}
+	}
 	
 	// runs actual resource loop data
 	async run(): Promise<void> {
@@ -61,32 +120,62 @@ class building_queue {
 			// fetch latest data needed
 			await api.get_cache(params);
 
+			let sleep_time: number = null;
+
 			for(const village in this.loop_data) {
 				const village_obj: Ivillage = state.get_village(village);
-				console.log(village_obj)
 
 				const queue_data: Ibuilding_queue = state.find(this.building_queue_ident + village_obj.villageId);
+
 				// skip if resource slot is used
-				// TODO uncomment below
-				//if(queue_data.freeSlots[2] == 0) continue;
+				if(queue_data.freeSlots[2] == 0) {
+					// set sleep time
+					const finished: number = queue_data.queues[2][0].finished;
+					const now: number = get_date();
+
+					const rest_time: number = finished - now;
+
+					if(!sleep_time) sleep_time = rest_time;
+					else if(rest_time < sleep_time) sleep_time = rest_time;
+
+					continue;
+				}
 				
 				// village got free res slot
-				console.log('village got a free slot: ' + village)
-
 				const village_data: Ibuilding_collection[] = state.find(this.building_collection_ident + village_obj.villageId);
 
+				// sort resource type by it's production
+				const sorted_res_types: number[] = [];
+				const temp_res_prod: number[] = [];
+				const temp_dict: { [index: number]: number } = {};
+
+				for(let res in village_obj.production) {
+					let prod: number = village_obj.production[res];
+				
+					// double production for sorting for crop
+					if(res == '4') prod = prod * 2;
+
+					temp_res_prod.push(prod);
+					temp_dict[prod] = Number(res);
+				}
+
+				temp_res_prod.sort((x1, x2) => Number(x1) - Number(x2));
+
+				for(let prod of temp_res_prod) {
+					sorted_res_types.push(temp_dict[prod]);
+				}
+
+				// queue loop
 				let upgrade_building: Ibuilding = null;
 				for(const queue of this.loop_data[village]) {
-					const sorted_res_types: number[] = [1,2,3,4];
-					// TODO sort res type by production per hour
-					
 					// iterate over resource by its priority based on production
 					for(let res of sorted_res_types) {
 						// res type not given
 						if(!queue[res]) continue;
 
 						// sort array lowest number will be first
-						const sorted_queue: number[] = queue[res].sort((x1, x2) => x1 - x2);
+						const sorted_queue: number[] = [...queue[res]];
+						sorted_queue.sort((x1, x2) => x1 - x2);
 
 						let lowest_building: Ibuilding = this.lowest_building_by_type(res, village_data);
 
@@ -101,14 +190,41 @@ class building_queue {
 							continue;
 						}
 
-						//alles TODO !
-						// neue queue splice den ersten weg
-						for(let i: number = 1; i < sorted_queue.length; i++) {
+						// splice away the lowest building level
+						let new_queue: number[] = [...sorted_queue];
+						new_queue = new_queue.splice(1);
+						const new_building_data: Ibuilding[] = this.get_building_collection_above_level(res, sorted_queue[0], village_data);
 
-							// alle buildings ausser die vorherigen und kleiner als das eigene level
-							// liste mit allen die kleiner sind als das jetztige level, und zurueck iterieren und das level rausstreichen
+						for(let i: number = 0; i < new_queue.length; i++) {
+							let temp_lowest: Ibuilding = null;
 
-							//das erste der uebrig gebliebenen nehmen
+							// get lowest building if possible
+							new_building_data.forEach(x => {
+								if(x.lvl >= new_queue[i]) {
+									if(!temp_lowest) {
+										temp_lowest = x;
+									} else {
+										if(x.lvl < temp_lowest.lvl) temp_lowest = x;
+									}
+								}
+							});
+
+							// delete from queue and continue to next level
+							if(temp_lowest) {
+								delete new_building_data[new_building_data.indexOf(temp_lowest)];
+								continue;
+							}
+
+							// upgrade highest building which is lower than required level
+							const to_upgrade: Ibuilding = this.get_highest_level_until(res, new_queue[i], village_data);
+
+							if(!to_upgrade) break;
+
+							if(this.able_to_build(to_upgrade, village_obj)) {
+								upgrade_building = to_upgrade;
+							}
+
+							break;
 						}
 
 						if(upgrade_building) break;
@@ -118,21 +234,51 @@ class building_queue {
 				}
 
 				if(upgrade_building) {
-					// upgrade this building
-					// TODO uncomment below
-					//await api.upgrade_building(upgrade_building.buildingType, upgrade_building.locationId, village_obj.villageId);
+					// upgrade building
+					await api.upgrade_building(upgrade_building.buildingType, upgrade_building.locationId, village_obj.villageId);
+
+					// set sleep time
+					if(!sleep_time) sleep_time = upgrade_building.upgradeTime;
+					else if(upgrade_building.upgradeTime < sleep_time) sleep_time = upgrade_building.upgradeTime;
+
 					console.log('upgrade building ' + upgrade_building.locationId + ' on village ' + village);
 				}
 			}
 
-			// calculate sleep time
-			for(let village in this.loop_data) {
+			if(sleep_time && this.finish_earlier) sleep_time = sleep_time - (5 * 60) + 10;
 
-			}
+			// set save sleep time
+			if(!sleep_time || sleep_time <= 0) sleep_time = 60;
 
-			break;
-			sleep(10);
+			await sleep(sleep_time);
 		}
+	}
+
+	get_building_collection_above_level(type: number, level: number, org_collection: Ibuilding_collection[]): Ibuilding[] {
+		const rv: Ibuilding[] = [];
+
+		for(const item of org_collection) {
+			if(item.data.buildingType == type)
+				if(item.data.lvl > level)
+					rv.push(item.data);
+		}
+
+		return rv;
+	}
+
+	get_highest_level_until(building_type: number, max_level: number, building_collection: Ibuilding_collection[]): Ibuilding {
+		let rv: Ibuilding = null;
+
+		for(const building of building_collection) {
+			if(building.data.buildingType == building_type) {
+				if(building.data.lvl < max_level) {
+					if(!rv) rv = building.data;
+					else if (building.data.lvl > rv.lvl) rv = building.data;
+				}
+			}
+		}
+
+		return rv;
 	}
 
 	able_to_build(building: Ibuilding, village: Ivillage): boolean {
@@ -183,13 +329,3 @@ export interface Iresource_type {
 }
 
 export default new building_queue();
-
-// list mit buildings
-// wenn neues dazu kommt, adden
-// bei jedem run einmal queue fetchen
-// einach die queue pro building veraendern
-//
-// find village, storage = current resources
-// free slots 1 und 2 sind frei heisst ich kann bauen !
-//canuseinstantcontructiononlyinvillage = finish 5 min ealier
-//
