@@ -6,8 +6,9 @@
   "module": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node index.js",
-    "dev": "tsc && DEV=true node dev/dev_index.js"
+    "start": "node index.js",
+    "build": "tsc",
+    "dev": "tsc && node index.js"
   },
   "repository": {
     "type": "git",
