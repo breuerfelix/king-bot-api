@@ -5,6 +5,17 @@ all notable changes to this project will be documented in this file.
 the format is based on [keep a changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2018-10-15
+
+### added
+
+-   finish building or resource field 5 minutes earlier
+
+## 2018-10-13
+
+### added
+
+-   upgrade resource fields
 
 ## 2018-10-09
 

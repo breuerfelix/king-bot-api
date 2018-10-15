@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { clash_obj } from './util';
+import { clash_obj, get_date } from './util';
 import manage_login from './login';
 import settings from './settings';
 import state from './state';
@@ -8,10 +8,9 @@ import database from './database';
 class api {
 	private ax: AxiosInstance;
 
-	// set default so dev server can replace later
-	session: string = 'insert_session';
-	token: string = 'insert_token';
-	msid: string = 'insert_msid';
+	session: string = '';
+	token: string = '';
+	msid: string = '';
 
 	constructor() {
 		this.ax = axios.create();
@@ -32,20 +31,7 @@ class api {
 	}
 
 	async get_all(): Promise<object> {
-		const session: string = this.session;
-
-		const payload = {
-			controller: 'player',
-			action: 'getAll',
-			params: {},
-			session
-		};
-
-		const response = await this.ax.post(`/?c=player&a=getAll&t${Date.now()}`, payload);
-
-		this.merge_data(response.data);
-
-		return response.data;
+		return await this.post('getAll', 'player', {});
 	}
 
 	async get_cache(params: string[]): Promise<object> {
@@ -60,29 +46,59 @@ class api {
 			session
 		};
 
-		const response = await this.ax.post(`/?c=cache&a=get&t${Date.now()}`, payload);
+		const response = await this.ax.post(`/?c=cache&a=get&t${get_date()}`, payload);
 
 		this.merge_data(response.data);
 
 		return response.data;
 	}
 
-	async send_farmlists(lists: string[], village_id: string): Promise<object> {
-		const session: string = this.session;
+	async send_farmlists(lists: number[], village_id: number): Promise<object> {
+		const params = {
+			listIds: lists,
+			villageId: village_id
+		};
+
+		return await this.post('startFarmListRaid', 'troops', params);
+	}
+
+	async upgrade_building(buildingType: number, locationId: number, villageId: number): Promise<void> {
+		const params = {
+			villageId,
+			locationId,
+			buildingType
+		};
+
+		return await this.post('upgrade', 'building', params);
+	}
+
+	async finish_now(villageId: number, queueType: number): Promise<any> {
+		const params = {
+			featureName: 'finishNow',
+			params: {
+				villageId,
+				queueType,
+				price: 0
+			}
+		};
+
+		return await this.post('bookFeature', 'premiumFeature', params);
+
+	}
+
+	async post(action: string, controller: string, params: object, merge: boolean = true): Promise<any> {
+		const session = this.session;
 
 		const payload = {
-			action: 'startFarmListRaid',
-			controller: 'troops',
-			params: {
-				listIds: lists,
-				villageId: village_id
-			},
+			controller,
+			action,
+			params,
 			session
 		};
 
-		const response = await this.ax.post(`/?c=troops&a=startFarmListRaid&t${Date.now()}`, payload);
-
-		this.merge_data(response.data);
+		const response = await this.ax.post(`/?t${get_date()}`, payload);
+		
+		if(merge) this.merge_data(response.data);
 
 		return response.data;
 	}
