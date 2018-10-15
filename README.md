@@ -1,6 +1,6 @@
 # king-bot-api <!-- omit in toc -->
 
-this is a really high performance based bot for [travian kingdoms](https://www.kingdoms.com/) written in javascript.  
+this is a really high performance based bot for [travian kingdoms](https://www.kingdoms.com/) written in typescript.  
 it's designed to run in a console for better server support.
 
 feel free to join the [official discord channel](https://discord.gg/5n2btF7) or **[contact me! (:](mailto:f.breuer@scriptworld.net)**
@@ -25,11 +25,15 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 3. open project in console
 4. install all dependencies
     1. `$ npm install`
+1. build the project
+    1. `$ npm run build`
 5. edit `main.js`
     1. look up `sample_main.js` for help
 6. start the bot
     1. `$ npm start`
 
+after changing `main.js` only use `$ npm start` to restart the bot.  
+when downloading a new project version you have to `$ npm install && npm run build` again before starting the bot.
 
 # features
 
@@ -38,7 +42,7 @@ for details check each chapter.
 
 ```typescript
 kingbot.start_farming([ 'startup farm list', 'rocking farms' ], '-02- rome', 600);
-async function start_farming(farmlists: string[], village: string, interval: number);
+async function start_farming(farmlists: string[], village: string | string[], interval: number);
 
 kingbot.add_building_queue({ crop: [4, 4, 3], iron: [5] }, '-01-');
 async add_building_queue(resources: Iresource_type, village: string);
@@ -54,13 +58,15 @@ the bot will simply just send the farmlists out of the named village in a given 
 
 ```typescript
 kingbot.start_farming([ 'startup farm list', 'rocking farms' ], '-02- rome', 600);
+kingbot.start_farming([ 'startup farm list', 'rocking farms' ], [ '-02- rome', '-03- paris' ], 600);
 ```
 
 **farmlists:** _(non case-sensitiv)_  
 names of the farmlists which should be send together
 
 **village:** _(non case-sensitiv)_  
-name of the village from where the lists are going to be send
+name of the village from where the lists are going to be send  
+could also be an array of villages if you need same lists in same interval for different villages
 
 **interval:**  
 interval of sending the lists _in seconds_
