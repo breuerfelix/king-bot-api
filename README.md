@@ -7,6 +7,7 @@ feel free to join the [official discord channel](https://discord.gg/5n2btF7) or 
 
 you want to run the bot **24/7**, but don't want to use your computer? **[contact me aswell! (:](mailto:f.breuer@scriptworld.net)**
 
+[![Build Status](https://travis-ci.org/scriptworld-git/king-bot-api.svg?branch=master)](https://travis-ci.org/scriptworld-git/king-bot-api)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/scriptworld-git/king-bot/blob/master/LICENSE)
 
 # table of contents <!-- omit in toc -->
