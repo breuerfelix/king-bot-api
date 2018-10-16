@@ -10,7 +10,7 @@ export function get_date(): number {
 	return Math.floor(Date.now() / 1000);
 } 
 
-export function find(data: any, ident: string, contains: boolean = false): any {
+export function find_state_data(ident: string, data: any[],  contains: boolean = false): any {
 	const found_obj = data.find((x: any) => {
 		return contains ? x.name.includes(ident) : x.name == ident;
 	});
