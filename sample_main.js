@@ -6,7 +6,6 @@ const password = 'really_save_password';
 
 async function main(){
 	await kingbot.login(gameworld, email, password);
-	await kingbot.init_data();
 
 	// place bot action below
 	kingbot.finish_earlier();

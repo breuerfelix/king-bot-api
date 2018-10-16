@@ -2,7 +2,6 @@ import axios, { AxiosInstance } from 'axios';
 import { clash_obj, get_date } from './util';
 import manage_login from './login';
 import settings from './settings';
-import state from './state';
 import database from './database';
 
 class api {
@@ -30,11 +29,11 @@ class api {
 		this.ax.defaults.baseURL = `https://${gameworld.toLowerCase()}.kingdoms.com/api`;
 	}
 
-	async get_all(): Promise<object> {
-		return await this.post('getAll', 'player', {}, true);
+	async get_all(): Promise<any[]> {
+		return await this.post('getAll', 'player', {});
 	}
 
-	async get_cache(params: string[]): Promise<object> {
+	async get_cache(params: string[]): Promise<any[]> {
 		const session: string = this.session;
 		
 		const payload = {
@@ -84,7 +83,7 @@ class api {
 
 	}
 
-	async post(action: string, controller: string, params: object, merge: boolean = false): Promise<any> {
+	async post(action: string, controller: string, params: object): Promise<any> {
 		const session = this.session;
 
 		const payload = {
@@ -94,19 +93,17 @@ class api {
 			session
 		};
 
-		const response = await this.ax.post(`/?t${get_date()}`, payload);
-		
-		if(merge) return this.merge_data(response.data);
+		const response: any = await this.ax.post(`/?t${get_date()}`, payload);
 
-		return clash_obj(response.data, 'cache', 'response');
+		if(response.errors) {
+			console.log(response.errors);
+		}
+		
+		return this.merge_data(response.data);
 	}
 
 	// merges data into state object
-	merge_data(data: any): any {
-		const clash: any = clash_obj(data, 'cache', 'response');
-		state.set_state(clash);
-		return clash;
-	}
+	merge_data: any = (data: any) => clash_obj(data, 'cache', 'response');
 }
 
 export default new api();

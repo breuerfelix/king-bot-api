@@ -1,8 +1,8 @@
 import { Ivillage, Ibuilding, Ibuilding_collection, Ibuilding_queue } from './interfaces';
-import state from './state';
-import { log, get_date, clash_obj, find } from './util';
+import { log, get_date, clash_obj, find_state_data } from './util';
 import { sleep } from './util';
 import api from './api';
+import village from './village';
 
 class building_queue {
 	building_type: { [index: number]: number, wood: number, clay: number, iron: number, crop: number } = {
@@ -22,13 +22,6 @@ class building_queue {
 
 	// reads in loop data
 	upgrade_res(resources: Iresource_type, village_name: string): void {
-		const village: Ivillage | null = state.get_village(village_name);
-
-		if(!village) {
-			log(`village ${village_name} could not be found`);
-			return;
-		}
-
 		const data: { [index: number]: number[] } = {};
 		
 		for(let t in resources) {
@@ -46,26 +39,26 @@ class building_queue {
 
 	async upgrade_earlier(): Promise<void> {
 		this.finish_earlier = true;
-		const own_ident: string = state.village_ident + 'own';
 		const five_minutes: number = 5 * 60;
 
 		while(true) {
+			const villages_data: any = await village.get_own();
+
 			let params: string[] = [];
 
-			for(let data of state.find(own_ident)) {
-				const village: Ivillage = data.data;
-				params.push(own_ident);
-				params.push(this.building_queue_ident + village.villageId);
+			for(let data of find_state_data(village.own_villages_ident, villages_data)) {
+				const vill: Ivillage = data.data;
+				params.push(this.building_queue_ident + vill.villageId);
 			}
 
 			// fetch latest data needed
-			let response = await api.get_cache(params);
+			let response: any[] = await api.get_cache(params);
 
 			let sleep_time: number = null;
 
-			for(let data of find(response, own_ident)) {
-				const village: Ivillage = data.data;
-				const queue: Ibuilding_queue = find(response, this.building_queue_ident + village.villageId);
+			for(let data of find_state_data(village.own_villages_ident, villages_data)) {
+				const vill: Ivillage = data.data;
+				const queue: Ibuilding_queue = find_state_data(this.building_queue_ident + vill.villageId, response);
 
 				const queues: number[] = [1, 2];
 
@@ -84,8 +77,8 @@ class building_queue {
 
 					// finish building instant
 					if(rest_time <= five_minutes) {
-						await api.finish_now(village.villageId, qu);
-						console.log(`finished building earlier for free in village ${village.name}`);
+						const res = await api.finish_now(vill.villageId, qu);
+						console.log(`finished building earlier for free in village ${vill.name}`);
 						continue;
 					}
 
@@ -111,22 +104,24 @@ class building_queue {
 		while(true) {
 			let params: string[] = [];
 
-			for(let village in this.loop_data) {
-				const village_obj: Ivillage = state.get_village(village);
+			const villages_data: any = await village.get_own();
+
+			for(let vill in this.loop_data) {
+				const village_obj: Ivillage = village.find(vill, villages_data);
+
 				params.push(this.building_collection_ident + village_obj.villageId);
 				params.push(this.building_queue_ident + village_obj.villageId);
-				params.push(state.village_ident + 'own');
 			}
 
 			// fetch latest data needed
-			let response = await api.get_cache(params);
+			let response: any[] = await api.get_cache(params);
 
 			let sleep_time: number = null;
 
-			for(const village in this.loop_data) {
-				const village_obj: Ivillage = state.get_village(village);
+			for(const vill in this.loop_data) {
+				const village_obj: Ivillage = village.find(vill, villages_data);
 
-				const queue_data: Ibuilding_queue = find(response, this.building_queue_ident + village_obj.villageId);
+				const queue_data: Ibuilding_queue = find_state_data(this.building_queue_ident + village_obj.villageId, response);
 
 				// skip if resource slot is used
 				if(queue_data.freeSlots[2] == 0) {
@@ -143,7 +138,7 @@ class building_queue {
 				}
 				
 				// village got free res slot
-				const village_data: Ibuilding_collection[] = find(response, this.building_collection_ident + village_obj.villageId);
+				const village_data: Ibuilding_collection[] = find_state_data(this.building_collection_ident + village_obj.villageId, response);
 
 				// sort resource type by it's production
 				const sorted_res_types: number[] = [];
@@ -168,7 +163,7 @@ class building_queue {
 
 				// queue loop
 				let upgrade_building: Ibuilding = null;
-				for(const queue of this.loop_data[village]) {
+				for(const queue of this.loop_data[vill]) {
 					// iterate over resource by its priority based on production
 					for(let res of sorted_res_types) {
 						// res type not given
@@ -236,13 +231,18 @@ class building_queue {
 
 				if(upgrade_building) {
 					// upgrade building
-					await api.upgrade_building(upgrade_building.buildingType, upgrade_building.locationId, village_obj.villageId);
+					const res: any = await api.upgrade_building(upgrade_building.buildingType, upgrade_building.locationId, village_obj.villageId);
+					if(res.errors) {
+						//TODO delete this console log
+						console.log('error upgrading building');
+						console.log(upgrade_building);
+					}
 
 					// set sleep time
 					if(!sleep_time) sleep_time = upgrade_building.upgradeTime;
 					else if(upgrade_building.upgradeTime < sleep_time) sleep_time = upgrade_building.upgradeTime;
 
-					console.log('upgrade building ' + upgrade_building.locationId + ' on village ' + village);
+					console.log('upgrade building ' + upgrade_building.locationId + ' on village ' + vill);
 				}
 			}
 
