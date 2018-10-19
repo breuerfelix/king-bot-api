@@ -146,15 +146,18 @@ class building_queue {
 				const temp_dict: { [index: number]: number } = {};
 
 				for(let res in village_obj.production) {
-					let prod: number = village_obj.production[res];
-				
-					// double production for sorting for crop
-					if(res == '4') prod = prod * 2;
+					// let prod: number = village_obj.production[res];
+					let current_res: number = Number(village_obj.storage[res]);
+					let storage: number = Number(village_obj.storageCapacity[res]);
 
-					temp_res_prod.push(prod);
-					temp_dict[prod] = Number(res);
+					// calculate percentage of current resource
+					let percent: number = current_res / (storage / 100);
+				
+					temp_res_prod.push(percent);
+					temp_dict[percent] = Number(res);
 				}
 
+				// sort lowest is first by number
 				temp_res_prod.sort((x1, x2) => Number(x1) - Number(x2));
 
 				for(let prod of temp_res_prod) {
