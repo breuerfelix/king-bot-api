@@ -3,6 +3,7 @@ import { clash_obj, get_date } from './util';
 import manage_login from './login';
 import settings from './settings';
 import database from './database';
+import { Iunits } from './interfaces';
 
 class api {
 	private ax: AxiosInstance;
@@ -81,6 +82,19 @@ class api {
 
 		return await this.post('bookFeature', 'premiumFeature', params);
 
+	}
+
+	async send_units(villageId: number, destVillageId: number, units: Iunits, movementType: number, spyMission: string = 'resources'): Promise<any> {
+		const params = {
+			destVillageId,
+			villageId,
+			movementType,
+			redeployHero: false,
+			units,
+			spyMission
+		};
+
+		return await this.post('send', 'troops', params);
 	}
 
 	async post(action: string, controller: string, params: object): Promise<any> {
