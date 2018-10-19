@@ -13,7 +13,7 @@ class settings {
 		let cred: string = fs.readFileSync(filename, 'utf-8');
 		let cred_array: string[] = cred.trim().split(';');
 
-		return { email: cred_array[0], password: cred_array[1] };
+		return { email: cred_array[0], password: cred_array[1], gameworld: cred_array[2] };
 	}
 }
 

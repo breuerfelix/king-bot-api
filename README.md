@@ -150,7 +150,7 @@ default value is 1
 
 you can also create a file names `cred.txt` in the root folder which contains your login credentials:
 ```csv
-your_email@mail.com;your_password
+your_email@mail.com;your_password;your_gameworld
 ```
 this file will be ignored by git so you don't have to be scared to accidentally commit your credentials.
 
