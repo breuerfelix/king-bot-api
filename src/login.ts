@@ -233,8 +233,8 @@ async function get_gameworld_id(axios: AxiosInstance, session: string, gameworld
 async function test_lobby_connection(axios: AxiosInstance, session: string): Promise<boolean> {
 
 	const payload = {
-		action: 'getAll',
-		controller: 'player',
+		action: 'getPossibleNewGameworlds',
+		controller: 'gameworld',
 		params: {},
 		session
 	};
@@ -247,13 +247,15 @@ async function test_lobby_connection(axios: AxiosInstance, session: string): Pro
 async function test_gameworld_connection(axios: AxiosInstance, gameworld: string, session: string): Promise<boolean> {
 
 	const payload = {
-		action: 'getAll',
-		controller: 'player',
-		params: {},
+		action: 'get',
+		controller: 'cache',
+		params: {
+			names: [ 'Player:' ]
+		},
 		session
 	};
 
-	const response = await axios.post(`https://${gameworld}.kingdoms.com/api/?c=player&a=getAll&t${Date.now()}`, payload);
+	const response = await axios.post(`https://${gameworld}.kingdoms.com/api/?c=cache&a=get&t${Date.now()}`, payload);
 
 	return !response.data.error;
 }
