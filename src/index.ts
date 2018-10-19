@@ -9,23 +9,18 @@ import { tribe } from './data';
 
 class kingbot {
 	async login(gameworld: string, email: string = '', password: string = ''): Promise<void> {
-		if(!gameworld) {
-			log('no gameworld provided');
-			process.exit();
-			return;
-		}
-
-		if(!email || !password) {
+		if(!email || !password || !gameworld) {
 			let cred: any = settings.read_credentials();
 
 			if(cred) {
 				email = cred.email;
 				password = cred.password;
+				gameworld = cred.gameworld;
 			}
 		}
 		
-		if(!email || !password) {
-			log('please provide email and password');
+		if(!email || !password || !gameworld) {
+			log('please provide email, password and gameworld');
 			process.exit();
 			return;
 		}
