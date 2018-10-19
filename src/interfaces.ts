@@ -1,11 +1,9 @@
-// all number types have to be converted with Number(value) to be sure it's a number
-
 export interface Ifarmlist {
 	listId: number;
 	listName: string;
 	lastSent: Date;
 	lastChanged: Date;
-	units: Iunits;
+	units: Ifarmlist_units;
 	orderNr: number;
 	villageIds: number[];
 	entryIds: number[];
@@ -17,7 +15,7 @@ export interface Ifarmlist_entry {
 	entryId: number;
 	villageId: number;
 	villageName: string;
-	units: Iunits; 	
+	units: Ifarmlist_units; 	
 	targetOwnerId: number;
 	belongsToKing: number;
 	population: number;
@@ -32,6 +30,16 @@ export interface Ifarmlist_entry {
 	};
 }
 
+export interface Ifarmlist_units {
+	[index: number]: number
+	1: number;
+	2: number;
+	3: number;
+	4: number;
+	5: number;
+	6: number;
+}
+
 export interface Iunits {
 	[index: number]: number
 	1: number;
@@ -40,6 +48,11 @@ export interface Iunits {
 	4: number;
 	5: number;
 	6: number;
+	7: number;
+	8: number;
+	9: number;
+	10: number;
+	11: number;
 }
 
 export interface Icoordinates {
