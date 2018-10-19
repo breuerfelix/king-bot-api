@@ -18,6 +18,7 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
     - [send farmlists](#send-farmlists)
     - [upgrade resource fields](#upgrade-resource-fields)
     - [finish 5 min earlier](#finish-5-min-earlier)
+    - [easy scout](#easy-scout)
 - [development](#development)
 
 # getting-started
@@ -50,6 +51,9 @@ kingbot.add_building_queue({ crop: [4, 4, 3], iron: [5] }, '-01-');
 async add_building_queue(resources: Iresource_type, village: string);
 
 kingbot.finish_earlier();
+
+kingbot.scout('scout', '-01-', 1);
+async scout(farmlist_name: string, village_name: string, amount: number = 1);
 ```
 
 you can stack each feature as often as you wish with different parameters.
@@ -116,6 +120,31 @@ kingbot.finish_earlier();
 
 this will auto finish building or resource fields below 5 minutes rest time.  
 it will scan your queue every minute and wake up one second after the five minute line is crossed to finish it instantly.
+
+## easy scout
+
+sometimes there are some bigger farms, you can't put into a farmlist, so you scout them during the day and send a little army to clear them.  
+this feature allows you to store all of these farms into a farmlist and the bot will send a given amount of scouts to this village when executed.
+
+the following command with send the scouts once.
+
+```bash
+$ npm run scout
+```
+
+```
+kingbot.scout('scout', '-01-', 1);
+```
+
+**farmlist:** _(non case-sensitiv)_  
+names of the farmlist with all scout farms
+
+**village:** _(non case-sensitiv)_  
+name of the village from where the scouts are going to be send
+
+**amount:** _(optional)_  
+amount of scouts being send per list
+default value is 1
 
 # development
 

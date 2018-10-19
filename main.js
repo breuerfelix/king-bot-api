@@ -6,12 +6,18 @@ const password = '';
 
 async function main(){
 	await kingbot.login(gameworld, email, password);
-	await kingbot.init_data();
 
 	// place bot action below
 }
 
-main();
+async function scout() {
+	await kingbot.login(gameworld, email, password);
+
+	// farmlists which should be send when using npm run scout
+}
+
+if(process.argv[2] == '--scout') scout();
+else main();
 
 export {};
 

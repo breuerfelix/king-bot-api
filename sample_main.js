@@ -17,6 +17,14 @@ async function main(){
 	kingbot.add_building_queue({ clay: [10, 6], wood: [7], iron: [6] }, '-01-');
 }
 
-main();
+async function scout() {
+	await kingbot.login(gameworld, email, password);
+
+	// farmlists which should be sent when using npm run scout
+	kingbot.scout('scout list', '-01-', 1);
+}
+
+if(process.argv[2] == '--scout') scout();
+else main();
 
 export {};
