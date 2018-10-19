@@ -132,7 +132,7 @@ the following command with send the scouts once.
 $ npm run scout
 ```
 
-```
+```typescript
 kingbot.scout('scout', '-01-', 1);
 ```
 
