@@ -152,6 +152,9 @@ class building_queue {
 
 					// calculate percentage of current resource
 					let percent: number = current_res / (storage / 100);
+
+					// add 30 percent storage to crop, since its not that needed
+					if(res == '4') percent += 30;
 				
 					temp_res_prod.push(percent);
 					temp_dict[percent] = Number(res);
