@@ -8,7 +8,8 @@
     "test": "tsc",
     "start": "node index.js",
     "build": "tsc",
-    "dev": "tsc && node index.js"
+    "dev": "tsc && node index.js",
+	"scout": "node index.js --scout"
   },
   "repository": {
     "type": "git",

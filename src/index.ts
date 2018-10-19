@@ -1,10 +1,11 @@
 import api from './api';
 import settings from './settings';
 import { log, sleep } from './util';
-import { Ivillage, Ifarmlist } from './interfaces';
+import { Ivillage, Ifarmlist, Iunits } from './interfaces';
 import building_queue, { Iresource_type } from './building';
 import farming from './farming';
 import village from './village';
+import { tribe } from './data';
 
 class kingbot {
 	async login(gameworld: string, email: string = '', password: string = ''): Promise<void> {
@@ -71,12 +72,68 @@ class kingbot {
 		}
 	}
 
-	add_building_queue(resources: Iresource_type, village: string): void {
-		building_queue.upgrade_res(resources, village);
+	add_building_queue(resources: Iresource_type, village_name: string): void {
+		building_queue.upgrade_res(resources, village_name);
 	}
 
 	finish_earlier(): void {
 		building_queue.upgrade_earlier();
+	}
+
+	async scout(farmlist_name: string, village_name: string, amount: number = 1) {
+		const params = [
+			village.own_villages_ident,
+			farming.farmlist_ident,
+			'Player:'
+		];
+
+		// fetch data
+		const response = await api.get_cache(params);
+
+		const vill: Ivillage | null = village.find(village_name, response);
+		if(!vill) return;
+
+		const village_id: number = vill.villageId;
+
+		const list_obj = farming.find(farmlist_name, response);
+		if(!list_obj) return;
+
+		const list_id: number = list_obj.listId;
+
+		if(!list_id) return;
+
+		// get own tribe
+		const player_data: any = response.find((x: any) => {
+			if(x.name.includes('Player:')) {
+				if(x.name != 'Player:0') return true;
+			}
+
+			return false;
+		});
+		const own_tribe: tribe = player_data.data.tribeId;
+
+		const units: Iunits = {
+			1: 0,
+			2: 0,
+			3: 0,
+			4: 0,
+			5: 0,
+			6: 0,
+			7: 0,
+			8: 0,
+			9: 0,
+			10: 0,
+			11: 0
+		};
+
+		// scouts are on different positions
+		if(own_tribe == tribe.gaul) units[3] = amount;
+		else units[4] = amount;
+
+		// send scouts
+		for(let target of list_obj.villageIds) {
+			await api.send_units(village_id, target, units, 6);
+		}
 	}
 }
 
