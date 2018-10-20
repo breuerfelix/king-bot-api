@@ -9,7 +9,7 @@
     "start": "node index.js",
     "build": "tsc",
     "dev": "tsc && node index.js",
-	"scout": "node index.js --scout"
+    "scout": "node index.js --scout"
   },
   "repository": {
     "type": "git",
@@ -40,7 +40,7 @@
     "@types/cheerio": "^0.22.9",
     "@types/deepmerge": "^2.1.0",
     "@types/lowdb": "^1.0.5",
-    "@types/node": "^10.11.2",
+    "@types/node": "^10.12.0",
     "@types/qs": "^6.5.1",
     "typescript": "^3.2.0-dev.20180927",
     "typescript-eslint-parser": "^19.0.1"
