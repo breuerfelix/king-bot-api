@@ -151,7 +151,7 @@ default value is 1
 
 # auto adventure
 
-**thanks to @Tom-Boyd**  
+**thanks to [@Tom-Boyd](https://github.com/Tom-Boyd)**  
 this feature will just send your hero on an adventure if available.
 
 ```typescript
