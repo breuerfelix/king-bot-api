@@ -3,6 +3,7 @@ import settings from './settings';
 import { log, sleep } from './util';
 import { Ivillage, Ifarmlist, Iunits } from './interfaces';
 import building_queue, { Iresource_type } from './building';
+import hero from './hero';
 import farming from './farming';
 import village from './village';
 import { tribe } from './data';
@@ -18,13 +19,13 @@ class kingbot {
 				gameworld = cred.gameworld;
 			}
 		}
-		
+
 		if(!email || !password || !gameworld) {
 			log('please provide email, password and gameworld');
 			process.exit();
 			return;
 		}
-		
+
 		console.log(`start login to gameworld ${gameworld} with account ${email} ...`);
 		await api.login(email, password, gameworld);
 	}
@@ -73,6 +74,13 @@ class kingbot {
 
 	finish_earlier(): void {
 		building_queue.upgrade_earlier();
+	}
+
+	auto_adventure(type: number): void {
+		if (type == 0 || type == 1)
+			hero.auto_adventure(type);
+		else
+			log('Incorrect parameter in auto_adventure. Should be 0 or 1');
 	}
 
 	async scout(farmlist_name: string, village_name: string, amount: number = 1) {

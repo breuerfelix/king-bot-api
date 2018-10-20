@@ -15,7 +15,7 @@ export interface Ifarmlist_entry {
 	entryId: number;
 	villageId: number;
 	villageName: string;
-	units: Ifarmlist_units; 	
+	units: Ifarmlist_units;
 	targetOwnerId: number;
 	belongsToKing: number;
 	population: number;
@@ -111,7 +111,7 @@ export interface Ibuilding_collection {
 
 export interface Ibuilding {
 	buildingType: number
-	villageId: number 
+	villageId: number
 	locationId: number
 	lvl: number
 	lvlNext: number
@@ -157,4 +157,44 @@ export interface Iresources {
 	2: number
 	3: number
 	4: number
+}
+
+export interface Ihero {
+	playerId: number;
+	villageId: number;
+	destVillageId: number;
+	destVillageName: string;
+	destPlayerName: string;
+	destPlayerId: number;
+	status: number;
+	health: number;
+	lastHealthTime: number;
+	baseRegenerationRate: number;
+	regenerationRate: number;
+	fightStrength: number;
+	fightStrengthPoints: number;
+	attBonusPoints: number;
+	defBonusPoints: number;
+	resBonusPoints: number;
+	resBonusType: number;
+	freePoints: number;
+	speed: number;
+	untilTime: number;
+	bonuses: any;
+	maxScrollsPerDay: number;
+	scrollsUsedToday: number;
+	waterbucketUsedToday: number;
+	ointmentsUsedToday: number;
+	adventurePointCardUsedToday: number;
+	resourceChestsUsedToday: number;
+	cropChestsUsedToday: number;
+	artworkUsedToday: number;
+	isMoving: boolean;
+	adventurePoints: number;
+	adventurePointTime: number;
+	levelUp: number;
+	xp: number;
+	xpThisLevel: number;
+	xpNextLevel: number;
+	level: number;
 }
