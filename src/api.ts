@@ -36,7 +36,7 @@ class api {
 
 	async get_cache(params: string[]): Promise<any[]> {
 		const session: string = this.session;
-		
+
 		const payload = {
 			controller: 'cache',
 			action: 'get',
@@ -97,6 +97,16 @@ class api {
 		return await this.post('send', 'troops', params);
 	}
 
+	async start_adventure(type: number): Promise<void> {
+		const params = {
+			questId: (type == 0) ? 991 : 992,
+			dialogId: 0,
+			command: 'activate'
+		};
+
+		return await this.post('dialogAction', 'quest', params);
+	}
+
 	async post(action: string, controller: string, params: object): Promise<any> {
 		const session = this.session;
 
@@ -112,7 +122,7 @@ class api {
 		if(response.errors) {
 			console.log(response.errors);
 		}
-		
+
 		return this.merge_data(response.data);
 	}
 

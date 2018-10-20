@@ -1,11 +1,13 @@
 import api from './api';
 import settings from './settings';
 import { log, sleep } from './util';
-import { Ivillage, Ifarmlist, Iunits } from './interfaces';
+import { Ivillage, Ifarmlist, Iunits, Iplayer } from './interfaces';
 import building_queue, { Iresource_type } from './building';
+import hero, { adventure_type } from './hero';
 import farming from './farming';
 import village from './village';
 import { tribe } from './data';
+import player from './player';
 
 class kingbot {
 	async login(gameworld: string, email: string = '', password: string = ''): Promise<void> {
@@ -18,13 +20,13 @@ class kingbot {
 				gameworld = cred.gameworld;
 			}
 		}
-		
+
 		if(!email || !password || !gameworld) {
 			log('please provide email, password and gameworld');
 			process.exit();
 			return;
 		}
-		
+
 		console.log(`start login to gameworld ${gameworld} with account ${email} ...`);
 		await api.login(email, password, gameworld);
 	}
@@ -75,17 +77,20 @@ class kingbot {
 		building_queue.upgrade_earlier();
 	}
 
+	auto_adventure(type: adventure_type = adventure_type.short, min_health: number = 15): void {
+		hero.auto_adventure(type, min_health);
+	}
+
 	async scout(farmlist_name: string, village_name: string, amount: number = 1) {
 		const params = [
 			village.own_villages_ident,
-			farming.farmlist_ident,
-			'Player:'
+			farming.farmlist_ident
 		];
 
 		// fetch data
 		const response = await api.get_cache(params);
 
-		const vill: Ivillage | null = village.find(village_name, response);
+		const vill: Ivillage = village.find(village_name, response);
 		if(!vill) return;
 
 		const village_id: number = vill.villageId;
@@ -97,15 +102,8 @@ class kingbot {
 
 		if(!list_id) return;
 
-		// get own tribe
-		const player_data: any = response.find((x: any) => {
-			if(x.name.includes('Player:')) {
-				if(x.name != 'Player:0') return true;
-			}
-
-			return false;
-		});
-		const own_tribe: tribe = player_data.data.tribeId;
+		const player_data: Iplayer = await player.get();
+		const own_tribe: tribe = player_data.tribeId;
 
 		const units: Iunits = {
 			1: 0,
