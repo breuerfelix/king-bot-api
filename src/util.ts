@@ -7,7 +7,7 @@ export function log(obj: any): void {
 export const sleep = (ms: number) => new Promise(res => setTimeout(res, ms * 1000));
 
 export function get_date(): number {
-	return Math.floor(Date.now() / 1000);
+	return Math.floor(Number(Date.now()) / 1000);
 } 
 
 export function find_state_data(ident: string, data: any[],  contains: boolean = false): any {
@@ -18,6 +18,9 @@ export function find_state_data(ident: string, data: any[],  contains: boolean =
 	return found_obj.data;
 }
 
+export function get_diff_time(time: number): number {
+	return get_date() - Number(time);
+}
 
 export function clash_obj(merge_obj: any, ident: string, ident2: string = ''): any {
 	let rv: any = {};
