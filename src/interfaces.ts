@@ -1,3 +1,5 @@
+import { tribe } from './data';
+
 export interface Ifarmlist {
 	listId: number;
 	listName: string;
@@ -197,4 +199,10 @@ export interface Ihero {
 	xpThisLevel: number;
 	xpNextLevel: number;
 	level: number;
+}
+
+export interface Iplayer {
+	//TODO fill interface
+	playerId: number
+	tribeId: tribe
 }
