@@ -19,6 +19,7 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
     - [upgrade resource fields](#upgrade-resource-fields)
     - [finish 5 min earlier](#finish-5-min-earlier)
     - [easy scout](#easy-scout)
+    - [auto adventure](#auto-adventure)
 - [development](#development)
 
 # getting-started
@@ -51,6 +52,8 @@ kingbot.add_building_queue({ crop: [4, 4, 3], iron: [5] }, '-01-');
 async add_building_queue(resources: Iresource_type, village: string);
 
 kingbot.finish_earlier();
+
+kingbot.auto_adventure();
 
 kingbot.scout('scout', '-01-', 1);
 async scout(farmlist_name: string, village_name: string, amount: number = 1);
@@ -145,6 +148,21 @@ name of the village from where the scouts are going to be send
 **amount:** _(optional)_  
 amount of scouts being send per list
 default value is 1
+
+# auto adventure
+
+this feature will just send your hero on an adventure if available.
+
+```typescript
+kingbot.auto_adventure(adventure_type.short, 35);
+```
+
+**adventure type:**  
+`adventure_type.short` or `adventure_type.long`
+
+**health:** _(optional)_  
+default is 15  
+required amount of health _in percent_ for the hero to be send on a adventure
 
 # development
 
