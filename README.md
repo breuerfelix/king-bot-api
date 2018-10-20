@@ -102,8 +102,8 @@ the bot will upgrade __all__ crop fields to lvl 3 since its the lowest number in
 it will also upgrade __all__ iron fields to lvl 5.  
 after upgrading the crop and iron fields it will upgrade 2 crop fields to level 4 before jumping to your next `add_building_queue` statement.
 
-when the bot has to upgrade crop and iron fields in this example it will always try to upgrade the type with the lowest production per hour.  
-crop production will be count * 2 since its not as important as the other resource types.
+when the bot has to upgrade crop and iron fields in this example it will always try to upgrade the type with the lowest storage percentage.  
+crop production will be added 25 % since it's not as important as the other resource types.
 
 when all crop and iron level requirements are done, it will go on the with the next queue statement you wrote with the same village.  
 it is able to handle multiple qeueues each village.
