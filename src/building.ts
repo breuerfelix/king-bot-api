@@ -182,7 +182,7 @@ class building_queue {
 						let lowest_building: Ibuilding = this.lowest_building_by_type(res, village_data);
 
 						// build until all res fields are this lvl
-						if(lowest_building.lvl < sorted_queue[0]) {
+						if(Number(lowest_building.lvl) < Number(sorted_queue[0])) {
 							if(this.able_to_build(lowest_building, village_obj)) {
 								upgrade_building = lowest_building;
 								break;
@@ -202,11 +202,11 @@ class building_queue {
 
 							// get lowest building if possible
 							new_building_data.forEach(x => {
-								if(x.lvl >= new_queue[i]) {
+								if(Number(x.lvl) >= Number(new_queue[i])) {
 									if(!temp_lowest) {
 										temp_lowest = x;
 									} else {
-										if(x.lvl < temp_lowest.lvl) temp_lowest = x;
+										if(Number(x.lvl) < Number(temp_lowest.lvl)) temp_lowest = x;
 									}
 								}
 							});
@@ -241,7 +241,6 @@ class building_queue {
 					if(res.errors) {
 						//TODO delete this console log
 						console.log('error upgrading building');
-						console.log(upgrade_building);
 					}
 
 					// set sleep time
@@ -267,7 +266,7 @@ class building_queue {
 
 		for(const item of org_collection) {
 			if(item.data.buildingType == type)
-				if(item.data.lvl > level)
+				if(Number(item.data.lvl) > Number(level))
 					rv.push(item.data);
 		}
 
@@ -279,9 +278,9 @@ class building_queue {
 
 		for(const building of building_collection) {
 			if(building.data.buildingType == building_type) {
-				if(building.data.lvl < max_level) {
+				if(Number(building.data.lvl) < Number(max_level)) {
 					if(!rv) rv = building.data;
-					else if (building.data.lvl > rv.lvl) rv = building.data;
+					else if (Number(building.data.lvl) > Number(rv.lvl)) rv = building.data;
 				}
 			}
 		}
@@ -291,7 +290,7 @@ class building_queue {
 
 	able_to_build(building: Ibuilding, village: Ivillage): boolean {
 		for(let res in village.storage)
-			if(village.storage[res] < building.upgradeCosts[res]) return false;
+			if(Number(village.storage[res]) < Number(building.upgradeCosts[res])) return false;
 
 		return true;
 	}
@@ -302,7 +301,7 @@ class building_queue {
 		let min: number = arr[0];
 
 		for(let item of arr) {
-			if(item < min) min = item;
+			if(Number(item) < Number(min)) min = item;
 		}
 
 		return min;
@@ -321,7 +320,7 @@ class building_queue {
 				continue;
 			}
 
-			if(bd.lvl < rv.lvl) rv = bd;
+			if(Number(bd.lvl) < Number(rv.lvl)) rv = bd;
 		}
 
 		return rv;
