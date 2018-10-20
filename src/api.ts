@@ -97,6 +97,16 @@ class api {
 		return await this.post('send', 'troops', params);
 	}
 
+	async start_adventure(type: number): Promise<void> {
+		const params = {
+			questId: (type == 0) ? 991 : 992,
+			dialogId: 0,
+			command: 'activate'
+		};
+
+		return await this.post('dialogAction', 'quest', params);
+	}
+
 	async post(action: string, controller: string, params: object): Promise<any> {
 		const session = this.session;
 
@@ -114,25 +124,6 @@ class api {
 		}
 
 		return this.merge_data(response.data);
-	}
-
-	async adventure(type: number): Promise<void> {
-		var params = {};
-		if (type == 0) {
-			params = {
-				questId: 991,
-				dialogId: 0,
-				command: "activate"
-			};
-		} else {
-			params = {
-				questId: 992,
-				dialogId: 0,
-				command: "activate"
-			};
-		}
-
-		return await this.post('dialogAction', 'quest', params);
 	}
 
 	// merges data into state object
