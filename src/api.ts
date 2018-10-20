@@ -36,7 +36,7 @@ class api {
 
 	async get_cache(params: string[]): Promise<any[]> {
 		const session: string = this.session;
-		
+
 		const payload = {
 			controller: 'cache',
 			action: 'get',
@@ -112,8 +112,27 @@ class api {
 		if(response.errors) {
 			console.log(response.errors);
 		}
-		
+
 		return this.merge_data(response.data);
+	}
+
+	async adventure(type: number): Promise<void> {
+		var params = {};
+		if (type == 0) {
+			params = {
+				questId: 991,
+				dialogId: 0,
+				command: "activate"
+			};
+		} else {
+			params = {
+				questId: 992,
+				dialogId: 0,
+				command: "activate"
+			};
+		}
+
+		return await this.post('dialogAction', 'quest', params);
 	}
 
 	// merges data into state object
