@@ -7,7 +7,10 @@
     "parser": "typescript-eslint-parser",
     "parserOptions": {
         "sourceType": "module",
-		"ecmaVersion": 2018
+		"ecmaVersion": 2018,
+		"ecmaFeatures": {
+			"jsx": true
+		}
     },
     "rules": {
 	"no-unused-vars": "warn",

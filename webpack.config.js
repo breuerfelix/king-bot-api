@@ -7,6 +7,11 @@ module.exports = {
 	entry: './frontend/index.jsx',
 	mode: 'development',
 
+	resolve: {
+		extensions: [ '.js', '.jsx' ],
+		modules: [ 'node_modules' ]
+	},
+
 	// where to dump the output of a production build
 	output: {
 		path: path.join(__dirname, 'build'),
@@ -26,6 +31,10 @@ module.exports = {
 						['@babel/plugin-transform-react-jsx', { pragma: 'h' }]
 					]
 				}
+			},
+			{
+				test: /\.css$/,
+				loader: 'css-loader'
 			}
 		]
 	},
