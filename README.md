@@ -149,7 +149,7 @@ name of the village from where the scouts are going to be send
 amount of scouts being send per list
 default value is 1
 
-# auto adventure
+## auto adventure
 
 **special thanks [@Tom-Boyd](https://github.com/Tom-Boyd)**
 
