@@ -4,12 +4,12 @@ const webpack = require('webpack');
 
 module.exports = {
 	// entry file - starting point for the app
-	entry: './frontend/index.jsx',
+	entry: './frontend',
 	mode: 'development',
 
 	resolve: {
 		extensions: [ '.js', '.jsx' ],
-		modules: [ 'node_modules' ]
+		modules: [ 'node_modules', 'frontend' ]
 	},
 
 	// where to dump the output of a production build
@@ -34,7 +34,7 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				loader: 'css-loader'
+				loader: [ 'style-loader', 'css-loader' ]
 			}
 		]
 	},
