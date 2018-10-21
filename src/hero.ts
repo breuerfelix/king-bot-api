@@ -17,8 +17,17 @@ class hero {
 			const hero: Ihero = find_state_data(this.hero_ident + player_data.playerId, response);
 
 			if (hero.adventurePoints > 0 && !hero.isMoving && hero.status == 0 && Number(hero.health) > min_health){
-				await api.start_adventure(type);
-				log('sent hero on adventure');
+				let send: boolean = false;
+
+				if(type == adventure_type.short && Number(hero.adventurePoints) > 0)
+					send = true;
+				else if(type == adventure_type.long && Number(hero.adventurePoints > 1))
+					send = true;
+
+				if(send) {
+					await api.start_adventure(type);
+					log('sent hero on adventure');
+				}
 			}
 
 			const diff_time: number = get_diff_time(hero.untilTime);
