@@ -56,6 +56,7 @@
     "@types/qs": "^6.5.1",
     "babel-loader": "^8.0.4",
     "css-loader": "^1.0.0",
+    "file-loader": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.9.4",
     "sass-loader": "^7.1.0",
