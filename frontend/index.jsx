@@ -1,7 +1,4 @@
-// import material lite design
-import 'material-design-lite/material.min.css';
-import 'material-design-lite/material.min.js';
-
+import 'bulma';
 import { h, render, Component } from 'preact';
 
 import Router from 'preact-router';
@@ -10,12 +7,13 @@ import Login from './sites/login';
 
 class App extends Component {
 	render() {
-		let time = new Date().toLocaleTimeString();
 		return (
-			<Router>
-				<Home path='/' />
-				<Login path='/login' />
-			</Router>
+			<div class='container'>
+				<Router>
+					<Home path='/' />
+					<Login path='/login' />
+				</Router>
+			</div>
 		);
 	}
 }

@@ -28,24 +28,26 @@ module.exports = {
 						'@babel/env'
 					],
 					plugins: [
-						['@babel/plugin-transform-react-jsx', { pragma: 'h' }]
+						[ '@babel/plugin-transform-react-jsx', { pragma: 'h' } ],
+						'@babel/plugin-proposal-class-properties'
 					]
 				}
 			},
 			{
-				test: /\.css$/,
-				loader: [ 'style-loader', 'css-loader' ]
+				test: /\.(css|sass|scss)$/,
+				loader: [ 'style-loader', 'css-loader', 'sass-loader' ]
 			}
 		]
 	},
 
 	plugins: [
 		new HtmlWebpackPlugin({
-			title: 'automate kingdoms'
+			title: 'automate kingdoms',
+			template: path.join(__dirname, 'frontend/index.html')
 		}),
 		new webpack.HotModuleReplacementPlugin()
 	],
-	
+
 	// enable Source Maps
 	devtool: 'inline-source-map',
 
