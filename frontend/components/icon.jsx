@@ -8,9 +8,9 @@ export default class Icon extends Component {
 
 	render() {
 		return (
-			<span class="icon">
-				<span class="fas fa-toggle-on"></span>
-			</span>
+			<a class="icon">
+				<i class="fas fa-toggle-on"></i>
+			</a>
 		);
 	}
 }

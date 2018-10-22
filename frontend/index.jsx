@@ -1,4 +1,6 @@
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bulma';
+
 import { h, render, Component } from 'preact';
 
 import Router from 'preact-router';
