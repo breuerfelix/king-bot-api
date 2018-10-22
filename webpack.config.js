@@ -12,6 +12,10 @@ module.exports = {
 		modules: [ 'node_modules', 'frontend' ]
 	},
 
+	performance: {
+		hints: false
+	},
+
 	// where to dump the output of a production build
 	output: {
 		path: path.join(__dirname, 'build'),
@@ -53,7 +57,6 @@ module.exports = {
 	],
 
 	// enable Source Maps
-	devtool: 'inline-source-map',
 
 	devServer: {
 		// serve up any static files from src/
