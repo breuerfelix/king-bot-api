@@ -9,6 +9,7 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 
 [![ko-fi](https://img.shields.io/badge/buy%20me%20a-coffee-yellowgreen.svg)](https://ko-fi.com/Y8Y6KZHJ)
 [![Build Status](https://travis-ci.org/scriptworld-git/king-bot-api.svg?branch=master)](https://travis-ci.org/scriptworld-git/king-bot-api)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1143396b01b944b28252861dc3762d7a)](https://www.codacy.com/app/scriptworld-git/king-bot-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scriptworld-git/king-bot-api&amp;utm_campaign=Badge_Grade)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/scriptworld-git/king-bot/blob/master/LICENSE)
 
 # table of contents <!-- omit in toc -->
