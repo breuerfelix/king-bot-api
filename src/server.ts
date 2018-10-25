@@ -1,5 +1,6 @@
 import express from 'express';
 import hero from './hero';
+import path from 'path';
 
 class server {
 	app: any = null;
@@ -8,6 +9,8 @@ class server {
 		this.app = express();
 
 		this.app.use(express.json());
+
+		this.app.use(express.static(path.resolve(__dirname, '../build')));
 
 		this.app.get('/api/allfeatures', (req: any, res: any) => {
 			res.send([
