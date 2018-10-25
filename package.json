@@ -10,7 +10,8 @@
 		"build": "tsc && webpack --mode production",
 		"dev": "tsc && node index.js",
 		"server": "webpack-dev-server",
-		"scout": "node index.js --scout"
+		"scout": "node index.js --scout",
+		"gui": "node index.js --gui"
 	},
 	"repository": {
 		"type": "git",
