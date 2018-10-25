@@ -27,7 +27,6 @@ class hero {
 
 	handle_request(payload: any): any {
 		const { action } = payload;
-		console.log(payload)
 
 		if(action == 'start') {
 			this.options.run = true;
