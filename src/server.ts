@@ -1,5 +1,6 @@
 import express from 'express';
 import hero from './hero';
+import farming from './farming';
 import path from 'path';
 
 class server {
@@ -14,7 +15,8 @@ class server {
 
 		this.app.get('/api/allfeatures', (req: any, res: any) => {
 			res.send([
-				hero.get_feature_params()
+				hero.get_feature_params(),
+				...farming.get_feature_params()
 			]);
 		});
 
@@ -26,6 +28,8 @@ class server {
 
 			if(ident == 'hero') {
 				response = hero.handle_request(req.body);
+			} else if (ident == 'farming') {
+				response = farming.handle_request(req.body);
 			}
 
 			res.send(response);

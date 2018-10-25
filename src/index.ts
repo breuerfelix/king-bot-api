@@ -18,6 +18,7 @@ class kingbot {
 
 		// start all running features
 		if(hero.options.run) hero.start();
+		farming.start_farms();
 	}
 
 	async login(gameworld: string, email: string = '', password: string = ''): Promise<void> {
@@ -41,42 +42,8 @@ class kingbot {
 		await api.login(email, password, gameworld);
 	}
 
-	async start_farming(farmlists: string[], village_name: string | string[], interval: number): Promise<void> {
-		if(Array.isArray(village_name)) {
-			for(let name of village_name) this.start_farming(farmlists, name, interval);
-			return;
-		}
-
-		const params = [
-			village.own_villages_ident,
-			farming.farmlist_ident
-		];
-
-		// fetch farmlists
-		const response = await api.get_cache(params);
-
-		const vill: Ivillage | null = village.find(village_name, response);
-		if(!vill) return;
-
-		const village_id: number = vill.villageId;
-		const farmlist_ids: number[] = [];
-
-		for(let list of farmlists) {
-			const list_obj = farming.find(list, response);
-			if(!list_obj) return;
-
-			const list_id: number = list_obj.listId;
-			farmlist_ids.push(list_id);
-		}
-
-		if(!farmlist_ids) return;
-
-		while(true) {
-			await api.send_farmlists(farmlist_ids, village_id);
-			log(`farmlists ${farmlists} sent from village ${village_name}`);
-
-			await sleep(interval);
-		}
+	start_farming(farmlists: string[], village_name: string | string[], interval: number): void {
+		farming.start_farming(farmlists, village_name, interval);
 	}
 
 	add_building_queue(resources: Iresource_type, village_name: string): void {
