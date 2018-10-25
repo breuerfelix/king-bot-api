@@ -27,6 +27,7 @@ class hero {
 
 	handle_request(payload: any): any {
 		const { action } = payload;
+		console.log(payload)
 
 		if(action == 'start') {
 			this.options.run = true;
@@ -37,6 +38,16 @@ class hero {
 		if(action == 'stop') {
 			this.stop();
 			return 'offline';
+		}
+
+		if(action == 'update') {
+			const { min_health, type } = payload.feature;
+			this.options.type = Number(type);
+			this.options.min_health = Number(min_health);
+
+			database.set('hero.options', this.options).write();
+
+			return 'success';
 		}
 
 		return 'error';
