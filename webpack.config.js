@@ -4,7 +4,11 @@ const webpack = require('webpack');
 
 module.exports = {
 	// entry file - starting point for the app
-	entry: './frontend',
+	entry: [
+		'@babel/polyfill',
+		'./frontend'
+	] ,
+
 	mode: 'development',
 
 	resolve: {
@@ -56,14 +60,16 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin()
 	],
 
-	// enable Source Maps
-
 	devServer: {
 		// serve up any static files from src/
 		contentBase: path.join(__dirname, 'frontend'),
 		hot: true,
 		inline: true,
 		progress: true,
+
+		proxy: {
+			'/api': 'http://localhost:3000'
+		},
 
 		// enable gzip compression:
 		compress: true,

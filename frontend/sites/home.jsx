@@ -1,7 +1,6 @@
 import { h, render, Component } from 'preact';
 
-import Feature from '../components/feature';
-import AddFeature from '../components/add_feature';
+import FeatureList from '../components/feature_list';
 
 class Home extends Component {
 	render() {
@@ -10,21 +9,11 @@ class Home extends Component {
 				<div className="notification">
 					<nav class="level">
 						<div className="level-item has-text-centered">
-							<strong>
-								automate kingdoms
-							</strong>
+							<h1 className="title is-4">automate kingdoms</h1>
 						</div>
 					</nav>
 				</div>
-				<div class="columns is-centered">
-					<div className="column is-half">
-						current features:
-						<br />
-						<br />
-						<Feature name='farming'/>
-						<AddFeature />
-					</div>
-				</div>
+				<FeatureList />
 			</div>
 		);
 	}
