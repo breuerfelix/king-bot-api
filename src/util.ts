@@ -19,7 +19,7 @@ export function find_state_data(ident: string, data: any[],  contains: boolean =
 }
 
 export function get_diff_time(time: number): number {
-	return get_date() - Number(time);
+	return Number(time) - get_date();
 }
 
 export function clash_obj(merge_obj: any, ident: string, ident2: string = ''): any {
