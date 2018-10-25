@@ -1,6 +1,8 @@
 import { h, render, Component } from 'preact';
+import { route } from 'preact-router';
 import classNames from 'classnames';
 import axios from 'axios';
+import state from '../other/state';
 
 export default class Feature extends Component {
 	status_dict = {
@@ -14,7 +16,7 @@ export default class Feature extends Component {
 		ident: 'null',
 		name: 'feature_name',
 		description: 'description',
-		running: false,
+		run: false,
 		// error, loading, offline, online
 		status: 'offline'
 	}
@@ -22,26 +24,22 @@ export default class Feature extends Component {
 	constructor(props) {
 		super(props);
 
-		const { ident, name, description, run } = this.props.feature;
-		const status = run ? 'online' : 'offline';
+		const status = props.feature.run ? 'online' : 'offline';
 
 		this.setState({
-			ident,
-			name,
-			description,
-			running: run,
-			status 
+			status,
+			...props.feature
 		});
 	}
 
 	toggle = async (e) => {
 		const payload = {
-			action: this.state.running ? 'stop' : 'start',
-			feature: this.props.feature
+			action: this.state.run ? 'stop' : 'start',
+			feature: this.state
 		};
 
 		this.setState({
-			running: !this.state.running,
+			run: !this.state.run,
 			status: 'loading'
 		});
 
@@ -50,27 +48,27 @@ export default class Feature extends Component {
 		if(res.status == 200) {
 			this.setState({
 				status: res.data,
-				running: (res.data == 'online')
+				run: (res.data == 'online')
 			});
 		} else {
 			this.setState({
 				status: 'error',
-				running: false
+				run: false
 			});
 		}
 	}
 
 	edit = (e) => {
-		// pass this.props.feature -> full response from server
-
+		state.edit_feature = { ...this.state };
+		route('/editFeature');
 	}
 
 	render() {
 		var toggle_icon = classNames({
 			fas: true,
 			'fa-lg': true,
-			'fa-toggle-on': this.state.running,
-			'fa-toggle-off': !this.state.running
+			'fa-toggle-on': this.state.run,
+			'fa-toggle-off': !this.state.run
 		});
 
 		const row_style = {
