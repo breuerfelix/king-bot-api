@@ -8,8 +8,18 @@ import farming from './farming';
 import village from './village';
 import { tribe } from './data';
 import player from './player';
+import server from './server';
 
 class kingbot {
+	async start_server(gameworld: string = '', email: string = '', password: string = '', port: number = 3000) {
+		await this.login(gameworld, email, password);
+
+		server.start(port);
+
+		// start all running features
+		if(hero.options.run) hero.start();
+	}
+
 	async login(gameworld: string, email: string = '', password: string = ''): Promise<void> {
 		if(!email || !password || !gameworld) {
 			let cred: any = settings.read_credentials();
