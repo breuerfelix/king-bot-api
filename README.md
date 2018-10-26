@@ -54,7 +54,7 @@ if you start the bot via `$ npm run gui` you can forget about all of the feature
 ## screenshots
 
 ![interface](https://scriptworld.net/assets/king-bot-api/home.png)  
-![farming](https://scriptworld.net/assets/king-bot-api/farming.png)
+![farming](https://scriptworld.net/assets/king-bot-api/farmlist.png)
 
 # features
 
