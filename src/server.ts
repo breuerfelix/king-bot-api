@@ -3,6 +3,8 @@ import { Ifeature } from './interfaces';
 import hero from './hero';
 import farming from './farming';
 import path from 'path';
+import village from './village';
+import { find_state_data } from './util';
 
 class server {
 	app: any = null;
@@ -36,6 +38,28 @@ class server {
 			}
 
 			res.send(response);
+		});
+		
+		this.app.get('/api/data/:ident', async (req: any, res: any) => {
+			const { ident } = req.params;
+
+			if(ident == 'villages') {
+				const villages = await village.get_own();
+				const data = find_state_data(village.own_villages_ident, villages);
+
+				res.send(data);
+				return;
+			}
+
+			if(ident == 'farmlists') {
+				const farmlists = await farming.get_own();
+				const data = find_state_data(farming.farmlist_ident, farmlists);
+
+				res.send(data);
+				return;
+			}
+
+			res.send('error');
 		});
 	}
 
