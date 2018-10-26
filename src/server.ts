@@ -5,6 +5,7 @@ import farming from './farming';
 import path from 'path';
 import village from './village';
 import { find_state_data } from './util';
+import kingbot from './index';
 
 class server {
 	app: any = null;
@@ -60,6 +61,14 @@ class server {
 			}
 
 			res.send('error');
+		});
+
+		this.app.post('/api/easyscout', (req: any, res: any) => {
+			const { village_name, list_name } = req.body;
+
+			kingbot.scout(list_name, village_name);
+
+			res.send('success');
 		});
 	}
 
