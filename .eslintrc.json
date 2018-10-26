@@ -13,6 +13,10 @@
 			"jsx": true
 		}
     },
+	"compilerOptions": {
+        "target": "ES5",
+        "experimentalDecorators": true
+    },
     "rules": {
 		"no-unused-vars": "warn",
 		"no-undef": "off",
