@@ -1,10 +1,21 @@
-import { Ihero, Iplayer } from './interfaces';
-import { log, find_state_data, get_date, get_diff_time } from './util';
+import { Ihero, Iplayer, Irequest, Ifeature } from './interfaces';
+import { log, find_state_data, get_diff_time } from './util';
 import { sleep } from './util';
 import api from './api';
-import village from './village';
 import player from './player';
 import database from './database';
+
+interface Ifeature_hero extends Ifeature, options {}
+
+interface Irequest_hero extends Irequest {
+	feature: Ifeature_hero
+}
+
+interface options {
+	type: adventure_type
+	min_health: number
+	run: boolean
+}
 
 class hero {
 	// idents for state data
@@ -25,7 +36,7 @@ class hero {
 		}
 	}
 
-	handle_request(payload: any): any {
+	handle_request(payload: Irequest_hero): any {
 		const { action } = payload;
 
 		if(action == 'start') {
@@ -52,7 +63,7 @@ class hero {
 		return 'error';
 	}
 
-	get_feature_params(): any {
+	get_feature_params(): Ifeature_hero {
 		const params: any = {
 			ident: 'hero',
 			name: 'auto adventure',
@@ -63,12 +74,12 @@ class hero {
 		return params;
 	}
 
-	stop() {
+	stop(): void {
 		this.options.run = false;
 		database.set('hero.options', this.options).write();
 	}
 
-	start() {
+	start(): void {
 		this.auto_adventure(this.options.type, this.options.min_health);
 	}
 
@@ -120,12 +131,6 @@ class hero {
 export enum adventure_type {
 	short = 0,
 	long = 1
-}
-
-interface options {
-	type: adventure_type
-	min_health: number
-	run: boolean
 }
 
 export default new hero();

@@ -1,9 +1,23 @@
-import { log, find_state_data, sleep } from './util';
-import { Ifarmlist, Ivillage } from './interfaces';
+import { log, find_state_data, sleep, list_remove } from './util';
+import { Ifarmlist, Ivillage, Ifeature, Irequest } from './interfaces';
 import village from './village';
 import api from './api';
 import database from './database';
 import uniqid from 'uniqid';
+
+interface Ifeature_farming extends Ifeature, options {}
+
+interface Irequest_farming extends Irequest {
+	feature: Ifeature_farming
+}
+
+interface options {
+	uuid: string
+	farmlists: string[]
+	village_name: string
+	interval: number
+	run: boolean
+}
 
 class farming {
 	farmlist_ident: string = 'Collection:FarmList:';
@@ -30,39 +44,99 @@ class farming {
 
 	constructor() {
 		// load in data from database
-		const options: any[] = database.get('farming.options').value();
+		const options: options[] = database.get('farming.options').value();
 
 		for(let opt of options) {
 			this.farming_features.push(new farm_feature(opt));
 		}
 	}
 
-	get_feature_params(): any [] {
-		const rv: any[] = [];
+	get_feature_params(): Ifeature_farming[] {
+		const rv: Ifeature_farming[] = [];
 		for(let feat of this.farming_features) rv.push(feat.get_feature_params());
 		return rv;
 	}
 
-	handle_request(payload: any): any {
-		// bei start, options.run auf true, falls running dann start sonst nicht start und save
-		// bei stop options.run auf false und save
-		// bei update feature stoppen und loeschen , neues feature anlegen
+	handle_request(payload: Irequest_farming): any {
+		const { action } = payload;
+		const { uuid } = payload.feature;
+		const feature: farm_feature = this.farming_features.find(x => x.options.uuid == uuid);
 
+		if(!feature) return 'error';
+
+		if(action == 'start') {
+			feature.options.run = true;
+			if(!feature.running) feature.start();
+			this.save();
+			return 'online';
+		}
+
+		if(action == 'stop') {
+			feature.stop();
+			this.save();
+			return 'offline';
+		}
+
+		if(action == 'update') {
+			feature.stop();
+			this.farming_features = list_remove(feature, this.farming_features);
+
+			const { farmlists, village_name, interval } = payload.feature;
+			const new_opt: options = {
+				uuid: feature.options.uuid,
+				run: feature.options.run,
+				farmlists,
+				village_name,
+				interval
+			};
+
+			const new_feat: farm_feature = new farm_feature(new_opt);
+
+			this.farming_features.push(new_feat);
+			this.save();
+
+			return 'success';
+		}
+
+		if(action == 'new') {
+			const uuid: string = uniqid.time();
+
+			const options: options = {
+				uuid,
+				farmlists: [],
+				village_name: '',
+				interval: 0,
+				run: false
+			};
+
+			let feat = new farm_feature(options);
+			this.farming_features.push(feat);
+
+			this.save();
+			
+			return feat.get_feature_params();
+		}
+
+		return 'error';
 	}
 
-	save() {
-		// iterate over features and save options to array on farming.options
+	save(): void {
+		const rv: options[] = [];
 
+		for(let feat of this.farming_features) rv.push(feat.options);
+
+		database.set('farming.options', rv).write();
 	}
 
-	start_farms() {
-		// starts farming when server starts
+	// starts farming when server starts
+	start_farms(): void {
 		for(let farm of this.farming_features) {
 			if(farm.options.run)
 				farm.start();
 		}
 	}
 
+	// command line start
 	start_farming(farmlists: string[], village_name: string | string[], interval: number): Promise<void> {
 		if(Array.isArray(village_name)) {
 			for(let name of village_name) this.start_farming(farmlists, name, interval);
@@ -82,8 +156,6 @@ class farming {
 		let feat = new farm_feature(options);
 		this.farming_features.push(feat);
 		feat.start();
-
-		this.save();
 	}
 }
 
@@ -95,18 +167,24 @@ class farm_feature {
 		this.options = options;
 	}
 
-	get_feature_params() {
+	get_feature_params(): Ifeature_farming {
+		const { village_name, interval } = this.options;
+
 		const params = {
 			ident: 'farming',
 			name: 'send farmlist',
-			description: '',
+			description: `${village_name}<br />${interval}`,
 			...this.options
 		};
 
 		return params;
 	}
 
-	async start() {
+	stop(): void {
+		this.options.run = false;
+	}
+
+	async start(): Promise<void> {
 		this.running = true;
 		log(`farming uuid: ${this.options.uuid} started`);
 
@@ -119,7 +197,7 @@ class farm_feature {
 		// fetch farmlists
 		const response = await api.get_cache(params);
 
-		const vill: Ivillage | null = village.find(village_name, response);
+		const vill: Ivillage = village.find(village_name, response);
 		if(!vill) {
 			this.running = false;
 			return;
@@ -154,14 +232,6 @@ class farm_feature {
 		log(`farming uuid: ${this.options.uuid} stopped`);
 		this.running = false;
 	}
-}
-
-interface options {
-	uuid: string
-	farmlists: string[]
-	village_name: string
-	interval: number
-	run: boolean
 }
 
 export default new farming();
