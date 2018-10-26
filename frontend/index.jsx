@@ -4,6 +4,7 @@ import 'bulma';
 import 'bulma-extensions';
 
 import { h, render, Component } from 'preact';
+import { Provider } from 'unistore/preact';
 
 import Router from 'preact-router';
 import Home from './sites/home';
@@ -11,19 +12,29 @@ import Login from './sites/login';
 import EditFeature from './sites/edit_feature';
 import NavBar from './navbar';
 
+import createStore from 'unistore';
+
+const store = createStore({ edit_feature: {} });
+
 class App extends Component {
 	render() {
 		return (
 			<div>
 				<NavBar />
-				<Router>
-					<Home path='/' />
-					<Login path='/login' />
-					<EditFeature path='/editFeature' />
-				</Router>
+				<div style='margin-top: 1rem'>
+					<Router>
+						<Home path='/' />
+						<Login path='/login' />
+						<EditFeature path='/edit_feature' />
+					</Router>
+				</div>
 			</div>
 		);
 	}
 }
 
-render(<App />, document.body);
+render(
+	<Provider store={store}>
+		<App />
+	</Provider>
+	, document.body);

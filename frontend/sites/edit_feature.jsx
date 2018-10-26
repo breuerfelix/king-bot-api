@@ -1,27 +1,29 @@
 import { h, render, Component } from 'preact';
-import state from '../other/state';
 import { route } from 'preact-router';
-
 import Adventure from '../components/adventure';
+import SendFarmlist from '../components/send_farmlist';
 
-class EditFeature extends Component {
+import { connect } from 'unistore/preact';
+
+@connect('edit_feature')
+export default class EditFeature extends Component {
 	state = {
 		ident: ''
 	}
 
 	componentWillMount() {
-		if(!state.edit_feature) {
+		if(!this.props.edit_feature || Object.keys(this.props.edit_feature).length == 0) {
 			route('/');
 			return false;
 		}
 
 		this.setState({
-			...state.edit_feature
+			...this.props.edit_feature
 		});
 	}
 
 	render() {
-		if(!state.edit_feature) {
+		if(!this.props.edit_feature || Object.keys(this.props.edit_feature).length == 0) {
 			route('/');
 			return false;
 		}
@@ -31,6 +33,9 @@ class EditFeature extends Component {
 		switch(this.state.ident) {
 			case 'hero':
 				feat = <Adventure feature={ this.state } />;
+				break;
+			case 'farming':
+				feat = <SendFarmlist feature={ this.state } />;
 				break;
 		}
 
@@ -45,5 +50,3 @@ class EditFeature extends Component {
 		);
 	}
 }
-
-export default EditFeature;

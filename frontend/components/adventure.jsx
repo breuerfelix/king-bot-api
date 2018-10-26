@@ -1,12 +1,14 @@
 import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
 import axios from 'axios';
+import classNames from 'classnames';
 
-class Adventure extends Component {
+export default class Adventure extends Component {
 	state = {
 		name: 'auto adventure',
 		type: 0,
-		min_health: ''
+		min_health: '',
+		error_input: false
 	}
 
 	componentWillMount() {
@@ -16,6 +18,10 @@ class Adventure extends Component {
 	}
 
 	submit = async (e) => {
+		this.setState({ error_input: (this.state.min_health == '') });
+
+		if(this.state.error_input) return;
+
 		const payload = {
 			action: 'update',
 			feature: { ...this.state }
@@ -27,6 +33,10 @@ class Adventure extends Component {
 
 	render() {
 		const { name, type, min_health } = this.state;
+		const input_class = classNames({
+			input: true,
+			'is-danger': this.state.error_input
+		});
 
 		return (
 			<div>
@@ -63,7 +73,7 @@ class Adventure extends Component {
 							</p>
 							<div class="control">
 								<input 
-									class="input" 
+									class={ input_class }
 									type="text" 
 									value={ min_health } 
 									placeholder="health" 
@@ -98,5 +108,3 @@ class Adventure extends Component {
 		);
 	}
 }
-
-export default Adventure;

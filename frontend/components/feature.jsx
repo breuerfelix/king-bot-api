@@ -2,8 +2,15 @@ import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
 import classNames from 'classnames';
 import axios from 'axios';
-import state from '../other/state';
+import { connect } from 'unistore/preact';
 
+const actions = store => ({
+	change_feature_to_edit(state, feature) {
+		return { edit_feature: { ...feature } };
+	}
+});
+
+@connect('', actions)
 export default class Feature extends Component {
 	status_dict = {
 		'error': 'fa-exclamation',
@@ -59,8 +66,8 @@ export default class Feature extends Component {
 	}
 
 	edit = (e) => {
-		state.edit_feature = { ...this.state };
-		route('/editFeature');
+		this.props.change_feature_to_edit(this.state);
+		route('/edit_feature');
 	}
 
 	render() {

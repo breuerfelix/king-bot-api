@@ -45,11 +45,13 @@
 		"preact": "^8.3.1",
 		"preact-router": "^2.6.1",
 		"qs": "^6.5.2",
-		"uniqid": "^5.0.3"
+		"uniqid": "^5.0.3",
+		"unistore": "^3.1.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.1.2",
 		"@babel/plugin-proposal-class-properties": "^7.1.0",
+		"@babel/plugin-proposal-decorators": "^7.1.2",
 		"@babel/plugin-proposal-object-rest-spread": "^7.0.0",
 		"@babel/plugin-transform-react-jsx": "^7.0.0",
 		"@babel/plugin-transform-runtime": "^7.1.0",

@@ -1,7 +1,18 @@
 import { h, render, Component } from 'preact';
 import classNames from 'classnames';
+import axios from 'axios';
+import { route } from 'preact-router';
 
-class NavBar extends Component {
+import { connect } from 'unistore/preact';
+
+const actions = store => ({
+	change_feature_to_edit(state, feature) {
+		return { edit_feature: { ...feature } };
+	}
+});
+
+@connect('', actions)
+export default class NavBar extends Component {
 	state = {
 		burger: false
 	}
@@ -10,6 +21,25 @@ class NavBar extends Component {
 		this.setState({
 			burger: !this.state.burger
 		});
+	}
+
+	new_send_farmlist = async e => {
+		const payload = {
+			action: 'new',
+			feature: {
+				ident: 'farming'
+			}
+		};
+
+		const res = await axios.post('/api/feature', payload);
+
+		if(res.data == 'error') {
+			// TODO add error message
+			return;
+		}
+
+		this.props.change_feature_to_edit(res.data);
+		route('/edit_feature');
 	}
 
 	render() {
@@ -25,7 +55,7 @@ class NavBar extends Component {
 		});
 
 		return (
-			<nav class="navbar has-background-light" style="margin-bottom: 2rem">
+			<nav class="navbar is-light is-fixed-top">
 				<div class="container">
 					<div class="navbar-brand">
 						<a class="navbar-item" href="https://github.com/scriptworld-git/king-bot-api">
@@ -43,11 +73,39 @@ class NavBar extends Component {
 								home
 							</a>
 
+							<div class="navbar-item has-dropdown is-hoverable">
+								<a class="navbar-link is-arrowless">
+									add feature
+								</a>
+
+								<div class="navbar-dropdown">
+									<a className="navbar-item" onClick={ this.new_send_farmlist }>
+										send farmlist
+									</a>
+									<a className="navbar-item">
+										building queue (coming soon)
+									</a>
+								</div>
+							</div>
+
+							<div class="navbar-item has-dropdown is-hoverable">
+								<a class="navbar-link is-arrowless">
+									extras
+								</a>
+
+								<div class="navbar-dropdown">
+									<a className="navbar-item" href="">
+										easy scout (coming soon)
+									</a>
+								</div>
+							</div>
+
+						</div>
+						<div class="navbar-end">
 							<a class="navbar-item" href="https://github.com/scriptworld-git/king-bot-api/blob/master/README.md">
 								documentation
 							</a>
-						</div>
-						<div class="navbar-end">
+
 							<a class="navbar-item" href="https://ko-fi.com/Y8Y6KZHJ">
 								donate
 							</a>
@@ -58,5 +116,3 @@ class NavBar extends Component {
 		);
 	}
 }
-
-export default NavBar;
