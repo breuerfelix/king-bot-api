@@ -24,6 +24,7 @@ export default class Feature extends Component {
 		name: 'feature_name',
 		description: 'description',
 		run: false,
+		error: false,
 		// error, loading, offline, online
 		status: 'offline'
 	}
@@ -32,6 +33,8 @@ export default class Feature extends Component {
 		super(props);
 
 		const status = props.feature.run ? 'online' : 'offline';
+
+		if(this.state.error) status = 'error';
 
 		this.setState({
 			status,

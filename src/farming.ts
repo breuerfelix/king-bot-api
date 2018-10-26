@@ -17,6 +17,7 @@ interface options {
 	village_name: string
 	interval: number
 	run: boolean
+	error: boolean
 }
 
 class farming {
@@ -74,7 +75,8 @@ class farming {
 				farmlists: [],
 				village_name: '',
 				interval: 0,
-				run: false
+				run: false,
+				error: false
 			};
 
 			let feat = new farm_feature(options);
@@ -113,7 +115,8 @@ class farming {
 				run: feature.options.run,
 				farmlists,
 				village_name,
-				interval
+				interval,
+				error: false
 			};
 
 			const new_feat: farm_feature = new farm_feature(new_opt);
@@ -165,7 +168,8 @@ class farming {
 			farmlists,
 			village_name,
 			interval,
-			run: true
+			run: true,
+			error: false
 		};
 
 		let feat = new farm_feature(options);
@@ -200,52 +204,59 @@ class farm_feature {
 	}
 
 	async start(): Promise<void> {
-		this.running = true;
-		log(`farming uuid: ${this.options.uuid} started`);
+		try {
+			this.running = true;
+			log(`farming uuid: ${this.options.uuid} started`);
 
-		const { village_name, farmlists, interval } = this.options;
-		const params = [
-			village.own_villages_ident,
-			farming.farmlist_ident
-		];
+			const { village_name, farmlists, interval } = this.options;
+			const params = [
+				village.own_villages_ident,
+				farming.farmlist_ident
+			];
 
-		// fetch farmlists
-		const response = await api.get_cache(params);
+			// fetch farmlists
+			const response = await api.get_cache(params);
 
-		const vill: Ivillage = village.find(village_name, response);
-		if(!vill) {
-			this.running = false;
-			return;
-		}
-
-		const village_id: number = vill.villageId;
-		const farmlist_ids: number[] = [];
-
-		for(let list of farmlists) {
-			const list_obj = farming.find(list, response);
-			if(!list_obj) {
+			const vill: Ivillage = village.find(village_name, response);
+			if(!vill) {
 				this.running = false;
 				return;
 			}
 
-			const list_id: number = list_obj.listId;
-			farmlist_ids.push(list_id);
-		}
+			const village_id: number = vill.villageId;
+			const farmlist_ids: number[] = [];
 
-		if(!farmlist_ids) {
+			for(let list of farmlists) {
+				const list_obj = farming.find(list, response);
+				if(!list_obj) {
+					this.running = false;
+					return;
+				}
+
+				const list_id: number = list_obj.listId;
+				farmlist_ids.push(list_id);
+			}
+
+			if(!farmlist_ids) {
+				this.running = false;
+				return;
+			}
+
+			while(this.options.run) {
+				await api.send_farmlists(farmlist_ids, village_id);
+				log(`farmlists ${farmlists} sent from village ${village_name}`);
+
+				await sleep(interval);
+			}
+
+			log(`farming uuid: ${this.options.uuid} stopped`);
 			this.running = false;
-			return;
+		} catch {
+			log(`error on farming uuid: ${this.options.uuid}`);
+			this.options.run = false;
+			this.options.error = true;
+			this.running = false;
 		}
-
-		while(this.options.run) {
-			await api.send_farmlists(farmlist_ids, village_id);
-			log(`farmlists ${farmlists} sent from village ${village_name}`);
-
-			await sleep(interval);
-		}
-
-		log(`farming uuid: ${this.options.uuid} stopped`);
-		this.running = false;
 	}
 }
 
