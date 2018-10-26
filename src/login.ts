@@ -201,11 +201,11 @@ function parse_cookies(cookie_array: any[]): string{
 	return cookie_string;
 }
 
-function validate_cookie_status(status: number): boolean{
+function validate_cookie_status(status: number): boolean {
 	return status >= 200 && status < 303;
 }
 
-async function get_gameworld_id(axios: AxiosInstance, session: string, gameworld_string: string): Promise<string>{
+async function get_gameworld_id(axios: AxiosInstance, session: string, gameworld_string: string): Promise<string> {
 	const payload: object = {
 		action: 'get',
 		controller: 'cache',

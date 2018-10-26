@@ -3,6 +3,7 @@ import kingbot from './dist';
 const gameworld = 'test';
 const email = 'your_email@mail.com';
 const password = 'really_save_password';
+const port = 3000;
 
 async function main(){
 	await kingbot.login(gameworld, email, password);
@@ -27,6 +28,7 @@ async function scout() {
 }
 
 if(process.argv[2] == '--scout') scout();
+else if(process.argv[2] == '--gui') kingbot.start_server(gameworld, email, password, port);
 else main();
 
 export {};

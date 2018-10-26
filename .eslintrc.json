@@ -7,29 +7,37 @@
     "parser": "typescript-eslint-parser",
     "parserOptions": {
         "sourceType": "module",
-		"ecmaVersion": 2018
+		"ecmaVersion": 2018,
+		"ecmaFeatures": {
+			"experimentalDecorators": true,
+			"jsx": true
+		}
+    },
+	"compilerOptions": {
+        "target": "ES5",
+        "experimentalDecorators": true
     },
     "rules": {
-	"no-unused-vars": "warn",
-	"no-undef": "off",
-	"no-constant-condition": "off",
-        "indent": [
-            "error",
-	    	"tab",
-			{ "SwitchCase": 1 }
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-	"no-console": 0
+		"no-unused-vars": "warn",
+		"no-undef": "off",
+		"no-constant-condition": "off",
+			"indent": [
+				"error",
+				"tab",
+				{ "SwitchCase": 1 }
+			],
+			"linebreak-style": [
+				"error",
+				"unix"
+			],
+			"quotes": [
+				"error",
+				"single"
+			],
+			"semi": [
+				"error",
+				"always"
+			],
+		"no-console": 0
     }
 }
