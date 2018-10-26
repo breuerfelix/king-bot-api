@@ -15,6 +15,8 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 # table of contents <!-- omit in toc -->
 
 - [getting-started](#getting-started)
+- [gui](#gui)
+    - [screenshots](#screenshots)
 - [features](#features)
     - [send farmlists](#send-farmlists)
     - [upgrade resource fields](#upgrade-resource-fields)
@@ -30,15 +32,30 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 3. open project in console
 4. install all dependencies
     1. `$ npm install`
-1. build the project
+5. build the project
     1. `$ npm run build`
-5. edit `main.js`
+6. edit `main.js`
     1. look up `sample_main.js` for help
-6. start the bot
-    1. `$ npm start`
+7. start the bot
+    1. `$ npm start` or `$ npm run gui`
 
 after changing `main.js` only use `$ npm start` to restart the bot.  
 when downloading a new project version you have to `$ npm install && npm run build` again before starting the bot.
+
+# gui
+
+there are 2 modes for this bot, one is command line and the other one is gui-mode.
+
+if you start the bot via `$ npm run gui` you can forget about all of the features below since they are going to be configured in the webinterface.
+
+1.  provide your login credentials in `main.js`.
+1.  `$ npm run gui`
+1.  open `http://localhost:3000/` in your browser and explore the bot
+
+## screenshots
+
+![interface](https://scriptworld.net/assets/king-bot-api/home.png)  
+![farming](https://scriptworld.net/assets/king-bot-api/farmlist.png)
 
 # features
 
@@ -67,8 +84,12 @@ you can stack each feature as often as you wish with different parameters.
 the bot will simply just send the farmlists out of the named village in a given interval.
 
 ```typescript
-kingbot.start_farming([ 'startup farm list', 'rocking farms' ], '-02- rome', 600);
-kingbot.start_farming([ 'startup farm list', 'rocking farms' ], [ '-02- rome', '-03- paris' ], 600);
+kingbot.start_farming(['startup farm list', 'rocking farms'], '-02- rome', 600);
+kingbot.start_farming(
+    ['startup farm list', 'rocking farms'],
+    ['-02- rome', '-03- paris'],
+    600
+);
 ```
 
 **farmlists:** _(non case-sensitiv)_  
@@ -90,7 +111,10 @@ this queue can be stacked up unlimited and be as detailed as you wish.
 kingbot.add_building_queue({ crop: [4, 4, 3], iron: [5] }, '-01-');
 kingbot.add_building_queue({ crop: [6, 5, 5, 4], clay: [5, 4] }, '-01-');
 kingbot.add_building_queue({ clay: [10, 6], wood: [7], iron: [6] }, '-01-');
-kingbot.add_building_queue({ clay: [6], wood: [7], iron: [6], crop: [10, 7, 7, 5] }, '-01-');
+kingbot.add_building_queue(
+    { clay: [6], wood: [7], iron: [6], crop: [10, 7, 7, 5] },
+    '-01-'
+);
 ```
 
 **object:**  
@@ -102,8 +126,8 @@ name of the village where to apply the queue
 all 4 resource types are available to use: `crop, iron, clay, wood`.  
 they all take an array of numbers as a value.  
 our example will be `kingbot.add_building_queue({ crop: [4, 4, 3], iron: [5] }, '-01-');`:  
-the bot will upgrade __all__ crop fields to lvl 3 since its the lowest number in the array.  
-it will also upgrade __all__ iron fields to lvl 5.  
+the bot will upgrade **all** crop fields to lvl 3 since its the lowest number in the array.  
+it will also upgrade **all** iron fields to lvl 5.  
 after upgrading the crop and iron fields it will upgrade 2 crop fields to level 4 before jumping to your next `add_building_queue` statement.
 
 when the bot has to upgrade crop and iron fields in this example it will always try to upgrade the type with the lowest storage percentage.  
@@ -170,9 +194,11 @@ required amount of health _in percent_ for the hero to be send on a adventure
 # development
 
 you can also create a file names `cred.txt` in the root folder which contains your login credentials:
+
 ```csv
 your_email@mail.com;your_password;your_gameworld
 ```
+
 this file will be ignored by git so you don't have to be scared to accidentally commit your credentials.
 
 create a file names `own_main.js` which is going to be ignore by git, you can modify it as you wish, without pushing your custom feature set to github.

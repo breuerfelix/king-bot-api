@@ -4,6 +4,15 @@ export function log(obj: any): void {
 	console.log(obj);
 }
 
+export function list_remove(item: any, list: any[]): any[] {
+	var idx = list.indexOf(item);
+	if (idx != -1) {
+		return list.splice(idx, 1); // The second parameter is the number of elements to remove.
+	}
+
+	return list;
+}
+
 export const sleep = (ms: number) => new Promise(res => setTimeout(res, ms * 1000));
 
 export function get_date(): number {

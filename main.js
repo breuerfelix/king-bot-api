@@ -3,9 +3,11 @@ import kingbot from './dist';
 const gameworld = '';
 const email = '';
 const password = '';
+const port = 3000;
 
 async function main(){
-	await kingbot.login(gameworld, email, password);
+	kingbot.start_server();
+	//await kingbot.login(gameworld, email, password);
 
 	// place bot action below
 }
@@ -17,6 +19,7 @@ async function scout() {
 }
 
 if(process.argv[2] == '--scout') scout();
+else if(process.argv[2] == '--gui') kingbot.start_server(gameworld, email, password, port);
 else main();
 
 export {};
