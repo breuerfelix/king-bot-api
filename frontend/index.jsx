@@ -11,6 +11,7 @@ import Home from './sites/home';
 import Login from './sites/login';
 import EditFeature from './sites/edit_feature';
 import NavBar from './navbar';
+import EasyScout from './sites/easy_scout';
 
 import createStore from 'unistore';
 
@@ -26,6 +27,7 @@ class App extends Component {
 						<Home path='/' />
 						<Login path='/login' />
 						<EditFeature path='/edit_feature' />
+						<EasyScout path='/easy_scout' />
 					</Router>
 				</div>
 			</div>

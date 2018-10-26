@@ -94,8 +94,8 @@ export default class NavBar extends Component {
 								</a>
 
 								<div class="navbar-dropdown">
-									<a className="navbar-item" href="">
-										easy scout (coming soon)
+									<a className="navbar-item" href="/easy_scout">
+										easy scout
 									</a>
 								</div>
 							</div>
