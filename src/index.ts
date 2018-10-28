@@ -6,9 +6,10 @@ import building_queue, { Iresource_type } from './building';
 import hero, { adventure_type } from './hero';
 import farming from './farming';
 import village from './village';
-import { tribe } from './data';
+import { tribe } from './interfaces';
 import player from './player';
 import server from './server';
+import finish_earlier from './finish_earlier';
 
 class kingbot {
 	async start_server(gameworld: string = '', email: string = '', password: string = '', port: number = 3000) {
@@ -19,6 +20,7 @@ class kingbot {
 		// start all running features
 		if(hero.options.run) hero.start();
 		farming.start_farms();
+		if(finish_earlier.options.run) finish_earlier.start();
 	}
 
 	async login(gameworld: string, email: string = '', password: string = ''): Promise<void> {
