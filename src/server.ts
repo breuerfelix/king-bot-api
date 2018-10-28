@@ -38,7 +38,7 @@ class server {
 				response = hero.handle_request(req.body);
 			} else if (ident == 'farming') {
 				response = farming.handle_request(req.body);
-			} else if (ident == 'finish_ealier') {
+			} else if (ident == 'finish_earlier') {
 				response = finish_earlier.handle_request(req.body);
 			}
 
