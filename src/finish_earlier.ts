@@ -49,7 +49,6 @@ class finish_earlier {
 		}
 
 		return 'error';
-
 	}
 
 	get_feature_params(): Ifeature_fe {
@@ -82,7 +81,7 @@ class finish_earlier {
 
 			const five_minutes: number = 5 * 60;
 
-			while(true) {
+			while(this.options.run) {
 				const villages_data: any = await village.get_own();
 
 				let params: string[] = [];
@@ -131,7 +130,7 @@ class finish_earlier {
 				if(sleep_time) sleep_time = sleep_time - five_minutes + 1;
 				
 				if(!sleep_time || sleep_time <= 0) sleep_time = 60;
-				if(sleep_time > 300) sleep_time = 300;
+				if(sleep_time > 120) sleep_time = 120;
 
 				await sleep(sleep_time);
 			}
