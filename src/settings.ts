@@ -1,8 +1,11 @@
 import fs from 'fs';
+import path from 'path';
+
+const BASE_DIR: string = path.join(__dirname, '../');
 
 class settings {
 
-	assets_folder: string = './assets';
+	assets_folder: string = BASE_DIR + './assets';
 	database_name: string = '/database.json';
 
 	read_credentials(){
