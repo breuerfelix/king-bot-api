@@ -6,6 +6,7 @@ import path from 'path';
 import village from './village';
 import { find_state_data } from './util';
 import kingbot from './index';
+import finish_earlier from './finish_earlier';
 
 class server {
 	app: any = null;
@@ -20,6 +21,7 @@ class server {
 		this.app.get('/api/allfeatures', (req: any, res: any) => {
 			const response: Ifeature[] = [
 				hero.get_feature_params(),
+				finish_earlier.get_feature_params(),
 				...farming.get_feature_params()
 			];
 
@@ -36,6 +38,8 @@ class server {
 				response = hero.handle_request(req.body);
 			} else if (ident == 'farming') {
 				response = farming.handle_request(req.body);
+			} else if (ident == 'finish_ealier') {
+				response = finish_earlier.handle_request(req.body);
 			}
 
 			res.send(response);
