@@ -52,6 +52,8 @@ if you start the bot via `$ npm run gui` you can forget about all of the feature
 1.  `$ npm run gui`
 1.  open `http://localhost:3000/` in your browser and explore the bot
 
+after configuring you can close the browser window and the bot keeps running until you exit it in the console (CTRL + C).
+
 ## screenshots
 
 ![interface](https://scriptworld.net/assets/king-bot-api/home.png)  
