@@ -1,5 +1,6 @@
 import { log, find_state_data, sleep, list_remove } from './util';
-import { Ifarmlist, Ivillage, Ifeature, Irequest } from './interfaces';
+import { Ifarmlist, Ivillage } from './interfaces';
+import { Ifeature, Irequest } from './feature';
 import village from './village';
 import api from './api';
 import database from './database';

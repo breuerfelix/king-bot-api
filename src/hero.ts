@@ -1,4 +1,5 @@
-import { Ihero, Iplayer, feature, Ioptions, Ifeature } from './interfaces';
+import { Ihero, Iplayer } from './interfaces';
+import { feature, Ioptions, Ifeature } from './feature';
 import { log, find_state_data, get_diff_time } from './util';
 import { sleep } from './util';
 import api from './api';
@@ -52,59 +53,51 @@ class hero extends feature {
 		};
 	}
 
-	start(): void {
+	async run(): Promise<void> {
 		this.auto_adventure(this.options.type, this.options.min_health);
 	}
 
 	async auto_adventure(type: adventure_type, min_health: number): Promise<void> {
-		try {
-			this.running = true;
-			log('auto adventure started');
+		log('auto adventure started');
 
-			// write data to database
-			this.options.min_health = min_health;
-			this.options.type = type;
-			this.options.run = true;
+		// write data to database
+		this.options.min_health = min_health;
+		this.options.type = type;
+		this.options.run = true;
 
-			database.set('hero.options', this.options).write();
+		database.set('hero.options', this.options).write();
 
-			const player_data: Iplayer = await player.get();
+		const player_data: Iplayer = await player.get();
 
-			while(this.options.run) {
-				// get hero data
-				const response: any[] = await api.get_cache([ this.hero_ident + player_data.playerId]);
-				const hero: Ihero = find_state_data(this.hero_ident + player_data.playerId, response);
+		while(this.options.run) {
+			// get hero data
+			const response: any[] = await api.get_cache([ this.hero_ident + player_data.playerId]);
+			const hero: Ihero = find_state_data(this.hero_ident + player_data.playerId, response);
 
-				if (hero.adventurePoints > 0 && !hero.isMoving && hero.status == 0 && Number(hero.health) > min_health){
-					let send: boolean = false;
+			if (hero.adventurePoints > 0 && !hero.isMoving && hero.status == 0 && Number(hero.health) > min_health){
+				let send: boolean = false;
 
-					if(type == adventure_type.short && Number(hero.adventurePoints) > 0)
-						send = true;
-					else if(type == adventure_type.long && Number(hero.adventurePoints > 1))
-						send = true;
+				if(type == adventure_type.short && Number(hero.adventurePoints) > 0)
+					send = true;
+				else if(type == adventure_type.long && Number(hero.adventurePoints > 1))
+					send = true;
 
-					if(send) {
-						await api.start_adventure(type);
-						log('sent hero on adventure');
-					}
+				if(send) {
+					await api.start_adventure(type);
+					log('sent hero on adventure');
 				}
-
-				const diff_time: number = get_diff_time(hero.untilTime);
-				let sleep_time: number = 60;
-
-				if(diff_time > 0) sleep_time = diff_time + 5;
-
-				await sleep(sleep_time);
 			}
 
-			this.running = false;
-			log('auto adventure stopped');
-		} catch {
-			log('error on feature auto adventure');
-			this.running = false;
-			this.options.run = false;
-			this.options.error = true;
+			const diff_time: number = get_diff_time(hero.untilTime);
+			let sleep_time: number = 60;
+
+			if(diff_time > 0) sleep_time = diff_time + 5;
+
+			await sleep(sleep_time);
 		}
+
+		this.running = false;
+		log('auto adventure stopped');
 	}
 }
 
