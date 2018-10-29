@@ -1,12 +1,10 @@
 import express from 'express';
 import { Ifeature_params } from './feature';
-import hero from './hero';
-import farming from './farming';
 import path from 'path';
-import village from './village';
 import { find_state_data } from './util';
 import kingbot from './index';
-import finish_earlier from './finish_earlier';
+import { finish_earlier, auto_adventure, send_farmlist } from './features';
+import { farming, village } from './gamedata';
 
 class server {
 	app: any = null;
@@ -20,9 +18,9 @@ class server {
 
 		this.app.get('/api/allfeatures', (req: any, res: any) => {
 			const response: Ifeature_params[] = [
-				hero.get_feature_params(),
+				auto_adventure.get_feature_params(),
 				finish_earlier.get_feature_params(),
-				...farming.get_feature_params()
+				...send_farmlist.get_feature_params()
 			];
 
 			res.send(response);
@@ -35,9 +33,9 @@ class server {
 			let response: string = '';
 
 			if(ident == 'hero') {
-				response = hero.handle_request(req.body);
+				response = auto_adventure.handle_request(req.body);
 			} else if (ident == 'farming') {
-				response = farming.handle_request(req.body);
+				response = send_farmlist.handle_request(req.body);
 			} else if (ident == 'finish_earlier') {
 				response = finish_earlier.handle_request(req.body);
 			}

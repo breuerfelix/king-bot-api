@@ -1,6 +1,6 @@
-import { Iplayer } from './interfaces';
-import { log, find_state_data } from './util';
-import api from './api';
+import { Iplayer } from '../interfaces';
+import { log, find_state_data } from '../util';
+import api from '../api';
 import village from './village';
 
 class player {

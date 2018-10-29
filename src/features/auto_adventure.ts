@@ -1,17 +1,16 @@
-import { Ihero, Iplayer } from './interfaces';
-import { feature, Ioptions, Ifeature } from './feature';
-import { log, find_state_data, get_diff_time } from './util';
-import { sleep } from './util';
-import api from './api';
-import player from './player';
-import database from './database';
+import { Ihero, Iplayer } from '../interfaces';
+import { feature, Ioptions, Ifeature } from '../feature';
+import { log, find_state_data, get_diff_time, sleep } from '../util';
+import api from '../api';
+import { player } from '../gamedata';
+import database from '../database';
 
 interface Ioptions_hero extends Ioptions {
 	type: adventure_type
 	min_health: number
 }
 
-class hero extends feature {
+class auto_adventure extends feature {
 	// idents for state data
 	hero_ident: string = 'Hero:';
 
@@ -115,4 +114,4 @@ export enum adventure_type {
 	long = 1
 }
 
-export default new hero();
+export default new auto_adventure();

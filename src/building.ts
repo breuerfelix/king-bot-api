@@ -2,7 +2,7 @@ import { Ivillage, Ibuilding, Ibuilding_collection, Ibuilding_queue } from './in
 import { log, get_date, clash_obj, find_state_data } from './util';
 import { sleep } from './util';
 import api from './api';
-import village from './village';
+import { village } from './gamedata';
 
 class building_queue {
 	building_type: { [index: number]: number, wood: number, clay: number, iron: number, crop: number } = {

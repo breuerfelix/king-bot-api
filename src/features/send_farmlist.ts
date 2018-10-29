@@ -1,9 +1,9 @@
-import { log, find_state_data, sleep, list_remove } from './util';
-import { Ifarmlist, Ivillage } from './interfaces';
-import { Ifeature, Irequest, feature_collection, feature_item, Ioptions } from './feature';
-import village from './village';
-import api from './api';
-import database from './database';
+import { log, find_state_data, sleep, list_remove } from '../util';
+import { Ifarmlist, Ivillage } from '../interfaces';
+import { Ifeature, Irequest, feature_collection, feature_item, Ioptions } from '../feature';
+import { farming, village } from '../gamedata';
+import api from '../api';
+import database from '../database';
 import uniqid from 'uniqid';
 
 interface Ioptions_farm extends Ioptions {
@@ -12,31 +12,7 @@ interface Ioptions_farm extends Ioptions {
 	interval: number
 }
 
-class farming extends feature_collection {
-	farmlist_ident: string = 'Collection:FarmList:';
-	static farmlist_ident: string = 'Collection:FarmList:';
-
-	find(name: string, data: any): Ifarmlist {
-		return farming.find(name, data);
-	}
-
-	static find(name: string, data: any): Ifarmlist {
-		const lists = find_state_data(farming.farmlist_ident, data);
-
-		const farmlist = lists.find((x: any) => x.data.listName.toLowerCase() == name.toLowerCase());
-
-		if(!farmlist) {
-			log(`couldn't find farmlist ${name} !`);
-			return null;
-		}
-
-		return farmlist.data;
-	}
-
-	async get_own(): Promise<any> {
-		return await api.get_cache([ this.farmlist_ident ]);
-	}
-
+class send_farmlist extends feature_collection {
 	get_database_ident(): string {
 		return 'farming';
 	}
@@ -150,4 +126,4 @@ class farm_feature extends feature_item {
 	}
 }
 
-export default new farming();
+export default new send_farmlist();
