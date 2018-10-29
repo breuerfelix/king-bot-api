@@ -34,7 +34,14 @@ class hero extends feature {
 	}
 
 	set_options(options: Ioptions_hero): void {
-		this.options = { ...this.options, ...options };
+		const { run, error, type, min_health } = options;
+		this.options = {
+			...this.options,
+			type,
+			min_health,
+			run,
+			error
+		};
 	}
 
 	get_options(): Ioptions {
