@@ -1,5 +1,5 @@
 import express from 'express';
-import { Ifeature_params } from './interfaces';
+import { Ifeature_params } from './feature';
 import hero from './hero';
 import farming from './farming';
 import path from 'path';

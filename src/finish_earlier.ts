@@ -1,4 +1,5 @@
-import { Ivillage, Ibuilding_queue, Ifeature, Irequest } from './interfaces';
+import { Ivillage, Ibuilding_queue } from './interfaces';
+import { Ifeature, Irequest } from './feature';
 import { log, get_date, clash_obj, find_state_data } from './util';
 import { sleep } from './util';
 import api from './api';
