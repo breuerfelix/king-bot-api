@@ -76,7 +76,7 @@ kingbot.finish_earlier();
 kingbot.auto_adventure();
 
 kingbot.scout('scout', '-01-', 1);
-async scout(farmlist_name: string, village_name: string, amount: number = 1);
+async function scout(farmlist_name: string, village_name: string, amount: number = 1);
 ```
 
 you can stack each feature as often as you wish with different parameters.
