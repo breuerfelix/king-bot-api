@@ -180,19 +180,22 @@ export abstract class feature_collection {
 		}
 
 		if(action == 'update') {
+			const { uuid, run } = feature.get_options();
 			feature.stop();
 			list_remove(feature, this.features);
 
 			const new_feature: feature_item = this.get_new_item({
 				...payload.feature,
-				uuid: feature.get_options().uuid,
-				run: feature.get_options().run,
+				uuid,
+				run,
 				error: false
 			});
 
 			this.features.push(new_feature);
 
 			this.save();
+
+			if(run) new_feature.start();
 
 			return 'success';
 		}
