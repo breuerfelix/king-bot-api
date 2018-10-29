@@ -1,31 +1,21 @@
 import { log, find_state_data, sleep, list_remove } from './util';
-import { Ifarmlist, Ivillage, Ifeature, Irequest } from './interfaces';
+import { Ifarmlist, Ivillage } from './interfaces';
+import { Ifeature, Irequest, feature_collection, feature_item, Ioptions } from './feature';
 import village from './village';
 import api from './api';
 import database from './database';
 import uniqid from 'uniqid';
 
-interface Ifeature_farming extends Ifeature, options {}
-
-interface Irequest_farming extends Irequest {
-	feature: Ifeature_farming
-}
-
-interface options {
-	uuid: string
+interface Ioptions_farm extends Ioptions {
 	farmlists: string[]
 	village_name: string
 	interval: number
-	run: boolean
-	error: boolean
 }
 
-class farming {
+class farming extends feature_collection {
 	farmlist_ident: string = 'Collection:FarmList:';
 	static farmlist_ident: string = 'Collection:FarmList:';
 
-	farming_features: farm_feature[] = []
-	
 	find(name: string, data: any): Ifarmlist {
 		return farming.find(name, data);
 	}
@@ -47,111 +37,12 @@ class farming {
 		return await api.get_cache([ this.farmlist_ident ]);
 	}
 
-	constructor() {
-		// load in data from database
-		const options: options[] = database.get('farming.options').value();
-
-		if(!options) return;
-
-		for(let opt of options) {
-			this.farming_features.push(new farm_feature(opt));
-		}
+	get_database_ident(): string {
+		return 'farming';
 	}
 
-	get_feature_params(): Ifeature_farming[] {
-		const rv: Ifeature_farming[] = [];
-		for(let feat of this.farming_features) rv.push(feat.get_feature_params());
-		return rv;
-	}
-
-	handle_request(payload: Irequest_farming): any {
-		const { action } = payload;
-
-		if(action == 'new') {
-			const uuid: string = uniqid.time();
-
-			const options: options = {
-				uuid,
-				farmlists: [],
-				village_name: '',
-				interval: 0,
-				run: false,
-				error: false
-			};
-
-			let feat = new farm_feature(options);
-			this.farming_features.push(feat);
-
-			this.save();
-			
-			return feat.get_feature_params();
-		}
-
-		const { uuid } = payload.feature;
-		const feature: farm_feature = this.farming_features.find(x => x.options.uuid == uuid);
-
-		if(!feature) return 'error';
-
-		if(action == 'start') {
-			feature.options.run = true;
-			if(!feature.running) feature.start();
-			this.save();
-			return 'online';
-		}
-
-		if(action == 'stop') {
-			feature.stop();
-			this.save();
-			return 'offline';
-		}
-
-		if(action == 'update') {
-			feature.stop();
-			list_remove(feature, this.farming_features);
-
-			const { farmlists, village_name, interval } = payload.feature;
-			const new_opt: options = {
-				uuid: feature.options.uuid,
-				run: feature.options.run,
-				farmlists,
-				village_name,
-				interval,
-				error: false
-			};
-
-			const new_feat: farm_feature = new farm_feature(new_opt);
-
-			this.farming_features.push(new_feat);
-			this.save();
-
-			return 'success';
-		}
-
-		if(action == 'delete') {
-			feature.stop();
-			list_remove(feature, this.farming_features);
-			this.save();
-			
-			return 'success';
-		}
-
-		return 'error';
-	}
-
-	save(): void {
-		const rv: options[] = [];
-
-		for(let feat of this.farming_features) rv.push(feat.options);
-
-		database.set('farming.options', rv).write();
-	}
-
-	// starts farming when server starts
-	start_farms(): void {
-		for(let farm of this.farming_features) {
-			if(farm.options.run)
-				farm.start();
-		}
+	get_new_item(options: Ioptions_farm): farm_feature {
+		return new farm_feature({ ...options });
 	}
 
 	// command line start
@@ -163,7 +54,7 @@ class farming {
 
 		const uuid: string = uniqid.time();
 
-		const options: options = {
+		const options: Ioptions_farm = {
 			uuid,
 			farmlists,
 			village_name,
@@ -173,90 +64,89 @@ class farming {
 		};
 
 		let feat = new farm_feature(options);
-		this.farming_features.push(feat);
+		this.features.push(feat);
 		feat.start();
 	}
 }
 
-class farm_feature {
-	running: boolean = false;
-	options: options = null;
+class farm_feature extends feature_item {
+	options: Ioptions_farm;
 
-	constructor(options: options) {
-		this.options = options;
-	}
-
-	get_feature_params(): Ifeature_farming {
-		const { village_name, interval } = this.options;
-
-		const params = {
-			ident: 'farming',
-			name: (this.options.farmlists.length < 1) ? 'farming' : 'farmlist ' + this.options.farmlists[0],
-			description: `${village_name} / ${interval} s`,
-			...this.options
+	set_options(options: Ioptions_farm): void {
+		const { uuid, run, error, farmlists, village_name, interval } = options;
+		this.options = {
+			...this.options,
+			uuid,
+			run,
+			error,
+			farmlists,
+			village_name,
+			interval
 		};
-
-		return params;
 	}
 
-	stop(): void {
-		this.options.run = false;
+	get_options(): Ioptions_farm {
+		return { ...this.options };
 	}
 
-	async start(): Promise<void> {
-		try {
-			this.running = true;
-			log(`farming uuid: ${this.options.uuid} started`);
+	set_params(): void {
+		this.params = {
+			ident: 'farming',
+			name: 'send farmlist'
+		};
+	}
 
-			const { village_name, farmlists, interval } = this.options;
-			const params = [
-				village.own_villages_ident,
-				farming.farmlist_ident
-			];
+	get_description(): string {
+		const { village_name, interval } = this.options;
+		return `${village_name} / ${interval} s`;
+	}
 
-			// fetch farmlists
-			const response = await api.get_cache(params);
+	async run(): Promise<void> {
+		log(`farming uuid: ${this.options.uuid} started`);
 
-			const vill: Ivillage = village.find(village_name, response);
-			if(!vill) {
-				this.running = false;
-				return;
-			}
+		const { village_name, farmlists, interval } = this.options;
+		const params = [
+			village.own_villages_ident,
+			farming.farmlist_ident
+		];
 
-			const village_id: number = vill.villageId;
-			const farmlist_ids: number[] = [];
+		// fetch farmlists
+		const response = await api.get_cache(params);
 
-			for(let list of farmlists) {
-				const list_obj = farming.find(list, response);
-				if(!list_obj) {
-					this.running = false;
-					return;
-				}
-
-				const list_id: number = list_obj.listId;
-				farmlist_ids.push(list_id);
-			}
-
-			if(!farmlist_ids) {
-				this.running = false;
-				return;
-			}
-
-			while(this.options.run) {
-				await api.send_farmlists(farmlist_ids, village_id);
-				log(`farmlists ${farmlists} sent from village ${village_name}`);
-
-				await sleep(interval);
-			}
-
-			log(`farming uuid: ${this.options.uuid} stopped`);
+		const vill: Ivillage = village.find(village_name, response);
+		if(!vill) {
 			this.running = false;
-		} catch {
-			log(`error on farming uuid: ${this.options.uuid}`);
-			this.options.run = false;
-			this.options.error = true;
-			this.running = false;
+			return;
 		}
+
+		const village_id: number = vill.villageId;
+		const farmlist_ids: number[] = [];
+
+		for(let list of farmlists) {
+			const list_obj = farming.find(list, response);
+			if(!list_obj) {
+				this.running = false;
+				return;
+			}
+
+			const list_id: number = list_obj.listId;
+			farmlist_ids.push(list_id);
+		}
+
+		if(!farmlist_ids) {
+			this.running = false;
+			return;
+		}
+
+		while(this.options.run) {
+			await api.send_farmlists(farmlist_ids, village_id);
+			log(`farmlists ${farmlists} sent from village ${village_name}`);
+
+			await sleep(interval);
+		}
+
+		log(`farming uuid: ${this.options.uuid} stopped`);
+		this.running = false;
 	}
 }
 

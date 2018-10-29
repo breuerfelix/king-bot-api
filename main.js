@@ -6,8 +6,7 @@ const password = '';
 const port = 3000;
 
 async function main(){
-	kingbot.start_server();
-	//await kingbot.login(gameworld, email, password);
+	await kingbot.login(gameworld, email, password);
 
 	// place bot action below
 }
