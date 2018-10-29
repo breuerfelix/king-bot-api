@@ -1,6 +1,6 @@
 import { log, find_state_data, sleep, list_remove } from '../util';
 import { Ifarmlist, Ivillage } from '../interfaces';
-import { Ifeature, Irequest, feature_collection, feature_item, Ioptions } from '../feature';
+import { Ifeature, Irequest, feature_collection, feature_item, Ioptions } from './feature';
 import { farming, village } from '../gamedata';
 import api from '../api';
 import database from '../database';

@@ -1,5 +1,5 @@
 import { Ivillage, Ibuilding_queue } from '../interfaces';
-import { Ifeature, feature, Ioptions } from '../feature';
+import { Ifeature, feature, Ioptions } from './feature';
 import { log, get_date, clash_obj, find_state_data, sleep } from '../util';
 import api from '../api';
 import { village } from '../gamedata';

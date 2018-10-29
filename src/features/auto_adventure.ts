@@ -1,5 +1,5 @@
 import { Ihero, Iplayer } from '../interfaces';
-import { feature, Ioptions, Ifeature } from '../feature';
+import { feature, Ioptions, Ifeature } from './feature';
 import { log, find_state_data, get_diff_time, sleep } from '../util';
 import api from '../api';
 import { player } from '../gamedata';

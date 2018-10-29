@@ -1,6 +1,6 @@
-import database from './database';
+import database from '../database';
 import uniqid from 'uniqid';
-import { log, list_remove } from './util';
+import { log, list_remove } from '../util';
 
 export interface Ifeature_params extends Ifeature, Ioptions {
 	description?: string

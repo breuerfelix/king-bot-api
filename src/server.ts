@@ -1,5 +1,5 @@
 import express from 'express';
-import { Ifeature_params } from './feature';
+import { Ifeature_params } from './features/feature';
 import path from 'path';
 import { find_state_data } from './util';
 import kingbot from './index';
