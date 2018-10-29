@@ -59,13 +59,13 @@ export abstract class feature {
 		this.save();
 	}
 
-	start(): void {
+	async start(): Promise<void> {
 		this.set_options({ ...this.get_options(), run: true });
 		this.save();
 
 		try {
 			this.running = true;
-			this.run();
+			await this.run();
 		} catch {
 			this.running = false;
 			this.set_options({ ...this.get_options(), run: false, error: true });
@@ -236,12 +236,12 @@ export abstract class feature_item {
 		this.set_options({ ...this.get_options(), run: false });
 	}
 
-	start(): void {
+	async start(): Promise<void> {
 		this.set_options({ ...this.get_options(), run: true });
 
 		try {
 			this.running = true;
-			this.run();
+			await this.run();
 		} catch {
 			this.running = false;
 			this.set_options({ ...this.get_options(), run: false, error: true });
