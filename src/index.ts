@@ -3,13 +3,10 @@ import settings from './settings';
 import { log, sleep } from './util';
 import { Ivillage, Ifarmlist, Iunits, Iplayer } from './interfaces';
 import building_queue, { Iresource_type } from './building';
-import hero, { adventure_type } from './hero';
-import farming from './farming';
-import village from './village';
-import { tribe } from './interfaces';
-import player from './player';
+import { tribe } from './data';
 import server from './server';
-import finish_earlier from './finish_earlier';
+import { send_farmlist, auto_adventure, finish_earlier, adventure_type } from './features';
+import { farming, village, player } from './gamedata';
 
 class kingbot {
 	async start_server(gameworld: string = '', email: string = '', password: string = '', port: number = 3000) {
@@ -18,9 +15,9 @@ class kingbot {
 		server.start(port);
 
 		// start all running features
-		hero.start_for_server();
-		farming.start_for_server();
-		if(finish_earlier.options.run) finish_earlier.start();
+		auto_adventure.start_for_server();
+		send_farmlist.start_for_server();
+		finish_earlier.start_for_server();
 	}
 
 	async login(gameworld: string, email: string = '', password: string = ''): Promise<void> {
@@ -45,7 +42,7 @@ class kingbot {
 	}
 
 	start_farming(farmlists: string[], village_name: string | string[], interval: number): void {
-		farming.start_farming(farmlists, village_name, interval);
+		send_farmlist.start_farming(farmlists, village_name, interval);
 	}
 
 	add_building_queue(resources: Iresource_type, village_name: string): void {
@@ -57,7 +54,7 @@ class kingbot {
 	}
 
 	auto_adventure(type: adventure_type = adventure_type.short, min_health: number = 15): void {
-		hero.auto_adventure(type, min_health);
+		auto_adventure.auto_adventure(type, min_health);
 	}
 
 	async scout(farmlist_name: string, village_name: string, amount: number = 1) {

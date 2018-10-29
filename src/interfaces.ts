@@ -1,8 +1,4 @@
-export enum tribe {
-	roman = '1',
-	teuton = '2',
-	gaul = '3'
-}
+import { tribe } from './data';
 
 export interface Ifarmlist {
 	listId: number;

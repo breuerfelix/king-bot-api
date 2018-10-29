@@ -1,6 +1,6 @@
-import { log, find_state_data } from './util';
-import { Ivillage } from './interfaces';
-import api from './api';
+import { log, find_state_data } from '../util';
+import { Ivillage } from '../interfaces';
+import api from '../api';
 
 class village {
 	village_ident: string = 'Collection:Village:'
