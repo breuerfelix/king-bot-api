@@ -77,6 +77,8 @@ class hero extends feature {
 		const player_data: Iplayer = await player.get();
 
 		while(this.options.run) {
+			const { type, min_health } = this.options;
+
 			// get hero data
 			const response: any[] = await api.get_cache([ this.hero_ident + player_data.playerId]);
 			const hero: Ihero = find_state_data(this.hero_ident + player_data.playerId, response);
