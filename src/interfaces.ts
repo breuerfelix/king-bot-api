@@ -4,18 +4,6 @@ export enum tribe {
 	gaul = '3'
 }
 
-export interface Irequest {
-	action: string
-	feature: Ifeature
-}
-
-export interface Ifeature {
-	ident: string
-	name: string
-	description: string
-	run: boolean
-}
-
 export interface Ifarmlist {
 	listId: number;
 	listName: string;
