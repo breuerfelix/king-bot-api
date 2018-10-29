@@ -1,5 +1,5 @@
 import express from 'express';
-import { Ifeature } from './interfaces';
+import { Ifeature_params } from './interfaces';
 import hero from './hero';
 import farming from './farming';
 import path from 'path';
@@ -19,7 +19,7 @@ class server {
 		this.app.use(express.static(path.resolve(__dirname, '../build')));
 
 		this.app.get('/api/allfeatures', (req: any, res: any) => {
-			const response: Ifeature[] = [
+			const response: Ifeature_params[] = [
 				hero.get_feature_params(),
 				finish_earlier.get_feature_params(),
 				...farming.get_feature_params()

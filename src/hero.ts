@@ -1,84 +1,55 @@
-import { Ihero, Iplayer, Irequest, Ifeature } from './interfaces';
+import { Ihero, Iplayer, feature, Ioptions, Ifeature } from './interfaces';
 import { log, find_state_data, get_diff_time } from './util';
 import { sleep } from './util';
 import api from './api';
 import player from './player';
 import database from './database';
 
-interface Ifeature_hero extends Ifeature, options {}
-
-interface Irequest_hero extends Irequest {
-	feature: Ifeature_hero
-}
-
-interface options {
+interface Ioptions_hero extends Ioptions {
 	type: adventure_type
 	min_health: number
-	run: boolean
-	error: boolean
 }
 
-class hero {
+class hero extends feature {
 	// idents for state data
 	hero_ident: string = 'Hero:';
 
-	options: options = null;
-	
-	running: boolean = false;
+	options: Ioptions_hero;
 
-	constructor() {
-		this.options = database.get('hero.options').value();
-		if(!this.options) {
-			this.options = {
-				type: 0,
-				min_health: 15,
-				run: false,
-				error: false
-			};
+	set_default_options(): void {
+		this.options = {
+			type: 0,
+			min_health: 15,
+			run: false,
+			error: false
 		}
 	}
 
-	handle_request(payload: Irequest_hero): any {
-		const { action } = payload;
-
-		if(action == 'start') {
-			this.options.run = true;
-			if(!this.running) this.start();
-			return 'online';
-		}
-
-		if(action == 'stop') {
-			this.stop();
-			return 'offline';
-		}
-
-		if(action == 'update') {
-			const { min_health, type } = payload.feature;
-			this.options.type = Number(type);
-			this.options.min_health = Number(min_health);
-
-			database.set('hero.options', this.options).write();
-
-			return 'success';
-		}
-
-		return 'error';
-	}
-
-	get_feature_params(): Ifeature_hero {
-		const params: any = {
+	set_params(): void {
+		this.params = {
 			ident: 'hero',
-			name: 'auto adventure',
-			description: (this.options.type == 0) ? 'short' : 'long',
-			...this.options
+			name: 'auto adventure'
 		};
-
-		return params;
 	}
 
-	stop(): void {
-		this.options.run = false;
-		database.set('hero.options', this.options).write();
+	set_options(options: Ioptions_hero): void {
+		this.options = { ...this.options, ...options };
+	}
+
+	get_options(): Ioptions {
+		return { ...this.options };
+	}
+
+	get_description(): string {
+		return (this.options.type == 0) ? 'short' : 'long';
+	}
+
+	update(options: Ioptions_hero): void {
+		this.options = {
+			...this.options,
+			min_health: options.min_health,
+			type: options.type
+		};
 	}
 
 	start(): void {

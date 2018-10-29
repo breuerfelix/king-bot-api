@@ -18,7 +18,7 @@ class kingbot {
 		server.start(port);
 
 		// start all running features
-		if(hero.options.run) hero.start();
+		hero.start_for_server();
 		farming.start_farms();
 		if(finish_earlier.options.run) finish_earlier.start();
 	}
