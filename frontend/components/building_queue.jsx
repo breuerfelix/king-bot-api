@@ -93,7 +93,11 @@ export default class BuildingQueue extends Component {
 		const { buildingType, lvl, locationId } = building;
 		const queue_item = {
 			type: buildingType,
-			location: locationId
+			location: locationId,
+			costs: {
+				...building.upgradeCosts
+			},
+			upgrade_time: building.upgradeTime
 		};
 
 		this.setState({ queue: [ ...this.state.queue, queue_item ] });
@@ -231,6 +235,7 @@ export default class BuildingQueue extends Component {
 								</div>
 								<a className="button is-success" style="margin-left: 3rem; margin-right: 1rem" onClick={ this.submit }>submit</a>
 								<a className="button is-danger" onClick={ this.delete }>delete</a>
+
 							</div>
 						</div>
 					</div>
