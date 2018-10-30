@@ -22,7 +22,7 @@ class auto_adventure extends feature {
 			min_health: 15,
 			run: false,
 			error: false
-		}
+		};
 	}
 
 	set_params(): void {
@@ -105,6 +105,7 @@ class auto_adventure extends feature {
 		}
 
 		this.running = false;
+		this.options.run = false;
 		log('auto adventure stopped');
 	}
 }
