@@ -42,6 +42,26 @@ export default class NavBar extends Component {
 		route('/edit_feature');
 	}
 
+	new_building_queue = async e => {
+		const payload = {
+			action: 'new',
+			feature: {
+				ident: 'queue'
+			}
+		};
+
+		const res = await axios.post('/api/feature', payload);
+		console.log(res.data)
+
+		if(res.data == 'error') {
+			// TODO add error message
+			return;
+		}
+
+		this.props.change_feature_to_edit(res.data);
+		route('/edit_feature');
+	}
+
 	render() {
 		const burger_class = classNames({
 			'navbar-burger': true,
@@ -78,12 +98,12 @@ export default class NavBar extends Component {
 									add feature
 								</a>
 
-								<div class="navbar-dropdown">
+								<div class="navbar-dropdown is-radiusless">
 									<a className="navbar-item" onClick={ this.new_send_farmlist }>
 										send farmlist
 									</a>
-									<a className="navbar-item">
-										building queue (coming soon)
+									<a className="navbar-item" onClick={ this.new_building_queue }>
+										building queue
 									</a>
 								</div>
 							</div>
@@ -93,7 +113,7 @@ export default class NavBar extends Component {
 									extras
 								</a>
 
-								<div class="navbar-dropdown">
+								<div class="navbar-dropdown is-radiusless">
 									<a className="navbar-item" href="/easy_scout">
 										easy scout
 									</a>
