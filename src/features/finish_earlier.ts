@@ -105,6 +105,7 @@ class finish_earlier extends feature {
 
 		log('finish earlier stopped');
 		this.running = false;
+		this.options.run = false;
 	}
 }
 

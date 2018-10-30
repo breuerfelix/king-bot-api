@@ -132,6 +132,7 @@ class farm_feature extends feature_item {
 
 		log(`farming uuid: ${this.options.uuid} stopped`);
 		this.running = false;
+		this.options.run = false;
 	}
 }
 
