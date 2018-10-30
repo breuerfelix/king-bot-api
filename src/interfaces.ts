@@ -150,7 +150,6 @@ export interface Ibuilding_queue {
 	}
 	canUseInstantConstruction: boolean
 	canUseInstantConstructionOnlyInVillage: boolean
-
 }
 
 export interface Iresources {
