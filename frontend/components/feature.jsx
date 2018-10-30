@@ -14,7 +14,7 @@ const actions = store => ({
 export default class Feature extends Component {
 	status_dict = {
 		'error': 'fa-exclamation',
-		'loading': 'fa-spinner',
+		'loading': 'fa-spinner fa-pulse',
 		'offline': 'fa-pause',
 		'online': 'fa-check'
 	}
@@ -100,14 +100,14 @@ export default class Feature extends Component {
 					</span>
 				</td>
 				<td style={ row_style }>
-					<a class="button is-white" onClick={ this.toggle }>
+					<a class="has-text-black" onClick={ this.toggle }>
 						<span class="icon is-medium">
 							<i class={ toggle_icon }></i>
 						</span>
 					</a>
 				</td>
 				<td style={ row_style }>
-					<a class="button is-white" onClick={ this.edit }>
+					<a class="has-text-black" onClick={ this.edit }>
 						<span class="icon is-medium">
 							<i class="fas fa-lg fa-edit"></i>
 						</span>
