@@ -1,9 +1,12 @@
 import express from 'express';
-import { Ifeature_params } from './features/feature';
 import path from 'path';
-import { find_state_data } from './util';
 import kingbot from './index';
-import { finish_earlier, auto_adventure, send_farmlist } from './features';
+import api from './api';
+import settings from './settings';
+import { Ifeature_params } from './features/feature';
+import { Ivillage, Ibuilding } from './interfaces';
+import { find_state_data } from './util';
+import { building_queue, finish_earlier, auto_adventure, send_farmlist } from './features';
 import { farming, village } from './gamedata';
 
 class server {
@@ -20,7 +23,8 @@ class server {
 			const response: Ifeature_params[] = [
 				auto_adventure.get_feature_params(),
 				finish_earlier.get_feature_params(),
-				...send_farmlist.get_feature_params()
+				...send_farmlist.get_feature_params(),
+				...building_queue.get_feature_params()
 			];
 
 			res.send(response);
@@ -38,13 +42,15 @@ class server {
 				response = send_farmlist.handle_request(req.body);
 			} else if (ident == 'finish_earlier') {
 				response = finish_earlier.handle_request(req.body);
+			} else if (ident == 'queue') {
+				response = building_queue.handle_request(req.body);
 			}
 
 			res.send(response);
 		});
 		
-		this.app.get('/api/data/:ident', async (req: any, res: any) => {
-			const { ident } = req.params;
+		this.app.get('/api/data', async (req: any, res: any) => {
+			const { ident } = req.query;
 
 			if(ident == 'villages') {
 				const villages = await village.get_own();
@@ -59,6 +65,34 @@ class server {
 				const data = find_state_data(farming.farmlist_ident, farmlists);
 
 				res.send(data);
+				return;
+			}
+
+			if(ident == 'queue') {
+				const { village_name } = req.query;
+				const village_data = await village.get_own();
+				const village_obj: Ivillage = village.find(village_name, village_data);
+
+				const queue_ident: string = village.building_collection_ident + village_obj.villageId;
+
+				const response: any[] = await api.get_cache([ queue_ident]);
+
+				const rv = [];
+				const data = find_state_data(queue_ident, response);
+
+				for(let bd of data) {
+					const build: Ibuilding = bd.data;
+					
+					if(Number(build.buildingType) != 0) rv.push(build);
+				}
+
+				res.send(rv);
+
+				return;
+			}
+
+			if(ident == 'buildings') {
+				res.send(settings.get_buildings());
 				return;
 			}
 
