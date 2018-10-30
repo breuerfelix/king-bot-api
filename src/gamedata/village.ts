@@ -6,6 +6,10 @@ class village {
 	village_ident: string = 'Collection:Village:'
 	own_villages_ident: string = this.village_ident + 'own';
 
+	building_collection_ident: string = 'Collection:Building:';
+	building_ident: string = 'Building:';
+	building_queue_ident: string = 'BuildingQueue:';
+
 	find(name: string, data: any): Ivillage {
 		const villages = find_state_data(this.own_villages_ident, data);
 

@@ -24,10 +24,10 @@ export default class EasyScout extends Component {
 	}
 
 	async componentDidMount() {
-		let response = await axios.get('/api/data/villages');
+		let response = await axios.get('/api/data?ident=villages');
 		this.setState({ all_villages: response.data });
 
-		response = await axios.get('/api/data/farmlists');
+		response = await axios.get('/api/data?ident=farmlists');
 		this.setState({ all_farmlists: response.data });
 	}
 
