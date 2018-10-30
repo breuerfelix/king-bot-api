@@ -5,7 +5,7 @@ import { Ivillage, Ifarmlist, Iunits, Iplayer } from './interfaces';
 import building_queue, { Iresource_type } from './building';
 import { tribe } from './data';
 import server from './server';
-import { send_farmlist, auto_adventure, finish_earlier, adventure_type } from './features';
+import { send_farmlist, auto_adventure, finish_earlier, adventure_type, building_queue as queue } from './features';
 import { farming, village, player } from './gamedata';
 
 class kingbot {
@@ -18,6 +18,7 @@ class kingbot {
 		auto_adventure.start_for_server();
 		send_farmlist.start_for_server();
 		finish_earlier.start_for_server();
+		queue.start_for_server();
 	}
 
 	async login(gameworld: string, email: string = '', password: string = ''): Promise<void> {

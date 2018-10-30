@@ -109,6 +109,7 @@ export abstract class feature_collection {
 
 	abstract get_database_ident(): string;
 	abstract get_new_item(options: Ioptions): feature_item;
+	abstract get_default_options(options: Ioptions): Ioptions;
 
 	constructor() {
 		const options: Ioptions[] = database.get(`${this.get_database_ident()}.options`).value();
@@ -144,11 +145,11 @@ export abstract class feature_collection {
 		if(action == 'new') {
 			const uuid: string = uniqid.time();
 
-			const options: Ioptions = {
+			const options: Ioptions = this.get_default_options({
 				uuid,
 				run: false,
 				error: false
-			};
+			});
 
 			const feat: feature_item = this.get_new_item(options);
 			this.features.push(feat);

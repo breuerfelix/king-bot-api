@@ -21,6 +21,15 @@ class send_farmlist extends feature_collection {
 		return new farm_feature({ ...options });
 	}
 
+	get_default_options(options: Ioptions): Ioptions_farm {
+		return {
+			...options,
+			farmlists: [],
+			village_name: '',
+			interval: 0
+		};
+	}
+
 	// command line start
 	start_farming(farmlists: string[], village_name: string | string[], interval: number): Promise<void> {
 		if(Array.isArray(village_name)) {
@@ -123,6 +132,7 @@ class farm_feature extends feature_item {
 
 		log(`farming uuid: ${this.options.uuid} stopped`);
 		this.running = false;
+		this.options.run = false;
 	}
 }
 

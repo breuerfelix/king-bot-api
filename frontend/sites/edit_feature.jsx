@@ -2,6 +2,7 @@ import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
 import Adventure from '../components/adventure';
 import SendFarmlist from '../components/send_farmlist';
+import BuildingQueue from '../components/building_queue';
 
 import { connect } from 'unistore/preact';
 
@@ -36,6 +37,9 @@ export default class EditFeature extends Component {
 				break;
 			case 'farming':
 				feat = <SendFarmlist feature={ this.state } />;
+				break;
+			case 'queue':
+				feat = <BuildingQueue feature={ this.state } />;
 				break;
 		}
 
