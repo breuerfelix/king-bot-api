@@ -146,6 +146,7 @@ export abstract class feature_collection {
 			const uuid: string = uniqid.time();
 
 			const options: Ioptions = this.get_default_options({
+				uuid,
 				run: false,
 				error: false
 			});
