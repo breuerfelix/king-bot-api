@@ -38,7 +38,8 @@ class kingbot {
 			return;
 		}
 
-		console.log(`start login to gameworld ${gameworld} with account ${email} ...`);
+		//console.log(`start login to gameworld ${gameworld} with account ${email} ...`);
+		log('start login...');
 		await api.login(email, password, gameworld);
 	}
 
