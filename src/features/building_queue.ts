@@ -1,11 +1,11 @@
 import { feature_collection, feature_item, Ioptions, Ifeature } from './feature';
-import settings from '../settings';
 import { log, find_state_data, sleep, get_diff_time } from '../util';
 import { village, player } from '../gamedata';
 import { Ivillage, Ibuilding_queue, Iresources, Iplayer } from '../interfaces';
 import { tribe } from '../data';
 import api from '../api';
 import finish_earlier from './finish_earlier';
+import { buildings } from '../data';
 
 interface Ioptions_queue extends Ioptions {
 	village_name: string
@@ -66,7 +66,7 @@ class queue extends feature_item {
 	get_description(): string {
 		const { queue } = this.options;
 		try {
-			if(queue.length > 0) return 'next: ' + settings.get_buildings()[queue[0].type];
+			if(queue.length > 0) return 'next: ' + buildings[queue[0].type];
 		} catch {
 			return 'next: -';
 		}
