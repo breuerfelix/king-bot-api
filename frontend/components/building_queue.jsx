@@ -22,14 +22,11 @@ export default class BuildingQueue extends Component {
 		});
 	}
 
-	async componentDidMount() {
-		let response = await axios.get('/api/data?ident=villages');
-		this.setState({ all_villages: response.data });
-
-		response = await axios.get('/api/data?ident=buildings');
-		this.setState({ buildings_dict: response.data });
-
+	componentDidMount() {
 		if(this.state.village_name) this.village_changes({ target: { value: this.state.village_name } });
+
+		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data }));
+		axios.get('/api/data?ident=buildings').then(res => this.setState({ buildings_dict: res.data }));
 	}
 
 	submit = async e => {

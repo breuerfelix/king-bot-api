@@ -23,12 +23,9 @@ export default class EasyScout extends Component {
 		if(this.state.farmlists.length > 0) this.setState({ selected_farmlist: this.state.farmlists[0] });
 	}
 
-	async componentDidMount() {
-		let response = await axios.get('/api/data?ident=villages');
-		this.setState({ all_villages: response.data });
-
-		response = await axios.get('/api/data?ident=farmlists');
-		this.setState({ all_farmlists: response.data });
+	componentDidMount() {
+		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data }));
+		axios.get('/api/data?ident=farmlists').then(res => this.setState({ all_farmlists: res.data }));
 	}
 
 	handle_multi = e => {
