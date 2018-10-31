@@ -26,7 +26,7 @@ export default class BuildingQueue extends Component {
 		if(this.state.village_name) this.village_changes({ target: { value: this.state.village_name } });
 
 		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data }));
-		axios.get('/api/data?ident=buildings').then(res => this.setState({ buildings_dict: res.data }));
+		axios.get('/api/data?ident=buildingdata').then(res => this.setState({ buildings_dict: res.data }));
 	}
 
 	submit = async e => {
@@ -64,7 +64,7 @@ export default class BuildingQueue extends Component {
 
 		this.setState({ village_name: e.target.value });
 
-		let response = await axios.get(`/api/data?ident=queue&village_name=${e.target.value}`);
+		let response = await axios.get(`/api/data?ident=buildings&village_name=${e.target.value}`);
 		let res = [];
 		let bd = [];
 

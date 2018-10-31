@@ -68,7 +68,7 @@ class server {
 				return;
 			}
 
-			if(ident == 'queue') {
+			if(ident == 'buildings') {
 				const { village_name } = req.query;
 				const village_data = await village.get_own();
 				const village_obj: Ivillage = village.find(village_name, village_data);
@@ -83,7 +83,9 @@ class server {
 				for(let bd of data) {
 					const build: Ibuilding = bd.data;
 					
-					if(Number(build.buildingType) != 0) rv.push(build);
+					if(Number(build.buildingType) != 0) 
+						if(Number(build.lvl) > 0)
+							rv.push(build);
 				}
 
 				res.send(rv);
@@ -91,7 +93,7 @@ class server {
 				return;
 			}
 
-			if(ident == 'buildings') {
+			if(ident == 'buildingdata') {
 				res.send(buildings);
 				return;
 			}
