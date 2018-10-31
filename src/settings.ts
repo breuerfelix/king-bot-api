@@ -20,15 +20,6 @@ class settings {
 
 		return { email: cred_array[0], password: cred_array[1], gameworld: cred_array[2] };
 	}
-
-	get_buildings(): any {
-		const filename: string = this.assets_folder + this.buildings_name;
-
-		if(!fs.existsSync(filename)) return null;
-
-		let data: string = fs.readFileSync(filename, 'utf-8');
-		return JSON.parse(data);
-	}
 }
 
 export default new settings();

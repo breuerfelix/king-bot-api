@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import kingbot from './index';
 import api from './api';
-import settings from './settings';
+import { buildings } from './data';
 import { Ifeature_params } from './features/feature';
 import { Ivillage, Ibuilding } from './interfaces';
 import { find_state_data } from './util';
@@ -92,7 +92,7 @@ class server {
 			}
 
 			if(ident == 'buildings') {
-				res.send(settings.get_buildings());
+				res.send(buildings);
 				return;
 			}
 
