@@ -51,7 +51,6 @@ export default class NavBar extends Component {
 		};
 
 		const res = await axios.post('/api/feature', payload);
-		console.log(res.data)
 
 		if(res.data == 'error') {
 			// TODO add error message
