@@ -32,7 +32,7 @@ export default class Feature extends Component {
 	constructor(props) {
 		super(props);
 
-		const status = props.feature.run ? 'online' : 'offline';
+		let status = props.feature.run ? 'online' : 'offline';
 
 		if(this.state.error) status = 'error';
 

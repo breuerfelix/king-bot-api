@@ -1,12 +1,12 @@
 import { h, render, Component } from 'preact';
 
-import Feature from './feature';
+import Feature from '../components/feature';
 
 import axios from 'axios';
 
 export default class FeatureList extends Component {
 	state = {
-		features: [],
+		features: []
 	}
 
 	constructor(props) {
@@ -25,7 +25,7 @@ export default class FeatureList extends Component {
 	refetch = async () => {
 		const res = await axios.get('/api/allfeatures');
 		this.setState({
-			features: res.data
+			features: [ ...res.data ]
 		});
 	}
 
@@ -38,24 +38,22 @@ export default class FeatureList extends Component {
 		const features = this.state.features.map(feature => <Feature feature={ feature } />);
 
 		return (
-			<div class="columns is-centered">
-				<div className="column is-two-thirds">
-					<h1 className="subtitle is-4" align="center">your features</h1>
-					<table className="table is-hoverable is-fullwidth">
-						<thead>
-							<tr>
-								<th style={ row_style }>feature name</th>
-								<th style={ row_style }>description</th>
-								<th style={ row_style }>status</th>
-								<th style={ row_style }>off / on</th>
-								<th style={ row_style }>options</th>
-							</tr>
-						</thead>
-						<tbody>
-							{ features }
-						</tbody>
-					</table>
-				</div>
+			<div>
+				<h1 className="subtitle is-4" align="center">your features</h1>
+				<table className="table is-hoverable is-fullwidth">
+					<thead>
+						<tr>
+							<th style={ row_style }>feature name</th>
+							<th style={ row_style }>description</th>
+							<th style={ row_style }>status</th>
+							<th style={ row_style }>off / on</th>
+							<th style={ row_style }>options</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ features }
+					</tbody>
+				</table>
 			</div>
 		);
 	}
