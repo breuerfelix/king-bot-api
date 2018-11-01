@@ -3,7 +3,7 @@ import path from 'path';
 import kingbot from './index';
 import api from './api';
 import { buildings } from './data';
-import { Ifeature_params } from './features/feature';
+import { Ifeature_params, feature, feature_collection } from './features/feature';
 import { Ivillage, Ibuilding } from './interfaces';
 import { find_state_data } from './util';
 import { building_queue, finish_earlier, auto_adventure, send_farmlist } from './features';
@@ -11,6 +11,7 @@ import { farming, village } from './gamedata';
 
 class server {
 	app: any = null;
+	features: (feature | feature_collection)[] = [ auto_adventure ];
 
 	constructor() {
 		this.app = express();
@@ -21,8 +22,8 @@ class server {
 
 		this.app.get('/api/allfeatures', (req: any, res: any) => {
 			const response: Ifeature_params[] = [
-				auto_adventure.get_feature_params(),
-				finish_earlier.get_feature_params(),
+				...auto_adventure.get_feature_params(),
+				...finish_earlier.get_feature_params(),
 				...send_farmlist.get_feature_params(),
 				...building_queue.get_feature_params()
 			];
@@ -107,6 +108,11 @@ class server {
 			kingbot.scout(list_name, village_name);
 
 			res.send('success');
+		});
+
+		// handles all 404 requests to main page
+		this.app.get('*', (req: any, res: any) => {
+			res.redirect('/');
 		});
 	}
 

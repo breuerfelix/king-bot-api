@@ -1,17 +1,19 @@
 import { Ivillage, Ibuilding_queue } from '../interfaces';
-import { Ifeature, feature, Ioptions } from './feature';
+import { Ifeature, feature_single, Ioptions } from './feature';
 import { log, get_date, clash_obj, find_state_data, sleep } from '../util';
 import api from '../api';
 import { village } from '../gamedata';
+import uniqid from 'uniqid';
 import database from '../database';
 
-class finish_earlier extends feature {
+class finish_earlier extends feature_single {
 	building_queue_ident: string = 'BuildingQueue:';
 
 	options: Ioptions;
 
 	set_default_options(): void {
 		this.options = {
+			uuid: uniqid.time(),
 			run: false,
 			error: false
 		};

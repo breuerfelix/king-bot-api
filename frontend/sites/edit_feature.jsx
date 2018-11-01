@@ -1,8 +1,8 @@
 import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
-import Adventure from '../components/adventure';
-import SendFarmlist from '../components/send_farmlist';
-import BuildingQueue from '../components/building_queue';
+import Adventure from '../features/adventure';
+import SendFarmlist from '../features/send_farmlist';
+import BuildingQueue from '../features/building_queue';
 
 import { connect } from 'unistore/preact';
 

@@ -7,7 +7,7 @@ export interface Ifeature_params extends Ifeature, Ioptions {
 }
 
 export interface Ioptions {
-	uuid?: string
+	uuid: string
 	run: boolean
 	error: boolean
 }
@@ -22,7 +22,13 @@ export interface Irequest {
 	feature: Ifeature_params
 }
 
-export abstract class feature {
+export interface feature {
+	start_for_server(): void
+	get_feature_params(): Ifeature_params[]
+	handle_request(payload: Irequest): any
+}
+
+export abstract class feature_single implements feature {
 	running: boolean = false;
 
 	params: Ifeature;
@@ -46,8 +52,8 @@ export abstract class feature {
 		else this.set_options({ ...options });
 	}
 
-	get_feature_params(): Ifeature_params {
-		return { ...this.params, description: this.get_description(), ...this.get_options() };
+	get_feature_params(): Ifeature_params[] {
+		return [{ ...this.params, description: this.get_description(), ...this.get_options() }];
 	}
 
 	start_for_server(): void {
@@ -104,7 +110,7 @@ export abstract class feature {
 	}
 }
 
-export abstract class feature_collection {
+export abstract class feature_collection implements feature {
 	features: feature_item[] = []
 
 	abstract get_database_ident(): string;

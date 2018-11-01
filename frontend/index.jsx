@@ -4,31 +4,38 @@ import 'bulma';
 import 'bulma-extensions';
 
 import { h, render, Component } from 'preact';
-import { Provider } from 'unistore/preact';
 
 import Router from 'preact-router';
-import Home from './sites/home';
-import Login from './sites/login';
-import EditFeature from './sites/edit_feature';
-import NavBar from './navbar';
-import EasyScout from './sites/easy_scout';
 
+import { Provider } from 'unistore/preact';
 import createStore from 'unistore';
 
-const store = createStore({ edit_feature: {} });
+import NavBar from './navbar';
+import Notifications from './components/notifications';
+import Login from './sites/login';
+import EditFeature from './sites/edit_feature';
+import EasyScout from './extras/easy_scout';
+import FeatureList from './sites/feature_list';
+
+const store = createStore({ edit_feature: {}, notifications: [] });
 
 class App extends Component {
 	render() {
 		return (
 			<div>
 				<NavBar />
-				<div style='margin-top: 1rem'>
-					<Router>
-						<Home path='/' />
-						<Login path='/login' />
-						<EditFeature path='/edit_feature' />
-						<EasyScout path='/easy_scout' />
-					</Router>
+				<div className="columns is-centered">
+					<div className="column is-two-thirds">
+						<Notifications />
+						<div style='margin-top: 1rem'>
+							<Router>
+								<FeatureList path='/' />
+								<Login path='/login' />
+								<EditFeature path='/edit_feature' />
+								<EasyScout path='/easy_scout' />
+							</Router>
+						</div>
+					</div>
 				</div>
 			</div>
 		);

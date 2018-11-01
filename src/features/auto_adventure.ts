@@ -1,16 +1,17 @@
 import { Ihero, Iplayer } from '../interfaces';
-import { feature, Ioptions, Ifeature } from './feature';
+import { feature_single, Ioptions, Ifeature } from './feature';
 import { log, find_state_data, get_diff_time, sleep } from '../util';
 import api from '../api';
 import { player } from '../gamedata';
 import database from '../database';
+import uniqid from 'uniqid';
 
 interface Ioptions_hero extends Ioptions {
 	type: adventure_type
 	min_health: number
 }
 
-class auto_adventure extends feature {
+class auto_adventure extends feature_single {
 	// idents for state data
 	hero_ident: string = 'Hero:';
 
@@ -18,6 +19,7 @@ class auto_adventure extends feature {
 
 	set_default_options(): void {
 		this.options = {
+			uuid: uniqid.time(),
 			type: 0,
 			min_health: 15,
 			run: false,

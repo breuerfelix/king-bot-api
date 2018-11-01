@@ -17,36 +17,17 @@ export default class NavBar extends Component {
 		burger: false
 	}
 
-	show_burger = (e) => {
+	show_burger = e => {
 		this.setState({
 			burger: !this.state.burger
 		});
 	}
 
-	new_send_farmlist = async e => {
+	get_new = async ident => {
 		const payload = {
 			action: 'new',
 			feature: {
-				ident: 'farming'
-			}
-		};
-
-		const res = await axios.post('/api/feature', payload);
-
-		if(res.data == 'error') {
-			// TODO add error message
-			return;
-		}
-
-		this.props.change_feature_to_edit(res.data);
-		route('/edit_feature');
-	}
-
-	new_building_queue = async e => {
-		const payload = {
-			action: 'new',
-			feature: {
-				ident: 'queue'
+				ident
 			}
 		};
 
@@ -98,10 +79,10 @@ export default class NavBar extends Component {
 								</a>
 
 								<div class="navbar-dropdown is-radiusless">
-									<a className="navbar-item" onClick={ this.new_send_farmlist }>
+									<a className="navbar-item" onClick={ e => this.get_new('farming') }>
 										send farmlist
 									</a>
-									<a className="navbar-item" onClick={ this.new_building_queue }>
+									<a className="navbar-item" onClick={ e => this.get_new('queue') }>
 										building queue
 									</a>
 								</div>
