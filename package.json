@@ -59,6 +59,7 @@
 		"@babel/preset-env": "^7.1.0",
 		"@babel/preset-react": "^7.0.0",
 		"@types/cheerio": "^0.22.9",
+		"@types/deepmerge": "^2.2.0",
 		"@types/express": "^4.16.0",
 		"@types/lowdb": "^1.0.5",
 		"@types/node": "^10.12.0",
