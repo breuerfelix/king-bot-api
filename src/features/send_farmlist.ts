@@ -13,7 +13,7 @@ interface Ioptions_farm extends Ioptions {
 }
 
 class send_farmlist extends feature_collection {
-	get_database_ident(): string {
+	get_ident(): string {
 		return 'farming';
 	}
 
@@ -84,6 +84,10 @@ class farm_feature extends feature_item {
 	get_description(): string {
 		const { village_name, interval } = this.options;
 		return `${village_name} / ${interval} s`;
+	}
+
+	get_long_description(): string {
+		return 'this feature will just send the farmlist in a given interval.';
 	}
 
 	async run(): Promise<void> {

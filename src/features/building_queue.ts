@@ -20,8 +20,8 @@ interface Iqueue {
 }
 
 class building_queue extends feature_collection {
-	get_database_ident(): string {
-		return 'building_queue';
+	get_ident(): string {
+		return 'queue';
 	}
 
 	get_new_item(options: Ioptions_queue): queue {
@@ -72,6 +72,10 @@ class queue extends feature_item {
 		}
 
 		return 'next: -';
+	}
+
+	get_long_description(): string {
+		return "this is an endless building queue. don't change the village once it's set. if you want to change the village, just do another building queue feature with your desired village";
 	}
 
 	async run(): Promise<void> {

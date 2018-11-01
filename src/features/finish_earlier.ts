@@ -1,17 +1,19 @@
 import { Ivillage, Ibuilding_queue } from '../interfaces';
-import { Ifeature, feature, Ioptions } from './feature';
+import { Ifeature, feature_single, Ioptions, Iresponse } from './feature';
 import { log, get_date, clash_obj, find_state_data, sleep } from '../util';
 import api from '../api';
 import { village } from '../gamedata';
+import uniqid from 'uniqid';
 import database from '../database';
 
-class finish_earlier extends feature {
+class finish_earlier extends feature_single {
 	building_queue_ident: string = 'BuildingQueue:';
 
 	options: Ioptions;
 
 	set_default_options(): void {
 		this.options = {
+			uuid: uniqid.time(),
 			run: false,
 			error: false
 		};
@@ -29,9 +31,10 @@ class finish_earlier extends feature {
 	}
 
 	set_options(options: Ioptions): void {
-		const { run, error } = options;
+		const { run, error, uuid } = options;
 		this.options = {
 			...this.options,
+			uuid,
 			run,
 			error
 		};
@@ -42,7 +45,13 @@ class finish_earlier extends feature {
 		return { ...this.options };
 	}
 
-	update(options: Ioptions): void {}
+	update(options: Ioptions): Iresponse {
+		return {
+			error: false,
+			data: null,
+			message: ''
+		};
+	}
 
 	async run(): Promise<void> {
 		log('finish earlier started');

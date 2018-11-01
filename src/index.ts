@@ -13,12 +13,6 @@ class kingbot {
 		await this.login(gameworld, email, password);
 
 		server.start(port);
-
-		// start all running features
-		auto_adventure.start_for_server();
-		send_farmlist.start_for_server();
-		finish_earlier.start_for_server();
-		queue.start_for_server();
 	}
 
 	async login(gameworld: string, email: string = '', password: string = ''): Promise<void> {

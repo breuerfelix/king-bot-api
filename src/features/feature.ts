@@ -4,10 +4,11 @@ import { log, list_remove } from '../util';
 
 export interface Ifeature_params extends Ifeature, Ioptions {
 	description?: string
+	long_description?: string
 }
 
 export interface Ioptions {
-	uuid?: string
+	uuid: string
 	run: boolean
 	error: boolean
 }
@@ -22,7 +23,20 @@ export interface Irequest {
 	feature: Ifeature_params
 }
 
-export abstract class feature {
+export interface feature {
+	start_for_server(): void
+	get_feature_params(): Ifeature_params[]
+	handle_request(payload: Irequest): any
+	get_ident(): string
+}
+
+export interface Iresponse {
+	data: any
+	error: boolean
+	message: string
+}
+
+export abstract class feature_single implements feature {
 	running: boolean = false;
 
 	params: Ifeature;
@@ -34,7 +48,7 @@ export abstract class feature {
 	abstract get_options(): Ioptions;
 	abstract get_description(): string;
 
-	abstract update(options: Ioptions): void;
+	abstract update(options: Ioptions): Iresponse;
 	abstract async run(): Promise<void>;
 
 	constructor() {
@@ -42,12 +56,25 @@ export abstract class feature {
 
 		const options: Ioptions = database.get(`${this.params.ident}.options`).value();
 
-		if(!options) this.set_default_options();
+		if(!options || Object.keys(options).length < 1) this.set_default_options();
 		else this.set_options({ ...options });
 	}
 
-	get_feature_params(): Ifeature_params {
-		return { ...this.params, description: this.get_description(), ...this.get_options() };
+	get_long_description(): string {
+		return null;
+	}
+
+	get_ident(): string {
+		return this.params.ident;
+	}
+
+	get_feature_params(): Ifeature_params[] {
+		return [{
+			...this.params,
+			description: this.get_description(),
+			long_description: this.get_long_description(),
+			...this.get_options()
+		}];
 	}
 
 	start_for_server(): void {
@@ -76,43 +103,67 @@ export abstract class feature {
 		database.set(`${this.params.ident}.options`, this.get_options()).write();
 	}
 
-	handle_request(payload: Irequest): any {
+	handle_request(payload: Irequest): Iresponse {
 		const { action } = payload;
+		let res: Iresponse = {
+			data: null,
+			error: false,
+			message: ''
+		};
 
 		if(action == 'start') {
 			this.set_options({ ...this.get_options(), run: true });
 			if(!this.running) this.start();
 			else this.save();
 
-			return 'online';
+			res.message = 'online';
+			return res;
 		}
 
 		if(action == 'stop') {
 			this.stop();
 
-			return 'offline';
+			res.message = 'offline';
+			return res;
 		}
 
 		if(action == 'update') {
-			this.update({ ...payload.feature });
+			res = this.update({ ...payload.feature });
 			this.save();
 
-			return 'success';
+			return res;
+		}
+	
+		if(action == 'get') {
+			res = {
+				data: {
+					...this.params,
+					description: this.get_description(),
+					long_description: this.get_long_description(),
+					...this.get_options()
+				},
+				error: false,
+				message: ''
+			};
+
+			return res;
 		}
 
-		return 'error';
+		res.error = true;
+		res.message = 'error handling request !';
+		return res;
 	}
 }
 
-export abstract class feature_collection {
+export abstract class feature_collection implements feature {
 	features: feature_item[] = []
 
-	abstract get_database_ident(): string;
+	abstract get_ident(): string;
 	abstract get_new_item(options: Ioptions): feature_item;
 	abstract get_default_options(options: Ioptions): Ioptions;
 
 	constructor() {
-		const options: Ioptions[] = database.get(`${this.get_database_ident()}.options`).value();
+		const options: Ioptions[] = database.get(`${this.get_ident()}.options`).value();
 
 		if(!options) return;
 
@@ -130,7 +181,7 @@ export abstract class feature_collection {
 	save(): void {
 		const options: Ioptions[] = [];
 		for(let feat of this.features) options.push(feat.get_options());
-		database.set(`${this.get_database_ident()}.options`, options).write();
+		database.set(`${this.get_ident()}.options`, options).write();
 	}
 
 	start_for_server(): void {
@@ -139,8 +190,13 @@ export abstract class feature_collection {
 				feat.start();
 	}
 
-	handle_request(payload: Irequest): any {
+	handle_request(payload: Irequest): Iresponse {
 		const { action } = payload;
+		let res: Iresponse = {
+			data: null,
+			error: false,
+			message: ''
+		};
 
 		if(action == 'new') {
 			const uuid: string = uniqid.time();
@@ -156,13 +212,19 @@ export abstract class feature_collection {
 
 			this.save();
 			
-			return feat.get_feature_params();
+			res.data = feat.get_feature_params();
+			return res;
 		}
 
 		const { uuid } = payload.feature;
 		const feature: feature_item = this.features.find(x => x.get_options().uuid == uuid);
 
-		if(!feature) return 'error';
+		if(!feature) {
+			res.error = true;
+			res.message = `feature with uuid: ${ uuid } not found !`;
+
+			return res;
+		}
 
 		if(action == 'start') {
 			feature.set_options({ ...feature.get_options(), run: true });
@@ -170,14 +232,16 @@ export abstract class feature_collection {
 
 			this.save();
 
-			return 'online';
+			res.message = 'online';
+			return res;
 		}
 
 		if(action == 'stop') {
 			feature.stop();
 			this.save();
 
-			return 'offline';
+			res.message = 'offline';
+			return res;
 		}
 
 		if(action == 'update') {
@@ -198,7 +262,8 @@ export abstract class feature_collection {
 
 			if(run) new_feature.start();
 
-			return 'success';
+			res.message = 'success';
+			return res;
 		}
 
 		if(action == 'delete') {
@@ -206,10 +271,28 @@ export abstract class feature_collection {
 			list_remove(feature, this.features);
 			this.save();
 			
-			return 'success';
+			res.message = 'success';
+			return res;
 		}
 
-		return 'error';
+		if(action == 'get') {
+			res = {
+				data: {
+					...feature.params,
+					description: feature.get_description(),
+					long_description: feature.get_long_description(),
+					...feature.get_options()
+				},
+				error: false,
+				message: ''
+			};
+
+			return res;
+		}
+
+		res.error = true;
+		res.message = 'error handling request !';
+		return res;
 	}
 }
 
@@ -229,8 +312,17 @@ export abstract class feature_item {
 		this.set_options(options);
 	}
 	
+	get_long_description(): string {
+		return null;
+	}
+
 	get_feature_params(): Ifeature_params {
-		return { ...this.params, description: this.get_description(), ...this.get_options() };
+		return {
+			...this.params,
+			description: this.get_description(),
+			long_description: this.get_long_description(),
+			...this.get_options()
+		};
 	}
 
 	stop(): void {

@@ -36,23 +36,11 @@ export default class BuildingQueue extends Component {
 
 		if(this.state.error_village) return;
 
-		const payload = {
-			action: 'update',
-			feature: { ...this.state }
-		};
-
-		const response = await axios.post('/api/feature', payload);
-		if(response.data == 'success') route('/');
+		this.props.submit({ ...this.state });
 	}
 
 	delete = async e => {
-		const payload = {
-			action: 'delete',
-			feature: { ...this.state }
-		};
-
-		const response = await axios.post('/api/feature', payload);
-		if(response.data == 'success') route('/');
+		this.props.delete({ ...this.state });
 	}
 
 	cancel = async e => {
@@ -215,8 +203,6 @@ export default class BuildingQueue extends Component {
 
 		return (
 			<div>
-				<h1 className="subtitle is-4" style='margin-bottom: 2rem' align="center">edit { name }</h1>
-
 				<div className="columns">
 					<div className="column">
 						<div class="field">

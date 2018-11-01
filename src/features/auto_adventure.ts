@@ -1,16 +1,17 @@
 import { Ihero, Iplayer } from '../interfaces';
-import { feature, Ioptions, Ifeature } from './feature';
+import { feature_single, Ioptions, Ifeature, Iresponse } from './feature';
 import { log, find_state_data, get_diff_time, sleep } from '../util';
 import api from '../api';
 import { player } from '../gamedata';
 import database from '../database';
+import uniqid from 'uniqid';
 
 interface Ioptions_hero extends Ioptions {
 	type: adventure_type
 	min_health: number
 }
 
-class auto_adventure extends feature {
+class auto_adventure extends feature_single {
 	// idents for state data
 	hero_ident: string = 'Hero:';
 
@@ -18,6 +19,7 @@ class auto_adventure extends feature {
 
 	set_default_options(): void {
 		this.options = {
+			uuid: uniqid.time(),
 			type: 0,
 			min_health: 15,
 			run: false,
@@ -32,10 +34,15 @@ class auto_adventure extends feature {
 		};
 	}
 
+	get_long_description(): string {
+		return 'this feature sends the hero automaticly on an adventure if the health is above given percentage.';
+	}
+
 	set_options(options: Ioptions_hero): void {
-		const { run, error, type, min_health } = options;
+		const { run, error, type, min_health, uuid } = options;
 		this.options = {
 			...this.options,
+			uuid,
 			type,
 			min_health,
 			run,
@@ -51,11 +58,17 @@ class auto_adventure extends feature {
 		return (this.options.type == 0) ? 'short' : 'long';
 	}
 
-	update(options: Ioptions_hero): void {
+	update(options: Ioptions_hero): Iresponse {
 		this.options = {
 			...this.options,
 			min_health: options.min_health,
 			type: options.type
+		};
+
+		return {
+			error: false,
+			data: null,
+			message: 'success'
 		};
 	}
 
