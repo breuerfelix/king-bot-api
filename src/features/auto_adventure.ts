@@ -34,10 +34,15 @@ class auto_adventure extends feature_single {
 		};
 	}
 
+	get_long_description(): string {
+		return 'this feature sends the hero automaticly on an adventure if the health is above given percentage.';
+	}
+
 	set_options(options: Ioptions_hero): void {
-		const { run, error, type, min_health } = options;
+		const { run, error, type, min_health, uuid } = options;
 		this.options = {
 			...this.options,
+			uuid,
 			type,
 			min_health,
 			run,

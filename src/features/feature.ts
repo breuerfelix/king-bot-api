@@ -56,7 +56,7 @@ export abstract class feature_single implements feature {
 
 		const options: Ioptions = database.get(`${this.params.ident}.options`).value();
 
-		if(!options) this.set_default_options();
+		if(!options || Object.keys(options).length < 1) this.set_default_options();
 		else this.set_options({ ...options });
 	}
 
@@ -130,6 +130,21 @@ export abstract class feature_single implements feature {
 		if(action == 'update') {
 			res = this.update({ ...payload.feature });
 			this.save();
+
+			return res;
+		}
+	
+		if(action == 'get') {
+			res = {
+				data: {
+					...this.params,
+					description: this.get_description(),
+					long_description: this.get_long_description(),
+					...this.get_options()
+				},
+				error: false,
+				message: ''
+			};
 
 			return res;
 		}
@@ -257,6 +272,21 @@ export abstract class feature_collection implements feature {
 			this.save();
 			
 			res.message = 'success';
+			return res;
+		}
+
+		if(action == 'get') {
+			res = {
+				data: {
+					...feature.params,
+					description: feature.get_description(),
+					long_description: feature.get_long_description(),
+					...feature.get_options()
+				},
+				error: false,
+				message: ''
+			};
+
 			return res;
 		}
 

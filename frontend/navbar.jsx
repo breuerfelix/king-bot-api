@@ -2,16 +2,23 @@ import { h, render, Component } from 'preact';
 import classNames from 'classnames';
 import axios from 'axios';
 import { route } from 'preact-router';
+import uniqid from 'uniqid';
 
 import { connect } from 'unistore/preact';
 
 const actions = store => ({
-	change_feature_to_edit(state, feature) {
-		return { edit_feature: { ...feature } };
+	add_notification(state, message, level) {
+		const noti = {
+			id: uniqid.time(),
+			message,
+			level
+		};
+
+		return { notifications: [ ...state.notifications, noti ] };
 	}
 });
 
-@connect('', actions)
+@connect('notifications', actions)
 export default class NavBar extends Component {
 	state = {
 		burger: false
@@ -33,13 +40,16 @@ export default class NavBar extends Component {
 
 		const res = await axios.post('/api/feature', payload);
 
-		if(res.data == 'error') {
-			// TODO add error message
+		const { error, message, data } = res.data;
+
+		if(error) {
+			this.props.add_notification(message, 'error');
 			return;
 		}
 
-		this.props.change_feature_to_edit(res.data);
-		route('/edit_feature');
+		const { uuid } = data;
+
+		route(`/edit_feature/${ ident }/${ uuid }`);
 	}
 
 	render() {

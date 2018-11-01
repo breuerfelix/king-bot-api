@@ -73,58 +73,56 @@ export default class EasyScout extends Component {
 		const farmlist_opt = all_farmlists.map(farmlist => <option value={ farmlist.data.listName }>{ farmlist.data.listName }</option>);
 
 		return (
-			<div class="columns is-centered">
-				<div className="column is-two-thirds">
-					<h1 className="subtitle is-4" style='margin-bottom: 2rem' align="center">easy scout</h1>
+			<div>
+				<h1 className="subtitle is-4" style='margin-bottom: 2rem' align="center">easy scout</h1>
 
-					<div className="content">send 1 scout to every farm in the given farmlist</div>
-					<div className="columns">
+				<div className="content">send 1 scout to every farm in the given farmlist</div>
+				<div className="columns">
 
-						<div className="column">
-							<label class="label">select farmlists</label>
-							<div class={ farmlist_select_class }>
-								<select 
-									value={ selected_farmlist }
-									onChange={ this.handle_multi }
-								>
-									{ farmlist_opt }
-								</select>
-							</div>
-
-						</div>
-
-						<div className="column">
-
-							<div class="field">
-								<label class="label">select village</label>
-								<div class="control">
-									<div class={ village_select_class }>
-										<select 
-											value={ village_name } 
-											onChange={ (e) => this.setState({ village_name: e.target.value }) }
-										>
-											{ villages }
-										</select>
-									</div>
-								</div>
-							</div>
-
-
+					<div className="column">
+						<label class="label">select farmlists</label>
+						<div class={ farmlist_select_class }>
+							<select 
+								value={ selected_farmlist }
+								onChange={ this.handle_multi }
+							>
+								{ farmlist_opt }
+							</select>
 						</div>
 
 					</div>
 
-					<div className="columns">
-						<div className="column">
-							<button className="button is-success" onClick={ this.submit } style='margin-right: 1rem'>
-								submit
-							</button>
-							<button className="button" onClick={ this.cancel } style='margin-right: 1rem'>
-								cancel
-							</button>
+					<div className="column">
+
+						<div class="field">
+							<label class="label">select village</label>
+							<div class="control">
+								<div class={ village_select_class }>
+									<select 
+										value={ village_name } 
+										onChange={ (e) => this.setState({ village_name: e.target.value }) }
+									>
+										{ villages }
+									</select>
+								</div>
+							</div>
 						</div>
-						<div className="column">
-						</div>
+
+
+					</div>
+
+				</div>
+
+				<div className="columns">
+					<div className="column">
+						<button className="button is-success" onClick={ this.submit } style='margin-right: 1rem'>
+							submit
+						</button>
+						<button className="button" onClick={ this.cancel } style='margin-right: 1rem'>
+							cancel
+						</button>
+					</div>
+					<div className="column">
 					</div>
 				</div>
 			</div>

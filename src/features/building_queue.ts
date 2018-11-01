@@ -74,6 +74,10 @@ class queue extends feature_item {
 		return 'next: -';
 	}
 
+	get_long_description(): string {
+		return "this is an endless building queue. don't change the village once it's set. if you want to change the village, just do another building queue feature with your desired village";
+	}
+
 	async run(): Promise<void> {
 		log(`building queue: ${this.options.uuid} started`);
 

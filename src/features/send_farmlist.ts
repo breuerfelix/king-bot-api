@@ -86,6 +86,10 @@ class farm_feature extends feature_item {
 		return `${village_name} / ${interval} s`;
 	}
 
+	get_long_description(): string {
+		return 'this feature will just send the farmlist in a given interval.';
+	}
+
 	async run(): Promise<void> {
 		log(`farming uuid: ${this.options.uuid} started`);
 

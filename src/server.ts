@@ -112,7 +112,7 @@ class server {
 
 		// handles all 404 requests to main page
 		this.app.get('*', (req: any, res: any) => {
-			res.redirect('/');
+			res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
 		});
 	}
 

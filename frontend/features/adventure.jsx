@@ -22,13 +22,7 @@ export default class Adventure extends Component {
 
 		if(this.state.error_input) return;
 
-		const payload = {
-			action: 'update',
-			feature: { ...this.state }
-		};
-
-		const response = await axios.post('/api/feature', payload);
-		if(response.data == 'success') route('/');
+		this.props.submit({ ...this.state });
 	}
 
 	render() {
@@ -40,8 +34,6 @@ export default class Adventure extends Component {
 
 		return (
 			<div>
-				<h1 className="subtitle is-4" style='margin-bottom: 2rem' align="center">edit { name }</h1>
-
 				<div className="columns">
 
 					<div className="column">

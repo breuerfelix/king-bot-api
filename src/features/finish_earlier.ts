@@ -31,9 +31,10 @@ class finish_earlier extends feature_single {
 	}
 
 	set_options(options: Ioptions): void {
-		const { run, error } = options;
+		const { run, error, uuid } = options;
 		this.options = {
 			...this.options,
+			uuid,
 			run,
 			error
 		};
