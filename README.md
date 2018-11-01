@@ -25,9 +25,14 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
     - [finish 5 min earlier](#finish-5-min-earlier)
     - [easy scout](#easy-scout)
     - [auto adventure](#auto-adventure)
+- [docker](#docker)
 - [development](#development)
 
 # getting-started
+
+[use docker](#docker)
+
+**or**  
 
 1. install latest version of [nodeJS](https://nodejs.org/)
 2. clone or download this repository
@@ -194,6 +199,23 @@ kingbot.auto_adventure(adventure_type.short, 35);
 **health:** _(optional)_  
 default is 15  
 required amount of health _in percent_ for the hero to be send on a adventure
+
+# docker
+
+there is also a docker image for this bot.  
+create a file with your credentials that can be mounted to the docker container:
+```csv
+your_email;your_password;your_gameworld
+```
+
+pull image and start the container mounting the file:
+
+```bash
+$ docker pull scriptworld/king-bot-api
+$ docker container run -d -p 3000:3000 -v /path_to/your_credentials_file.txt:/usr/kingbot/assets/cred.txt --name kingbot scriptworld/king-bot-api
+```
+
+open `http://localhost:3000` to see the results.
 
 # development
 
