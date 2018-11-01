@@ -13,7 +13,7 @@ interface Ioptions_farm extends Ioptions {
 }
 
 class send_farmlist extends feature_collection {
-	get_database_ident(): string {
+	get_ident(): string {
 		return 'farming';
 	}
 

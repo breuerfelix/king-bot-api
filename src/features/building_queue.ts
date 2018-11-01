@@ -20,8 +20,8 @@ interface Iqueue {
 }
 
 class building_queue extends feature_collection {
-	get_database_ident(): string {
-		return 'building_queue';
+	get_ident(): string {
+		return 'queue';
 	}
 
 	get_new_item(options: Ioptions_queue): queue {
