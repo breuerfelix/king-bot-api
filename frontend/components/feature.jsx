@@ -5,12 +5,18 @@ import axios from 'axios';
 import { connect } from 'unistore/preact';
 
 const actions = store => ({
-	change_feature_to_edit(state, feature) {
-		return { edit_feature: { ...feature } };
+	add_notification(state, message, level) {
+		const noti = {
+			id: uniqid.time(),
+			message,
+			level
+		};
+
+		return { notifications: [ ...state.notifications, noti ] };
 	}
 });
 
-@connect('', actions)
+@connect('notifications', actions)
 export default class Feature extends Component {
 	status_dict = {
 		'error': 'fa-exclamation',
@@ -29,6 +35,8 @@ export default class Feature extends Component {
 		status: 'offline'
 	}
 
+	interval = null;
+
 	constructor(props) {
 		super(props);
 
@@ -39,6 +47,39 @@ export default class Feature extends Component {
 		this.setState({
 			status,
 			...props.feature
+		});
+	}
+
+	componentDidMount() {
+		this.interval = setInterval(this.update, 3000);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.interval);
+	}
+
+	update = async () => {
+		const { uuid, ident } = this.state;
+
+		const payload = {
+			action: 'get',
+			feature: {
+				ident,
+				uuid
+			}
+		};
+
+		const res = await axios.post('/api/feature', payload);
+
+		const { error, message, data } = res.data;
+
+		if(error) {
+			this.props.add_notification(message, 'error');
+			return;
+		}
+		
+		this.setState({
+			...data
 		});
 	}
 
@@ -55,22 +96,27 @@ export default class Feature extends Component {
 
 		const res = await axios.post('/api/feature', payload);
 
-		if(res.status == 200) {
-			this.setState({
-				status: res.data,
-				run: (res.data == 'online')
-			});
-		} else {
-			this.setState({
+		const { data, error, message } = res.data;
+		
+		if(error) {
+			this.props.add_notification(message, 'error');
+			this.setState({ 
 				status: 'error',
 				run: false
 			});
+
+			return;
 		}
+
+		this.setState({
+			status: message,
+			run: (message == 'online')
+		});
 	}
 
 	edit = (e) => {
-		this.props.change_feature_to_edit(this.state);
-		route('/edit_feature');
+		const { ident, uuid } = this.state;
+		route(`/edit_feature/${ ident }/${ uuid }`);
 	}
 
 	render() {

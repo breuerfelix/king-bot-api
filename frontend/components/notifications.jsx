@@ -25,14 +25,14 @@ export default class Notifications extends Component {
 
 class Notification extends Component {
 	render({ remove, notification }) {
-		const { id, text, level } = notification;
+		const { id, message, level } = notification;
 
 		const noti = `notification is-${ level }`;
 
 		return (
 			<div class={ noti }>
 				<button class="delete" onClick={ e => remove(id) }></button>
-				{ text }
+				{ message }
 			</div>
 		);
 	}

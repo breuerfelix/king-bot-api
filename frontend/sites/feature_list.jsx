@@ -18,15 +18,6 @@ export default class FeatureList extends Component {
 		this.setState({
 			features: res.data
 		});
-
-		setInterval(this.refetch, 5000);
-	}
-
-	refetch = async () => {
-		const res = await axios.get('/api/allfeatures');
-		this.setState({
-			features: [ ...res.data ]
-		});
 	}
 
 	render() {

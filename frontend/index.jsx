@@ -17,7 +17,7 @@ import EditFeature from './sites/edit_feature';
 import EasyScout from './extras/easy_scout';
 import FeatureList from './sites/feature_list';
 
-const store = createStore({ edit_feature: {}, notifications: [] });
+const store = createStore({ notifications: [] });
 
 class App extends Component {
 	render() {
@@ -31,7 +31,7 @@ class App extends Component {
 							<Router>
 								<FeatureList path='/' />
 								<Login path='/login' />
-								<EditFeature path='/edit_feature' />
+								<EditFeature path='/edit_feature/:ident/:uuid' />
 								<EasyScout path='/easy_scout' />
 							</Router>
 						</div>
