@@ -1,5 +1,5 @@
 import { Ihero, Iplayer } from '../interfaces';
-import { feature_single, Ioptions, Ifeature } from './feature';
+import { feature_single, Ioptions, Ifeature, Iresponse } from './feature';
 import { log, find_state_data, get_diff_time, sleep } from '../util';
 import api from '../api';
 import { player } from '../gamedata';
@@ -53,11 +53,17 @@ class auto_adventure extends feature_single {
 		return (this.options.type == 0) ? 'short' : 'long';
 	}
 
-	update(options: Ioptions_hero): void {
+	update(options: Ioptions_hero): Iresponse {
 		this.options = {
 			...this.options,
 			min_health: options.min_health,
 			type: options.type
+		};
+
+		return {
+			error: false,
+			data: null,
+			message: 'success'
 		};
 	}
 

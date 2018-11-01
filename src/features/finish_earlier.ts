@@ -1,5 +1,5 @@
 import { Ivillage, Ibuilding_queue } from '../interfaces';
-import { Ifeature, feature_single, Ioptions } from './feature';
+import { Ifeature, feature_single, Ioptions, Iresponse } from './feature';
 import { log, get_date, clash_obj, find_state_data, sleep } from '../util';
 import api from '../api';
 import { village } from '../gamedata';
@@ -44,7 +44,13 @@ class finish_earlier extends feature_single {
 		return { ...this.options };
 	}
 
-	update(options: Ioptions): void {}
+	update(options: Ioptions): Iresponse {
+		return {
+			error: false,
+			data: null,
+			message: ''
+		};
+	}
 
 	async run(): Promise<void> {
 		log('finish earlier started');
