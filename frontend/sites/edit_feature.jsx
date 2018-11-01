@@ -1,55 +1,122 @@
 import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
-import Adventure from '../components/adventure';
-import SendFarmlist from '../components/send_farmlist';
-import BuildingQueue from '../components/building_queue';
+import axios from 'axios';
+import Adventure from '../features/adventure';
+import SendFarmlist from '../features/send_farmlist';
+import BuildingQueue from '../features/building_queue';
+import uniqid from 'uniqid';
 
 import { connect } from 'unistore/preact';
 
-@connect('edit_feature')
+const actions = store => ({
+	add_notification(state, message, level) {
+		const noti = {
+			id: uniqid.time(),
+			message,
+			level
+		};
+
+		return { notifications: [ ...state.notifications, noti ] };
+	}
+});
+
+@connect('notifications', actions)
 export default class EditFeature extends Component {
 	state = {
-		ident: ''
+		ident: '',
+		show_tips: false
 	}
 
 	componentWillMount() {
-		if(!this.props.edit_feature || Object.keys(this.props.edit_feature).length == 0) {
+		const { ident, uuid } = this.props;
+
+		if(!ident || !uuid) {
+			this.props.add_notification('provide ident and uuid for feature to edit !', 'error');
 			route('/');
-			return false;
+			return;
 		}
 
-		this.setState({
-			...this.props.edit_feature
+		const payload = {
+			action: 'get',
+			feature: {
+				ident,
+				uuid
+			}
+		};
+
+		axios.post('/api/feature', payload).then(res => {
+			const { error, message, data } = res.data;
+
+			if(error) {
+				this.props.add_notification(message, 'error');
+				return;
+			}
+
+			this.setState({
+				...data
+			});
 		});
 	}
 
-	render() {
-		if(!this.props.edit_feature || Object.keys(this.props.edit_feature).length == 0) {
-			route('/');
-			return false;
+	submit = async feature => {
+		const payload = {
+			action: 'update',
+			feature: { ...feature }
+		};
+
+		this.send_request(payload);
+	}
+
+	delete = async feature => {
+		const payload = {
+			action: 'delete',
+			feature: { ...feature }
+		};
+
+		this.send_request(payload);
+
+	}
+
+	send_request = async payload => {
+		const response = await axios.post('/api/feature', payload);
+
+		const { error, message, data } = response.data;
+
+		if(error) {
+			this.props.add_notification(message, 'error');
+			return;
 		}
 
+		route('/');
+	}
+
+	render({}, { ident, name, long_description }) {
 		let feat = null;
 
-		switch(this.state.ident) {
+		switch(ident) {
 			case 'hero':
-				feat = <Adventure feature={ this.state } />;
+				feat = <Adventure feature={ this.state } submit={ this.submit }/>;
 				break;
 			case 'farming':
-				feat = <SendFarmlist feature={ this.state } />;
+				feat = <SendFarmlist feature={ this.state } submit={ this.submit } delete={ this.delete } />;
 				break;
 			case 'queue':
-				feat = <BuildingQueue feature={ this.state } />;
+				feat = <BuildingQueue feature={ this.state } submit={ this.submit } delete={ this.delete } />;
 				break;
 		}
 
 		return (
-			<div class="columns is-centered">
-				<div className="column is-two-thirds">
-					<div>
-						{ feat }
-					</div>
-				</div>
+			<div>
+				<h1 className="subtitle is-4" style='margin-bottom: 2rem' align="center">{ name }
+					{ this.state.long_description && 
+					<a class="has-text-black" onClick={ e => this.props.add_notification(this.state.long_description, 'info') }>
+						<span class="icon is-large">
+							<i class="fas fa-info"></i>
+						</span>
+					</a>
+					}
+				</h1>
+				{ feat }
 			</div>
 		);
 	}

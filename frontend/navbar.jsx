@@ -2,63 +2,54 @@ import { h, render, Component } from 'preact';
 import classNames from 'classnames';
 import axios from 'axios';
 import { route } from 'preact-router';
+import uniqid from 'uniqid';
 
 import { connect } from 'unistore/preact';
 
 const actions = store => ({
-	change_feature_to_edit(state, feature) {
-		return { edit_feature: { ...feature } };
+	add_notification(state, message, level) {
+		const noti = {
+			id: uniqid.time(),
+			message,
+			level
+		};
+
+		return { notifications: [ ...state.notifications, noti ] };
 	}
 });
 
-@connect('', actions)
+@connect('notifications', actions)
 export default class NavBar extends Component {
 	state = {
 		burger: false
 	}
 
-	show_burger = (e) => {
+	show_burger = e => {
 		this.setState({
 			burger: !this.state.burger
 		});
 	}
 
-	new_send_farmlist = async e => {
+	get_new = async ident => {
 		const payload = {
 			action: 'new',
 			feature: {
-				ident: 'farming'
+				ident
 			}
 		};
 
 		const res = await axios.post('/api/feature', payload);
 
-		if(res.data == 'error') {
-			// TODO add error message
+		const { error, message, data } = res.data;
+
+		if(error) {
+			this.props.add_notification(message, 'error');
 			return;
 		}
 
-		this.props.change_feature_to_edit(res.data);
-		route('/edit_feature');
-	}
+		const { uuid } = data;
 
-	new_building_queue = async e => {
-		const payload = {
-			action: 'new',
-			feature: {
-				ident: 'queue'
-			}
-		};
-
-		const res = await axios.post('/api/feature', payload);
-
-		if(res.data == 'error') {
-			// TODO add error message
-			return;
-		}
-
-		this.props.change_feature_to_edit(res.data);
-		route('/edit_feature');
+		route(`/edit_feature/${ ident }/${ uuid }`);
 	}
 
 	render() {
@@ -98,10 +89,10 @@ export default class NavBar extends Component {
 								</a>
 
 								<div class="navbar-dropdown is-radiusless">
-									<a className="navbar-item" onClick={ this.new_send_farmlist }>
+									<a className="navbar-item" onClick={ e => this.get_new('farming') }>
 										send farmlist
 									</a>
-									<a className="navbar-item" onClick={ this.new_building_queue }>
+									<a className="navbar-item" onClick={ e => this.get_new('queue') }>
 										building queue
 									</a>
 								</div>
