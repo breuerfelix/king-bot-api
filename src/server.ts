@@ -2,6 +2,8 @@ import express from 'express';
 import path from 'path';
 import kingbot from './index';
 import api from './api';
+import settings from './settings';
+import { inactive_finder } from './extras';
 import { buildings } from './data';
 import { Ifeature_params, feature } from './features/feature';
 import { Ivillage, Ibuilding } from './interfaces';
@@ -99,6 +101,15 @@ class server {
 				return;
 			}
 
+			if(ident == 'settings') {
+				res.send({
+					email: settings.email,
+					gameworld: settings.gameworld
+				});
+
+				return;
+			}
+
 			res.send('error');
 		});
 
@@ -110,9 +121,19 @@ class server {
 			res.send('success');
 		});
 
+		this.app.post('/api/inactivefinder', async (req: any, res: any) => {
+			let { max_player_pop, max_village_pop, village_name, inactive_for, max_distance } = req.body;
+
+			const data = await inactive_finder.get_new_farms(
+				max_player_pop, max_village_pop, village_name, inactive_for, max_distance);
+
+			res.send(data);
+		});
+
 		// handles all 404 requests to main page
 		this.app.get('*', (req: any, res: any) => {
-			res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+			res.redirect('/');
+			//res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
 		});
 	}
 
