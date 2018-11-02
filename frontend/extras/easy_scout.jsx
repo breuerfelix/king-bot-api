@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 export default class EasyScout extends Component {
 	state = {
-		name: 'send farmlist',
+		name: 'easy scout',
 		farmlists: [],
 		selected_farmlist: '',
 		village_name: '',
@@ -13,14 +13,6 @@ export default class EasyScout extends Component {
 		all_villages: [],
 		error_village: false,
 		error_farmlist: false
-	}
-
-	componentWillMount() {
-		this.setState({
-			...this.props.feature
-		});
-
-		if(this.state.farmlists.length > 0) this.setState({ selected_farmlist: this.state.farmlists[0] });
 	}
 
 	componentDidMount() {

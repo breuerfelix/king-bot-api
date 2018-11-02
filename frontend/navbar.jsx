@@ -107,6 +107,9 @@ export default class NavBar extends Component {
 									<a className="navbar-item" href="/easy_scout">
 										easy scout
 									</a>
+									<a className="navbar-item" href="/inactive_finder">
+										inactive finder
+									</a>
 								</div>
 							</div>
 
