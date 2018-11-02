@@ -10,7 +10,10 @@ class settings {
 	buildings_name: string = '/buildings.json';
 	credentials_name: string = '/cred.txt';
 
-	read_credentials(){
+	gameworld: string;
+	email: string;
+
+	read_credentials() {
 		const filename: string = this.assets_folder + this.credentials_name;
 
 		if(!fs.existsSync(filename)) return null;

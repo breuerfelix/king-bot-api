@@ -3,14 +3,16 @@ import cheerio from 'cheerio';
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { clash_obj, log } from './util';
 import database from './database';
+import settings from './settings';
 
 const ci = cheerio;
 const lobby_endpoint: string = 'https://lobby.kingdoms.com/api/index.php';
 
-
 async function manage_login(axios: AxiosInstance, email: string, password: string, gameworld: string): Promise<any> {
-
 	gameworld = gameworld.toLowerCase();
+
+	settings.email = email;
+	settings.gameworld = gameworld;
 
 	let db_email = database.get('account.email').value();
 	let db_gameworld = database.get('account.gameworld').value();
