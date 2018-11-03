@@ -8,7 +8,7 @@
 		"test": "tsc && webpack --mode production",
 		"start": "node index.js",
 		"build": "tsc && webpack --mode production",
-		"dev": "tsc && node index.js",
+		"dev": "tsc && npm run gui",
 		"server": "webpack-dev-server",
 		"scout": "node index.js --scout",
 		"gui": "node index.js --gui"

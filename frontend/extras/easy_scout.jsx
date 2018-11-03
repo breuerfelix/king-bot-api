@@ -2,10 +2,14 @@ import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
 import axios from 'axios';
 import classNames from 'classnames';
+import { connect } from 'unistore/preact';
+import { add_notification } from '../actions';
+import InfoTitle from '../components/info_title';
 
+@connect('', add_notification)
 export default class EasyScout extends Component {
 	state = {
-		name: 'send farmlist',
+		name: 'easy scout',
 		farmlists: [],
 		selected_farmlist: '',
 		village_name: '',
@@ -15,13 +19,7 @@ export default class EasyScout extends Component {
 		error_farmlist: false
 	}
 
-	componentWillMount() {
-		this.setState({
-			...this.props.feature
-		});
-
-		if(this.state.farmlists.length > 0) this.setState({ selected_farmlist: this.state.farmlists[0] });
-	}
+	description = 'send 1 scout to every farm in the given farmlist';
 
 	componentDidMount() {
 		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data }));
@@ -74,9 +72,8 @@ export default class EasyScout extends Component {
 
 		return (
 			<div>
-				<h1 className="subtitle is-4" style='margin-bottom: 2rem' align="center">easy scout</h1>
+				<InfoTitle title={ name } description={ this.description } />
 
-				<div className="content">send 1 scout to every farm in the given farmlist</div>
 				<div className="columns">
 
 					<div className="column">

@@ -2,6 +2,8 @@ import express from 'express';
 import path from 'path';
 import kingbot from './index';
 import api from './api';
+import settings from './settings';
+import { inactive_finder } from './extras';
 import { buildings } from './data';
 import { Ifeature_params, feature } from './features/feature';
 import { Ivillage, Ibuilding } from './interfaces';
@@ -99,6 +101,15 @@ class server {
 				return;
 			}
 
+			if(ident == 'settings') {
+				res.send({
+					email: settings.email,
+					gameworld: settings.gameworld
+				});
+
+				return;
+			}
+
 			res.send('error');
 		});
 
@@ -110,9 +121,44 @@ class server {
 			res.send('success');
 		});
 
+		this.app.post('/api/inactivefinder', async (req: any, res: any) => {
+			const { action, data } = req.body;
+
+			if(action == 'get') {
+				const {
+					max_player_pop,
+					max_village_pop,
+					village_name,
+					inactive_for,
+					max_distance
+				} = data;
+
+				const response = await inactive_finder.get_new_farms(
+					max_player_pop, max_village_pop, village_name, inactive_for, max_distance);
+
+				res.send(response);
+				return;
+			}
+
+			if(action == 'toggle') {
+				const { farmlist, village } = data;
+				const response = await inactive_finder.add_inactive_player(farmlist, village);
+
+				res.send(response);
+				return;
+			}
+
+			res.send({
+				error: true,
+				message: 'could not identify action',
+				data: []
+			});
+		});
+
 		// handles all 404 requests to main page
 		this.app.get('*', (req: any, res: any) => {
-			res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+			res.redirect('/');
+			//res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
 		});
 	}
 

@@ -16,6 +16,7 @@ import Login from './sites/login';
 import EditFeature from './sites/edit_feature';
 import EasyScout from './extras/easy_scout';
 import FeatureList from './sites/feature_list';
+import InactiveFinder from './sites/inactive_finder';
 
 const store = createStore({ notifications: [] });
 
@@ -29,10 +30,11 @@ class App extends Component {
 						<Notifications />
 						<div style='margin-top: 1rem'>
 							<Router>
-								<FeatureList path='/' />
+								<FeatureList default path='/' />
 								<Login path='/login' />
 								<EditFeature path='/edit_feature/:ident/:uuid' />
 								<EasyScout path='/easy_scout' />
+								<InactiveFinder path='/inactive_finder' />
 							</Router>
 						</div>
 					</div>
