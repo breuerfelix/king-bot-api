@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { clash_obj, get_date } from './util';
+import { clash_obj, get_date, log } from './util';
 import manage_login from './login';
 import settings from './settings';
 import database from './database';
@@ -51,7 +51,7 @@ class api {
 		return this.merge_data(response.data);
 	}
 
-	async send_farmlists(lists: number[], village_id: number): Promise<object> {
+	async send_farmlists(lists: number[], village_id: number): Promise<any> {
 		const params = {
 			listIds: lists,
 			villageId: village_id
@@ -60,7 +60,16 @@ class api {
 		return await this.post('startFarmListRaid', 'troops', params);
 	}
 
-	async upgrade_building(buildingType: number, locationId: number, villageId: number): Promise<void> {
+	async toggle_farmlist_entry(villageId: number, listId: number): Promise<any> {
+		const params = {
+			villageId,
+			listId
+		};
+
+		return await this.post('toggleEntry', 'farmList', params);
+	}
+
+	async upgrade_building(buildingType: number, locationId: number, villageId: number): Promise<any> {
 		const params = {
 			villageId,
 			locationId,
@@ -120,7 +129,7 @@ class api {
 		const response: any = await this.ax.post(`/?t${get_date()}`, payload);
 
 		if(response.errors) {
-			console.log(response.errors);
+			log(response.errors);
 		}
 
 		return this.merge_data(response.data);

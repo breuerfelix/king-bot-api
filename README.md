@@ -11,15 +11,16 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 
 [![ko-fi](https://img.shields.io/badge/buy%20me%20a-coffee-yellowgreen.svg)](https://ko-fi.com/Y8Y6KZHJ)
 [![Build Status](https://travis-ci.org/scriptworld-git/king-bot-api.svg?branch=master)](https://travis-ci.org/scriptworld-git/king-bot-api)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1143396b01b944b28252861dc3762d7a)](https://www.codacy.com/app/scriptworld-git/king-bot-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scriptworld-git/king-bot-api&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1143396b01b944b28252861dc3762d7a)](https://www.codacy.com/app/scriptworld-git/king-bot-api?utm_source=github.com&utm_medium=referral&utm_content=scriptworld-git/king-bot-api&utm_campaign=Badge_Grade)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/scriptworld-git/king-bot/blob/master/LICENSE)
 
 # table of contents <!-- omit in toc -->
 
 - [getting-started](#getting-started)
 - [gui](#gui)
+    - [features](#features)
     - [screenshots](#screenshots)
-- [features](#features)
+- [features](#features-1)
     - [send farmlists](#send-farmlists)
     - [upgrade resource fields](#upgrade-resource-fields)
     - [finish 5 min earlier](#finish-5-min-earlier)
@@ -32,7 +33,7 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 
 [use docker](#docker)
 
-**or**  
+**or**
 
 1. install latest version of [nodeJS](https://nodejs.org/)
 2. clone or download this repository
@@ -60,6 +61,15 @@ if you start the bot via `$ npm run gui` you can forget about all of the feature
 1.  open `http://localhost:3000/` in your browser and explore the bot
 
 after configuring you can close the browser window and the bot keeps running until you exit it in the console (CTRL + C).
+
+## features
+
+-   endless building queue
+-   send farmlist in interval
+-   auto adventure
+-   finish 5 min earlier
+-   inactive finder
+-   easy scout
 
 ## screenshots
 
@@ -204,6 +214,7 @@ required amount of health _in percent_ for the hero to be send on a adventure
 
 there is also a docker image for this bot.  
 create a file with your credentials that can be mounted to the docker container:
+
 ```csv
 your_email;your_password;your_gameworld
 ```
