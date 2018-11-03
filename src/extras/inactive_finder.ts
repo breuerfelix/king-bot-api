@@ -1,11 +1,34 @@
 import axios from 'axios';
 import settings from '../settings';
+import api from '../api';
 import { farming, village } from '../gamedata';
 import { find_state_data } from '../util';
 import { Ifarmlist, Ivillage } from '../interfaces';
+import { Iresponse } from '../features/feature';
 
 class inactive_finder {
 	url: string = 'http://travian.scriptworld.net/inactive';
+
+	async add_inactive_player(farmlist: string, inactive: any): Promise<Iresponse> {
+		const temp_data: any = await farming.get_own();
+		const farmlist_data: Ifarmlist = farming.find(farmlist, temp_data);
+
+		if(!farmlist_data) {
+			return {
+				error: true,
+				message: 'could not find given farmlist',
+				data: null
+			};
+		}
+
+		await api.toggle_farmlist_entry(inactive.villageId, farmlist_data.listId);
+
+		return {
+			error: false,
+			message: 'toggled farmlist',
+			data: null
+		};
+	}
 
 	async get_new_farms(
 		max_player_pop: string,
@@ -24,7 +47,7 @@ class inactive_finder {
 			return {
 				error: true,
 				message: `village: ${ village_name } not found.`,
-				data: []
+				data: null
 			};
 		}
 

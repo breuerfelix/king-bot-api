@@ -122,12 +122,37 @@ class server {
 		});
 
 		this.app.post('/api/inactivefinder', async (req: any, res: any) => {
-			let { max_player_pop, max_village_pop, village_name, inactive_for, max_distance } = req.body;
+			const { action, data } = req.body;
 
-			const data = await inactive_finder.get_new_farms(
-				max_player_pop, max_village_pop, village_name, inactive_for, max_distance);
+			if(action == 'get') {
+				const {
+					max_player_pop,
+					max_village_pop,
+					village_name,
+					inactive_for,
+					max_distance
+				} = data;
 
-			res.send(data);
+				const response = await inactive_finder.get_new_farms(
+					max_player_pop, max_village_pop, village_name, inactive_for, max_distance);
+
+				res.send(response);
+				return;
+			}
+
+			if(action == 'toggle') {
+				const { farmlist, village } = data;
+				const response = await inactive_finder.add_inactive_player(farmlist, village);
+
+				res.send(response);
+				return;
+			}
+
+			res.send({
+				error: true,
+				message: 'could not identify action',
+				data: []
+			});
 		});
 
 		// handles all 404 requests to main page
