@@ -27,7 +27,7 @@ class Notification extends Component {
 	render({ remove, notification }) {
 		const { id, message, level } = notification;
 
-		const noti = `notification is-${ level }`;
+		const noti = `notification is-radiusless is-${ level }`;
 
 		return (
 			<div class={ noti }>
