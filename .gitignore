@@ -5,6 +5,7 @@ dev_main.js
 .DS_Store
 custom_main.js
 build/
+public/
 package-lock.json
 
 # Logs
