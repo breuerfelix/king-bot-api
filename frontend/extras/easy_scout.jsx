@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { connect } from 'unistore/preact';
 import { add_notification } from '../actions';
 import InfoTitle from '../components/info_title';
+import Input from '../components/input';
 
 @connect('', add_notification)
 export default class EasyScout extends Component {
@@ -13,16 +14,19 @@ export default class EasyScout extends Component {
 		farmlists: [],
 		selected_farmlist: '',
 		village_name: '',
+		amount: '1',
+		mission: 'resources',
 		all_farmlists: [],
 		all_villages: [],
 		error_village: false,
-		error_farmlist: false
+		error_farmlist: false,
+		error_amount: false
 	}
 
 	description = 'send 1 scout to every farm in the given farmlist';
 
 	componentDidMount() {
-		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data }));
+		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data, village_name: res.data[0].data.name }));
 		axios.get('/api/data?ident=farmlists').then(res => this.setState({ all_farmlists: res.data }));
 	}
 
@@ -36,14 +40,17 @@ export default class EasyScout extends Component {
 	submit = async e => {
 		this.setState({ 
 			error_farmlist: (this.state.selected_farmlist == ''),
-			error_village: (this.state.village_name == '')
+			error_village: (this.state.village_name == ''),
+			error_amount: (this.state.amount == '')
 		});
 
-		if(this.state.error_village || this.state.error_farmlist) return;
+		if(this.state.error_village || this.state.error_farmlist || this.state.error_amount) return;
 
 		const payload = {
 			list_name: this.state.selected_farmlist,
-			village_name: this.state.village_name
+			village_name: this.state.village_name,
+			amount: this.state.amount,
+			mission: this.state.mission
 		};
 
 		const response = await axios.post('/api/easyscout', payload);
@@ -55,7 +62,7 @@ export default class EasyScout extends Component {
 	}
 
 	render() {
-		const { name, all_villages, all_farmlists, village_name, selected_farmlist } = this.state;
+		const { name, all_villages, all_farmlists, village_name, selected_farmlist, amount, mission } = this.state;
 
 		const village_select_class = classNames({
 			select: true,
@@ -77,14 +84,36 @@ export default class EasyScout extends Component {
 				<div className="columns">
 
 					<div className="column">
-						<label class="label">select farmlists</label>
-						<div class={ farmlist_select_class }>
-							<select 
-								value={ selected_farmlist }
-								onChange={ this.handle_multi }
-							>
-								{ farmlist_opt }
-							</select>
+
+						<div className="field">
+							<label class="label">select farmlists</label>
+							<div className="control">
+								<div class={ farmlist_select_class }>
+									<select 
+										class='is-radiusless'
+										value={ selected_farmlist }
+										onChange={ this.handle_multi }
+									>
+										{ farmlist_opt }
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="field">
+							<label class="label">spy for</label>
+							<div class="control">
+								<div class="select">
+									<select 
+										class='is-radiusless'
+										value={ mission } 
+										onChange={ e => this.setState({ mission: e.target.value }) }
+									>
+										<option value='resources'>resources</option>
+										<option value='defence'>defence</option>
+									</select>
+								</div>
+							</div>
 						</div>
 
 					</div>
@@ -96,6 +125,7 @@ export default class EasyScout extends Component {
 							<div class="control">
 								<div class={ village_select_class }>
 									<select 
+										class='is-radiusless'
 										value={ village_name } 
 										onChange={ (e) => this.setState({ village_name: e.target.value }) }
 									>
@@ -105,6 +135,12 @@ export default class EasyScout extends Component {
 							</div>
 						</div>
 
+						<Input
+							label='amount'
+							placeholder='default: 1'
+							value={ amount }
+							onChange={ e => this.setState({ amount: e.target.value }) }
+						/>
 
 					</div>
 

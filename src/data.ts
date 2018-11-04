@@ -4,6 +4,10 @@ export enum tribe {
 	gaul = '3'
 }
 
+export enum mission_type {
+	spy = 6
+}
+
 export const buildings: { [index: number]: string } = {
 	1: 'wood',
 	2: 'clay',
