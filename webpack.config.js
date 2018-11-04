@@ -22,7 +22,7 @@ module.exports = {
 
 	// where to dump the output of a production build
 	output: {
-		path: path.join(__dirname, 'build'),
+		path: path.join(__dirname, 'public'),
 		filename: 'bundle.js'
 	},
 
@@ -42,14 +42,6 @@ module.exports = {
 						[ '@babel/plugin-proposal-decorators' , { legacy: true } ]
 					]
 				}
-			},
-			{
-				test: /\.(css|sass|scss)$/,
-				loader: [ 'style-loader', 'css-loader', 'sass-loader' ]
-			},
-			{
-				test:/.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-				loader: [ 'file-loader' ]
 			}
 		]
 	},

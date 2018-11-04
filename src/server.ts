@@ -26,7 +26,7 @@ class server {
 
 		this.app.use(express.json());
 
-		this.app.use(express.static(path.resolve(__dirname, '../build')));
+		this.app.use(express.static(path.resolve(__dirname, '../public')));
 
 		this.app.get('/api/allfeatures', (req: any, res: any) => {
 			let response: Ifeature_params[] = [];

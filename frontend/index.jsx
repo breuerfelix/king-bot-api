@@ -1,7 +1,4 @@
 // import styles
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'bulma';
-import 'bulma-extensions';
 
 import { h, render, Component } from 'preact';
 
