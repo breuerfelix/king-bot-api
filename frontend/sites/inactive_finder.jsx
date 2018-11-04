@@ -169,71 +169,71 @@ export default class InactiveFinder extends Component {
 							onChange={ e => this.setState({ max_player_pop: e.target.value }) }
 						/>
 
-					<Input
-						label='max village pop'
-						placeholder='default: 200'
-						value={ max_village_pop }
-						onChange={ e => this.setState({ max_village_pop: e.target.value }) }
-					/>
+						<Input
+							label='max village pop'
+							placeholder='default: 200'
+							value={ max_village_pop }
+							onChange={ e => this.setState({ max_village_pop: e.target.value }) }
+						/>
 
-				<button className={ search_button } onClick={ this.search } style='margin-right: 1rem'>
-					search
-				</button>
+						<button className={ search_button } onClick={ this.search } style='margin-right: 1rem'>
+							search
+						</button>
 
-			</div>
-			<div className="column">
-
-				<div class="field">
-					<label class="label">add to farmlist</label>
-					<div className="control">
-						<div class={ farmlist_select_class }>
-							<select 
-								class="is-radiusless"
-								value={ selected_farmlist }
-								onChange={ e => this.setState({ selected_farmlist: e.target.value }) }
-							>
-								{ farmlist_opt }
-							</select>
-						</div>
 					</div>
+					<div className="column">
+
+						<div class="field">
+							<label class="label">add to farmlist</label>
+							<div className="control">
+								<div class={ farmlist_select_class }>
+									<select 
+										class="is-radiusless"
+										value={ selected_farmlist }
+										onChange={ e => this.setState({ selected_farmlist: e.target.value }) }
+									>
+										{ farmlist_opt }
+									</select>
+								</div>
+							</div>
+						</div>
+
+
+						<Input
+							label='max distance'
+							placeholder='default: 100'
+							value={ max_distance }
+							onChange={ e => this.setState({ max_distance: e.target.value }) }
+						/>
+
+						<label class="label">inactive for</label>
+						<div class="field has-addons">
+							<p class="control">
+								<input 
+									class="input is-radiusless"
+									type="text"
+									placeholder="default: 5" 
+									value={ inactive_for }
+									onChange={ e => this.setState({ inactive_for: e.target.value }) }
+								/>
+							</p>
+							<p class="control">
+								<a class="button is-static is-radiusless">
+									days
+								</a>
+							</p>
+						</div>
+
+						<div className="content" style='margin-top: 1.5rem' >
+							{ message }
+						</div>
+
+					</div>
+
 				</div>
 
-
-				<Input
-					label='max distance'
-					placeholder='default: 100'
-					value={ max_distance }
-					onChange={ e => this.setState({ max_distance: e.target.value }) }
-				/>
-
-			<label class="label">inactive for</label>
-			<div class="field has-addons">
-				<p class="control">
-					<input 
-						class="input is-radiusless"
-						type="text"
-						placeholder="default: 3" 
-						value={ inactive_for }
-						onChange={ e => this.setState({ inactive_for: e.target.value }) }
-					/>
-				</p>
-				<p class="control">
-					<a class="button is-static is-radiusless">
-						days
-					</a>
-				</p>
+				<InactiveTable content={ inactives } clicked={ this.clicked } />
 			</div>
-
-			<div className="content" style='margin-top: 1.5rem' >
-				{ message }
-			</div>
-
-		</div>
-
-	</div>
-
-	<InactiveTable content={ inactives } clicked={ this.clicked } />
-</div>
 		);
 }
 }
