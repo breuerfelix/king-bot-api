@@ -31,6 +31,8 @@ export default class NavBar extends Component {
 	}
 
 	get_new = async ident => {
+		this.setState({ burger: false });
+
 		const payload = {
 			action: 'new',
 			feature: {
@@ -50,6 +52,11 @@ export default class NavBar extends Component {
 		const { uuid } = data;
 
 		route(`/edit_feature/${ ident }/${ uuid }`);
+	}
+
+	route = name => {
+		this.setState({ burger: false });
+		route(name);
 	}
 
 	render() {
@@ -79,7 +86,7 @@ export default class NavBar extends Component {
 					</div>
 					<div class={ menue_class }>
 						<div class="navbar-start">
-							<a class="navbar-item" href="/">
+							<a class="navbar-item" onClick={ e => this.route('/') }>
 								home
 							</a>
 
@@ -104,10 +111,10 @@ export default class NavBar extends Component {
 								</a>
 
 								<div class="navbar-dropdown is-radiusless">
-									<a className="navbar-item" href="/easy_scout">
+									<a className="navbar-item" onClick={ e => this.route('/easy_scout') }>
 										easy scout
 									</a>
-									<a className="navbar-item" href="/inactive_finder">
+									<a className="navbar-item" onClick={ e => this.route('/inactive_finder') }>
 										inactive finder
 									</a>
 								</div>
