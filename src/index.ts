@@ -53,7 +53,7 @@ class kingbot {
 		auto_adventure.auto_adventure(type, min_health);
 	}
 
-	async scout(farmlist_name: string, village_name: string, amount: number = 1) {
+	async scout(farmlist_name: string, village_name: string, amount: number = 1, mission: string = 'resources') {
 		const params = [
 			village.own_villages_ident,
 			farming.farmlist_ident
@@ -97,7 +97,7 @@ class kingbot {
 
 		// send scouts
 		for(let target of list_obj.villageIds) {
-			await api.send_units(village_id, target, units, 6);
+			await api.send_units(village_id, target, units, 6, mission);
 		}
 	}
 }

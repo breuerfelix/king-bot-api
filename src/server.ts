@@ -114,9 +114,9 @@ class server {
 		});
 
 		this.app.post('/api/easyscout', (req: any, res: any) => {
-			const { village_name, list_name } = req.body;
+			const { village_name, list_name, amount, mission } = req.body;
 
-			kingbot.scout(list_name, village_name);
+			kingbot.scout(list_name, village_name, amount, mission);
 
 			res.send('success');
 		});
