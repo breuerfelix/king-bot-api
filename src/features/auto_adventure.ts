@@ -113,6 +113,8 @@ class auto_adventure extends feature_single {
 			let sleep_time: number = 60;
 
 			if(diff_time > 0) sleep_time = diff_time + 5;
+			if(sleep_time <= 0) sleep_time = 300;
+			if(sleep_time > 500) sleep_time = 500;
 
 			await sleep(sleep_time);
 		}
