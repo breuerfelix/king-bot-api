@@ -221,7 +221,7 @@ your_email;your_password;your_gameworld
 
 pull image and start the container mounting the file:
 
-```bash
+```console
 $ docker pull scriptworld/king-bot-api
 $ docker container run -d -p 3000:3000 -v /path_to/your_credentials_file.txt:/usr/kingbot/assets/cred.txt --name kingbot scriptworld/king-bot-api
 ```
