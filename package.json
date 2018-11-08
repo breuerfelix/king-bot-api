@@ -6,12 +6,11 @@
 	"module": "main.js",
 	"scripts": {
 		"test": "tsc && webpack --mode production",
-		"start": "node index.js",
-		"build": "tsc && webpack --mode production",
-		"dev": "tsc && npm run gui",
+		"start": "ts-node main.js",
+		"build": "webpack --mode production",
 		"server": "webpack-dev-server",
-		"scout": "node index.js --scout",
-		"gui": "node index.js --gui"
+		"scout": "ts-node main.js --scout",
+		"gui": "ts-node main.js --gui"
 	},
 	"repository": {
 		"type": "git",
@@ -24,7 +23,7 @@
 		"advanced",
 		"api"
 	],
-	"author": "felix.scriptworld",
+	"author": "Felix Breuer",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/scriptworld-git/king-bot-api/issues"
@@ -64,6 +63,7 @@
 		"babel-eslint": "^10.0.1",
 		"babel-loader": "^8.0.4",
 		"html-webpack-plugin": "^3.2.0",
+		"ts-node": "^7.0.1",
 		"typescript": "^3.2.0-dev.20180927",
 		"typescript-eslint-parser": "^19.0.1",
 		"webpack": "^4.21.0",

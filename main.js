@@ -1,4 +1,4 @@
-import kingbot from './dist';
+import kingbot from './src';
 
 const gameworld = '';
 const email = '';
