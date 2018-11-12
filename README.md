@@ -64,8 +64,9 @@ after configuring you can close the browser window and the bot keeps running unt
 
 ## features
 
--   endless building queue
 -   send farmlist in interval
+-   endless building queue
+-	auto raise fields
 -   auto adventure
 -   finish 5 min earlier
 -   inactive finder
