@@ -5,10 +5,10 @@
 	"main": "index.js",
 	"module": "main.js",
 	"scripts": {
-		"test": "tsc && webpack --mode production",
+		"test": "tsc && webpack",
 		"start": "ts-node main.js",
-		"build": "webpack --mode production",
-		"server": "webpack-dev-server",
+		"build": "webpack",
+		"server": "webpack-dev-server --mode development",
 		"scout": "ts-node main.js --scout",
 		"gui": "ts-node main.js --gui"
 	},

@@ -8,7 +8,7 @@ import { buildings } from './data';
 import { Ifeature_params, feature } from './features/feature';
 import { Ivillage, Ibuilding } from './interfaces';
 import { find_state_data } from './util';
-import { building_queue, finish_earlier, auto_adventure, send_farmlist } from './features';
+import { raise_fields, building_queue, finish_earlier, auto_adventure, send_farmlist } from './features';
 import { farming, village } from './gamedata';
 
 class server {
@@ -18,7 +18,8 @@ class server {
 		finish_earlier,
 		auto_adventure,
 		send_farmlist,
-		building_queue
+		building_queue,
+		raise_fields
 	];
 
 	constructor() {

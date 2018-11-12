@@ -50,14 +50,7 @@ export default class Feature extends Component {
 		});
 	}
 
-	componentDidMount() {
-		this.interval = setInterval(this.update, 15000);
-	}
-
-	componentWillUnmount() {
-		clearInterval(this.interval);
-	}
-
+	// refresh feature status
 	update = async () => {
 		const { uuid, ident } = this.state;
 

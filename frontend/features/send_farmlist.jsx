@@ -23,9 +23,7 @@ export default class SendFarmlist extends Component {
 		});
 
 		if(this.state.farmlists.length > 0) this.setState({ selected_farmlist: this.state.farmlists[0] });
-	}
 
-	componentDidMount() {
 		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data }));
 		axios.get('/api/data?ident=farmlists').then(res => this.setState({ all_farmlists: res.data }));
 	}
