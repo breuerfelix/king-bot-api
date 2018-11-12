@@ -9,7 +9,7 @@ module.exports = {
 		'./frontend'
 	] ,
 
-	mode: 'development',
+	mode: 'production',
 
 	resolve: {
 		extensions: [ '.js', '.jsx' ],
@@ -23,7 +23,8 @@ module.exports = {
 	// where to dump the output of a production build
 	output: {
 		path: path.join(__dirname, 'public'),
-		filename: 'bundle.js'
+		filename: 'bundle.js',
+		publicPath: '/'
 	},
 
 	module: {
