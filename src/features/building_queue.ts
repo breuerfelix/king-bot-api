@@ -64,16 +64,13 @@ class queue extends feature_item {
 	}
 
 	get_description(): string {
-		const { queue, village_name } = this.options;
+		const { village_name } = this.options;
 
-		let des: string = village_name + ' / next: ';
-		try {
-			if(queue.length > 0) return des + buildings[queue[0].type];
-		} catch {
-			return des + '-';
-		}
+		let des: string = village_name;
 
-		return des + '-';
+		if(!village_name) return '-';
+
+		return des;
 	}
 
 	get_long_description(): string {
