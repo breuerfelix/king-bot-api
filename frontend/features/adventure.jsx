@@ -1,6 +1,5 @@
 import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
-import axios from 'axios';
 import classNames from 'classnames';
 
 export default class Adventure extends Component {
