@@ -51,7 +51,7 @@ export default class Feature extends Component {
 	}
 
 	componentDidMount() {
-		this.interval = setInterval(this.update, 3000);
+		this.interval = setInterval(this.update, 15000);
 	}
 
 	componentWillUnmount() {
