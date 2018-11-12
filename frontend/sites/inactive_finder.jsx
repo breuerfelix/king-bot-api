@@ -235,5 +235,5 @@ export default class InactiveFinder extends Component {
 				<InactiveTable content={ inactives } clicked={ this.clicked } />
 			</div>
 		);
-}
+	}
 }
