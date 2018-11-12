@@ -1,6 +1,6 @@
 {
 	"name": "king-bot-api",
-	"version": "0.0.1",
+	"version": "2.1.0",
 	"description": "Advanced Bot for Travian Kingdoms",
 	"main": "index.js",
 	"module": "main.js",
