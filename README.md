@@ -20,14 +20,9 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 - [gui](#gui)
     - [features](#features)
     - [screenshots](#screenshots)
-- [features](#features-1)
-    - [send farmlists](#send-farmlists)
-    - [upgrade resource fields](#upgrade-resource-fields)
-    - [finish 5 min earlier](#finish-5-min-earlier)
-    - [easy scout](#easy-scout)
-    - [auto adventure](#auto-adventure)
 - [docker](#docker)
 - [development](#development)
+- [thanks to](#thanks-for)
 
 # getting-started
 
