@@ -9,8 +9,7 @@
 		"start": "ts-node main.js",
 		"build": "webpack",
 		"server": "webpack-dev-server --mode development",
-		"scout": "ts-node main.js --scout",
-		"gui": "ts-node main.js --gui"
+		"gui": "ts-node main.js"
 	},
 	"repository": {
 		"type": "git",

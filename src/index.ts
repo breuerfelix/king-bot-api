@@ -37,22 +37,6 @@ class kingbot {
 		await api.login(email, password, gameworld);
 	}
 
-	start_farming(farmlists: string[], village_name: string | string[], interval: number): void {
-		send_farmlist.start_farming(farmlists, village_name, interval);
-	}
-
-	add_building_queue(resources: Iresource_type, village_name: string): void {
-		building_queue.upgrade_res(resources, village_name);
-	}
-
-	finish_earlier(): void {
-		building_queue.upgrade_earlier();
-	}
-
-	auto_adventure(type: adventure_type = adventure_type.short, min_health: number = 15): void {
-		auto_adventure.auto_adventure(type, min_health);
-	}
-
 	async scout(farmlist_name: string, village_name: string, amount: number = 1, mission: string = 'resources') {
 		const params = [
 			village.own_villages_ident,
