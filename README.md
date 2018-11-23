@@ -22,7 +22,7 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
     - [screenshots](#screenshots)
 - [docker](#docker)
 - [development](#development)
-- [thanks to](#thanks-for)
+- [thanks to](#thank-you-for)
 
 # getting-started
 
