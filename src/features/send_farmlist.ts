@@ -1,4 +1,4 @@
-import { log, find_state_data, sleep, list_remove } from '../util';
+import { log, find_state_data, sleep, list_remove, get_random_int } from '../util';
 import { Ifarmlist, Ivillage } from '../interfaces';
 import { Ifeature, Irequest, feature_collection, feature_item, Ioptions } from './feature';
 import { farming, village } from '../gamedata';
@@ -9,7 +9,8 @@ import uniqid from 'uniqid';
 interface Ioptions_farm extends Ioptions {
 	farmlists: string[]
 	village_name: string
-	interval: number
+	interval_min: number
+	interval_max: number
 }
 
 class send_farmlist extends feature_collection {
@@ -26,31 +27,9 @@ class send_farmlist extends feature_collection {
 			...options,
 			farmlists: [],
 			village_name: '',
-			interval: 0
+			interval_min: 0,
+			interval_max: 0
 		};
-	}
-
-	// command line start
-	start_farming(farmlists: string[], village_name: string | string[], interval: number): Promise<void> {
-		if(Array.isArray(village_name)) {
-			for(let name of village_name) this.start_farming(farmlists, name, interval);
-			return;
-		}
-
-		const uuid: string = uniqid.time();
-
-		const options: Ioptions_farm = {
-			uuid,
-			farmlists,
-			village_name,
-			interval,
-			run: true,
-			error: false
-		};
-
-		let feat = new farm_feature(options);
-		this.features.push(feat);
-		feat.start();
 	}
 }
 
@@ -58,7 +37,7 @@ class farm_feature extends feature_item {
 	options: Ioptions_farm;
 
 	set_options(options: Ioptions_farm): void {
-		const { uuid, run, error, farmlists, village_name, interval } = options;
+		const { uuid, run, error, farmlists, village_name, interval_min, interval_max } = options;
 		this.options = {
 			...this.options,
 			uuid,
@@ -66,7 +45,8 @@ class farm_feature extends feature_item {
 			error,
 			farmlists,
 			village_name,
-			interval
+			interval_min,
+			interval_max
 		};
 	}
 
@@ -82,8 +62,8 @@ class farm_feature extends feature_item {
 	}
 
 	get_description(): string {
-		const { village_name, interval } = this.options;
-		return `${village_name} / ${interval} s`;
+		const { village_name, interval_min, interval_max } = this.options;
+		return `${village_name} / ${interval_min} - ${interval_max} s`;
 	}
 
 	get_long_description(): string {
@@ -93,7 +73,7 @@ class farm_feature extends feature_item {
 	async run(): Promise<void> {
 		log(`farming uuid: ${this.options.uuid} started`);
 
-		const { village_name, farmlists, interval } = this.options;
+		const { village_name, farmlists, interval_min, interval_max } = this.options;
 		const params = [
 			village.own_villages_ident,
 			farming.farmlist_ident
@@ -131,7 +111,7 @@ class farm_feature extends feature_item {
 			await api.send_farmlists(farmlist_ids, village_id);
 			log(`farmlists ${farmlists} sent from village ${village_name}`);
 
-			await sleep(interval);
+			await sleep(get_random_int(interval_min, interval_max));
 		}
 
 		log(`farming uuid: ${this.options.uuid} stopped`);
