@@ -27,6 +27,12 @@ export function find_state_data(ident: string, data: any[],  contains: boolean =
 	return found_obj.data;
 }
 
+export function get_random_int(min: number, max: number): number {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export function get_diff_time(time: number): number {
 	return Number(time) - get_date();
 }
