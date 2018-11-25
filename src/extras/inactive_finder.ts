@@ -31,10 +31,13 @@ class inactive_finder {
 	}
 
 	async get_new_farms(
+		min_player_pop: string,
 		max_player_pop: string,
+		min_village_pop: string,
 		max_village_pop: string,
 		village_name: string,
 		inactive_for: string,
+		min_distance: string,
 		max_distance: string
 	): Promise<any> {
 
@@ -54,9 +57,12 @@ class inactive_finder {
 		const { x, y } = found_village.coordinates;
 
 		const query: string = `/?gameworld=${gameworld}&
+			min_player_pop=${min_player_pop}&
 			max_player_pop=${max_player_pop}&
+			min_village_pop=${min_village_pop}&
 			max_village_pop=${max_village_pop}&
 			inactive_for=${inactive_for}&
+			min_distance=${min_distance}&
 			max_distance=${max_distance}&
 			x=${x}&
 			y=${y}
@@ -85,6 +91,32 @@ class inactive_finder {
 			if(villages_farmlist.indexOf(Number(farm.villageId)) > -1) continue;
 
 			rv.push(farm);
+		}
+
+		// get kingdom names
+		const k_id_params: Set<string> = new Set();
+		for(let farm of rv) {
+			const kID: number = Number(farm.kingdomId);
+			if(kID == 0) continue;
+			k_id_params.add('Kingdom:' + kID);
+		}
+
+		const kingdom_response = await api.get_cache(Array.from(k_id_params));
+		const kingdom_data: { [index: number]: string } = {};
+
+		for(let k_data of kingdom_response) {
+			const k = k_data.data;
+			kingdom_data[Number(k.groupId)] = k.tag;
+		}
+
+		for(let farm of rv) {
+			const kID: number = Number(farm.kingdomId);
+			if(kID == 0) {
+				farm['kingdom_tag'] = '-';
+				continue;
+			}
+
+			farm['kingdom_tag'] = kingdom_data[kID];
 		}
 
 		return {

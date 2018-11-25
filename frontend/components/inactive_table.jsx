@@ -21,6 +21,7 @@ export default class InactiveTable extends Component {
 							<th style={ row_style }>coordinates</th>
 							<th style={ row_style }>player</th>
 							<th style={ row_style }>village</th>
+							<th style={ row_style }>kingdom</th>
 							<th style={ row_style }>tribe</th>
 							<th />
 						</tr>
@@ -46,7 +47,7 @@ class Inactive extends Component {
 	}
 
 	render({ content, clicked }, { toggled }) {
-		let { distance, player_name, village_name, population, x, y, tribeId } = content;
+		let { distance, player_name, village_name, population, x, y, tribeId, kingdom_tag } = content;
 		distance = Number(distance).toFixed(1);
 		const coordinates = `( ${x} | ${y} )`;
 		const tribe = this.tribe_dict[tribeId];
@@ -79,6 +80,9 @@ class Inactive extends Component {
 				</td>
 				<td style={ row_style }>
 					{ village_name }
+				</td>
+				<td style={ row_style }>
+					{ kingdom_tag }
 				</td>
 				<td style={ row_style }>
 					{ tribe }
