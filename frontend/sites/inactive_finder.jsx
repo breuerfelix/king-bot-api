@@ -2,6 +2,7 @@ import { h, render, Component } from 'preact';
 import axios from 'axios';
 import classNames from 'classnames';
 import Input from '../components/input';
+import DoubleInput from '../components/double_input';
 import { connect } from 'unistore/preact';
 import { handle_response } from '../actions';
 import InactiveTable from '../components/inactive_table';
@@ -17,8 +18,11 @@ export default class InactiveFinder extends Component {
 		all_villages: [],
 		error_village: false,
 		error_farmlist: false,
+		min_player_pop: '',
 		max_player_pop: '',
+		min_village_pop: '',
 		max_village_pop: '',
+		min_distance: '',
 		max_distance: '',
 		inactive_for: '',
 		inactives: [],
@@ -81,8 +85,11 @@ export default class InactiveFinder extends Component {
 
 		const { 
 			village_name,
+			min_player_pop,
 			max_player_pop,
+			min_village_pop,
 			max_village_pop,
+			min_distance,
 			max_distance,
 			inactive_for,
 			selected_farmlist
@@ -90,8 +97,11 @@ export default class InactiveFinder extends Component {
 
 		const payload_data = {
 			village_name,
+			min_distance,
 			max_distance,
+			min_player_pop,
 			max_player_pop,
+			min_village_pop,
 			max_village_pop,
 			inactive_for,
 			selected_farmlist
@@ -116,7 +126,7 @@ export default class InactiveFinder extends Component {
 		this.setState({ message });
 	}
 
-	render({}, { name, inactives, message, max_player_pop, max_village_pop, max_distance, inactive_for, loading }) {
+	render({}, { name, inactives, message, min_player_pop, max_player_pop, min_village_pop, max_village_pop, min_distance, max_distance, inactive_for, loading }) {
 		const { all_villages, all_farmlists, village_name, selected_farmlist } = this.state;
 
 		const village_select_class = classNames({
@@ -162,18 +172,24 @@ export default class InactiveFinder extends Component {
 							</div>
 						</div>
 
-						<Input
-							label='max player pop'
-							placeholder='default: 500'
-							value={ max_player_pop }
-							onChange={ e => this.setState({ max_player_pop: e.target.value }) }
+						<DoubleInput
+							label='player pop (min / max)'
+							placeholder1='default: 0'
+							placeholder2='default: 500'
+							value1={ min_player_pop }
+							value2={ max_player_pop }
+							onChange1={ e => this.setState({ min_player_pop: e.target.value }) }
+							onChange2={ e => this.setState({ max_player_pop: e.target.value }) }
 						/>
 
-						<Input
-							label='max village pop'
-							placeholder='default: 200'
-							value={ max_village_pop }
-							onChange={ e => this.setState({ max_village_pop: e.target.value }) }
+						<DoubleInput
+							label='village pop (min / max)'
+							placeholder1='default: 0'
+							placeholder2='default: 200'
+							value1={ min_village_pop }
+							value2={ max_village_pop }
+							onChange1={ e => this.setState({ min_village_pop: e.target.value }) }
+							onChange2={ e => this.setState({ max_village_pop: e.target.value }) }
 						/>
 
 						<button className={ search_button } onClick={ this.search } style='margin-right: 1rem'>
@@ -198,12 +214,14 @@ export default class InactiveFinder extends Component {
 							</div>
 						</div>
 
-
-						<Input
-							label='max distance'
-							placeholder='default: 100'
-							value={ max_distance }
-							onChange={ e => this.setState({ max_distance: e.target.value }) }
+						<DoubleInput
+							label='distance (min / max)'
+							placeholder1='default: 0'
+							placeholder2='default: 100'
+							value1={ min_distance }
+							value2={ max_distance }
+							onChange1={ e => this.setState({ min_distance: e.target.value }) }
+							onChange2={ e => this.setState({ max_distance: e.target.value }) }
 						/>
 
 						<label class="label">inactive for</label>

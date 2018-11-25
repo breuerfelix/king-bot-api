@@ -127,15 +127,22 @@ class server {
 
 			if(action == 'get') {
 				const {
+					min_player_pop,
 					max_player_pop,
+					min_village_pop,
 					max_village_pop,
 					village_name,
 					inactive_for,
+					min_distance,
 					max_distance
 				} = data;
 
 				const response = await inactive_finder.get_new_farms(
-					max_player_pop, max_village_pop, village_name, inactive_for, max_distance);
+					min_player_pop, max_player_pop,
+					min_village_pop, max_village_pop,
+					village_name, inactive_for,
+					min_distance, max_distance
+				);
 
 				res.send(response);
 				return;
