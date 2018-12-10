@@ -60,7 +60,6 @@ class trade_feature extends feature_item {
       iron,
       crop
     };
-    log(this.options)
   }
 
   get_options(): Ioptions_trade {
@@ -86,26 +85,33 @@ class trade_feature extends feature_item {
   async run(): Promise<void> {
     log(`trading uuid: ${this.options.uuid} started`);
 
-    const { origin_village_name, destination_village_name, interval_min, interval_max } = this.options;
-    log(this.options.wood)
+    const { origin_village_name, destination_village_name, interval_min, interval_max, wood, clay, iron, crop } = this.options;
+
     const params = [
       village.own_villages_ident,
-      farming.farmlist_ident
     ];
 
-    // fetch farmlists
     const response = await api.get_cache(params);
-
     const vill: Ivillage = village.find(origin_village_name, response);
+    const vill2: Ivillage = village.find(destination_village_name, response);
+    console.log(vill)
     if (!vill) {
       this.running = false;
       return;
     }
 
-    const village_id: number = vill.villageId;
-
+    const sourceVillage_id: number = vill.villageId;
+    const destVillage_id: number = vill2.villageId;
     while (this.options.run) {
-      //await api.send_farmlists(farmlist_ids, village_id);
+      const response = await api.get_cache(params);
+      const vill: Ivillage = village.find(origin_village_name, response);
+      var resources = [0, 0, 0, 0, 0]
+      resources[1] = Math.min(wood, vill.storage['1']);
+      resources[2] = Math.min(clay, vill.storage['2']);
+      resources[3] = Math.min(iron, vill.storage['3']);
+      resources[4] = Math.min(crop, vill.storage['4']);
+      console.log(resources)
+      await api.send_merchants(sourceVillage_id, destVillage_id, resources);
       //log(`farmlists ${farmlists} sent from village ${village_name}`);
       log(`run hit`)
 
