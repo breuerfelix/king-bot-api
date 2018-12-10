@@ -39,15 +39,16 @@ export default class TradeRoute extends Component {
 
 
   submit = async e => {
+    console.log(this.state.all_villages)
     this.setState({
       error_input_min: (this.state.interval_min == ''),
       error_input_max: (this.state.interval_max == ''),
       error_origin_village: (this.state.origin_village_name == ''),
       error_destination_village: (this.state.destination_village_name == ''),
-      error_wood: (this.state.wood = ''),
-      error_clay: (this.state.clay = ''),
-      error_iron: (this.state.iron = ''),
-      error_crop: (this.state.crop = ''),
+      error_wood: (this.state.wood == ''),
+      error_clay: (this.state.clay == ''),
+      error_iron: (this.state.iron == ''),
+      error_crop: (this.state.crop == ''),
     });
 
     if (this.state.error_input_min || this.state.error_input_max || this.state.error_origin_village || this.state.error_destination_village ||
