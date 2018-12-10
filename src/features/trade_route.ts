@@ -94,7 +94,6 @@ class trade_feature extends feature_item {
     const response = await api.get_cache(params);
     const vill: Ivillage = village.find(origin_village_name, response);
     const vill2: Ivillage = village.find(destination_village_name, response);
-    console.log(vill)
     if (!vill) {
       this.running = false;
       return;
@@ -110,10 +109,9 @@ class trade_feature extends feature_item {
       resources[2] = Math.min(clay, vill.storage['2']);
       resources[3] = Math.min(iron, vill.storage['3']);
       resources[4] = Math.min(crop, vill.storage['4']);
-      console.log(resources)
       await api.send_merchants(sourceVillage_id, destVillage_id, resources);
-      //log(`farmlists ${farmlists} sent from village ${village_name}`);
-      log(`run hit`)
+      log(`Trade ${resources} sent from ${origin_village_name} to ${destination_village_name}`);
+
 
       await sleep(get_random_int(interval_min, interval_max));
     }
