@@ -105,6 +105,9 @@ export default class NavBar extends Component {
 									<a className="navbar-item" onClick={ e => this.get_new('raise_fields') }>
 										raise fields
 									</a>
+									<a className="navbar-item" onClick={ e => this.get_new('trade_route') }>
+										trade route
+									</a>
 								</div>
 							</div>
 

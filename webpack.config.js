@@ -37,10 +37,10 @@ module.exports = {
 						'@babel/env'
 					],
 					plugins: [
-						[ '@babel/plugin-proposal-decorators' , { legacy: true } ],
 						[ '@babel/plugin-transform-react-jsx', { pragma: 'h' } ],
 						'@babel/plugin-proposal-class-properties',
-						'@babel/plugin-proposal-object-rest-spread'
+						'@babel/plugin-proposal-object-rest-spread',
+						[ '@babel/plugin-proposal-decorators' , { legacy: true } ]
 					]
 				}
 			}
