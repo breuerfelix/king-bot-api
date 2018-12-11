@@ -18,11 +18,11 @@ you want to run the bot **24/7**, but don't want to use your computer? **[contac
 
 - [getting-started](#getting-started)
 - [gui](#gui)
-    - [features](#features)
-    - [screenshots](#screenshots)
+  - [features](#features)
+  - [screenshots](#screenshots)
 - [docker](#docker)
 - [development](#development)
-- [thanks to](#thank-you-for)
+- [thank you for](#thank-you-for)
 
 # getting-started
 
@@ -62,6 +62,7 @@ after configuring you can close the browser window and the bot keeps running unt
 -   finish 5 min earlier
 -   inactive finder
 -   easy scout
+-   custom trade routes
 
 ## screenshots
 
@@ -102,7 +103,8 @@ create a file names `own_main.js` which is going to be ignore by git, you can mo
 
 beeing active since the first day of this project **[@didadadida93](https://github.com/didadadida93)**  
 keeping the issue page alive **[@OneManDevz](https://github.com/OneManDevz)**  
-programming auto adventure feature **[@Tom-Boyd](https://github.com/Tom-Boyd)**  
+programming auto adventure **[@Tom-Boyd](https://github.com/Tom-Boyd)**  
+programming trade routes **[tmfoltz](https://github.com/tmfoltz)**  
 
 ---
 
