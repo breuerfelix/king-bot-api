@@ -52,14 +52,6 @@ class api {
 		return this.merge_data(response.data);
 	}
 
-	async get_merchants(villageId: number) {
-		const params = {
-			names: [`Merchants:${villageId}`]
-		};
-
-		return await this.post('get', 'cache', params);
-	}
-
 	async send_farmlists(lists: number[], village_id: number): Promise<any> {
 		const params = {
 			listIds: lists,
