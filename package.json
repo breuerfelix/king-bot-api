@@ -11,8 +11,8 @@
     "server": "webpack-dev-server --mode development",
     "gui": "ts-node main.js",
     "watch": "nodemon -e ts -w ./src -x npm run start",
-    "lint": "eslint --config .eslintrc.json .",
-    "fix": "eslint --config .eslintrc.json --fix ."
+    "lint": "eslint --config .eslintrc.json --ext js --ext ts --ext jsx .",
+    "lint-fix": "eslint --config .eslintrc.json --fix --ext js --ext ts --ext jsx ."
   },
   "repository": {
     "type": "git",
