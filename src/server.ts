@@ -19,8 +19,8 @@ class server {
 		auto_adventure,
 		send_farmlist,
 		building_queue,
-    raise_fields,
-    trade_route
+		raise_fields,
+		trade_route
 	];
 
 	constructor() {

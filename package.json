@@ -11,7 +11,9 @@
     "server": "webpack-dev-server --mode development",
     "gui": "ts-node main.js",
     "watch": "nodemon -e ts -w ./src -x npm run start",
-    "watch:serve": "ts-node --inspect src/index.ts"
+    "watch:serve": "ts-node --inspect src/index.ts",
+		"lint": "eslint --config .eslintrc.json src/**",
+		"fix": "eslint --config .eslintrc.json --fix src/**"
   },
   "repository": {
     "type": "git",
@@ -40,7 +42,6 @@
     "esm": "^3.0.84",
     "express": "^4.16.4",
     "lowdb": "^1.0.0",
-    "nodemon": "^1.18.8",
     "preact": "^8.3.1",
     "preact-router": "^2.6.1",
     "qs": "^6.5.2",
@@ -65,6 +66,7 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "html-webpack-plugin": "^3.2.0",
+    "nodemon": "^1.18.8",
     "ts-node": "^7.0.1",
     "typescript": "^3.2.0-dev.20180927",
     "typescript-eslint-parser": "^19.0.1",

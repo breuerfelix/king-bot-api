@@ -6,157 +6,157 @@ import database from './database';
 import { Iunits } from './interfaces';
 
 class api {
-  private ax: AxiosInstance;
+	private ax: AxiosInstance;
 
-  session: string = '';
-  token: string = '';
-  msid: string = '';
+	session: string = '';
+	token: string = '';
+	msid: string = '';
 
-  constructor() {
-    this.ax = axios.create();
-    this.ax.defaults.withCredentials = true;
-    this.ax.defaults.headers['User-Agent'] = 'Chrome/51.0.2704.63';
-  }
+	constructor() {
+		this.ax = axios.create();
+		this.ax.defaults.withCredentials = true;
+		this.ax.defaults.headers['User-Agent'] = 'Chrome/51.0.2704.63';
+	}
 
-  async login(email: string, password: string, gameworld: string) {
-    await manage_login(this.ax, email, password, gameworld);
+	async login(email: string, password: string, gameworld: string) {
+		await manage_login(this.ax, email, password, gameworld);
 
-    // assign login credentials
-    const { session_gameworld, token_gameworld, msid } = database.get('account').value();
-    this.session = session_gameworld;
-    this.token = token_gameworld;
-    this.msid = msid;
+		// assign login credentials
+		const { session_gameworld, token_gameworld, msid } = database.get('account').value();
+		this.session = session_gameworld;
+		this.token = token_gameworld;
+		this.msid = msid;
 
-    // set base url
-    this.ax.defaults.baseURL = `https://${gameworld.toLowerCase()}.kingdoms.com/api`;
-  }
+		// set base url
+		this.ax.defaults.baseURL = `https://${gameworld.toLowerCase()}.kingdoms.com/api`;
+	}
 
-  async get_all(): Promise<any[]> {
-    return await this.post('getAll', 'player', {});
-  }
+	async get_all(): Promise<any[]> {
+		return await this.post('getAll', 'player', {});
+	}
 
-  async get_cache(params: string[]): Promise<any[]> {
-    const session: string = this.session;
+	async get_cache(params: string[]): Promise<any[]> {
+		const session: string = this.session;
 
-    const payload = {
-      controller: 'cache',
-      action: 'get',
-      params: {
-        names: params
-      },
-      session
-    };
+		const payload = {
+			controller: 'cache',
+			action: 'get',
+			params: {
+				names: params
+			},
+			session
+		};
 
-    const response = await this.ax.post(`/?c=cache&a=get&t${get_date()}`, payload);
+		const response = await this.ax.post(`/?c=cache&a=get&t${get_date()}`, payload);
 
-    return this.merge_data(response.data);
-  }
+		return this.merge_data(response.data);
+	}
 
-  async get_merchants(villageId: number) {
-    const params = {
-      names: [`Merchants:${villageId}`]
-    }
+	async get_merchants(villageId: number) {
+		const params = {
+			names: [`Merchants:${villageId}`]
+		};
 
-    return await this.post('get', 'cache', params);
-  }
+		return await this.post('get', 'cache', params);
+	}
 
-  async send_farmlists(lists: number[], village_id: number): Promise<any> {
-    const params = {
-      listIds: lists,
-      villageId: village_id
-    };
+	async send_farmlists(lists: number[], village_id: number): Promise<any> {
+		const params = {
+			listIds: lists,
+			villageId: village_id
+		};
 
-    return await this.post('startFarmListRaid', 'troops', params);
-  }
+		return await this.post('startFarmListRaid', 'troops', params);
+	}
 
-  async toggle_farmlist_entry(villageId: number, listId: number): Promise<any> {
-    const params = {
-      villageId,
-      listId
-    };
+	async toggle_farmlist_entry(villageId: number, listId: number): Promise<any> {
+		const params = {
+			villageId,
+			listId
+		};
 
-    return await this.post('toggleEntry', 'farmList', params);
-  }
+		return await this.post('toggleEntry', 'farmList', params);
+	}
 
-  async upgrade_building(buildingType: number, locationId: number, villageId: number): Promise<any> {
-    const params = {
-      villageId,
-      locationId,
-      buildingType
-    };
+	async upgrade_building(buildingType: number, locationId: number, villageId: number): Promise<any> {
+		const params = {
+			villageId,
+			locationId,
+			buildingType
+		};
 
-    return await this.post('upgrade', 'building', params);
-  }
+		return await this.post('upgrade', 'building', params);
+	}
 
-  async finish_now(villageId: number, queueType: number): Promise<any> {
-    const params = {
-      featureName: 'finishNow',
-      params: {
-        villageId,
-        queueType,
-        price: 0
-      }
-    };
+	async finish_now(villageId: number, queueType: number): Promise<any> {
+		const params = {
+			featureName: 'finishNow',
+			params: {
+				villageId,
+				queueType,
+				price: 0
+			}
+		};
 
-    return await this.post('bookFeature', 'premiumFeature', params);
+		return await this.post('bookFeature', 'premiumFeature', params);
 
-  }
+	}
 
-  async send_units(villageId: number, destVillageId: number, units: Iunits, movementType: number, spyMission: string = 'resources'): Promise<any> {
-    const params = {
-      destVillageId,
-      villageId,
-      movementType,
-      redeployHero: false,
-      units,
-      spyMission
-    };
+	async send_units(villageId: number, destVillageId: number, units: Iunits, movementType: number, spyMission: string = 'resources'): Promise<any> {
+		const params = {
+			destVillageId,
+			villageId,
+			movementType,
+			redeployHero: false,
+			units,
+			spyMission
+		};
 
-    return await this.post('send', 'troops', params);
-  }
+		return await this.post('send', 'troops', params);
+	}
 
 
-  async send_merchants(sourceVillageId: number, destVillageId: number, resources: number[]): Promise<any> {
-    const params = {
-      destVillageId,
-      sourceVillageId,
-      resources,
-      recurrences: 1
-    };
+	async send_merchants(sourceVillageId: number, destVillageId: number, resources: number[]): Promise<any> {
+		const params = {
+			destVillageId,
+			sourceVillageId,
+			resources,
+			recurrences: 1
+		};
 
-    return await this.post('sendResources', 'trade', params);
-  }
+		return await this.post('sendResources', 'trade', params);
+	}
 
-  async start_adventure(type: number): Promise<void> {
-    const params = {
-      questId: (type == 0) ? 991 : 992,
-      dialogId: 0,
-      command: 'activate'
-    };
+	async start_adventure(type: number): Promise<void> {
+		const params = {
+			questId: (type == 0) ? 991 : 992,
+			dialogId: 0,
+			command: 'activate'
+		};
 
-    return await this.post('dialogAction', 'quest', params);
-  }
+		return await this.post('dialogAction', 'quest', params);
+	}
 
-  async post(action: string, controller: string, params: object): Promise<any> {
-    const session = this.session;
+	async post(action: string, controller: string, params: object): Promise<any> {
+		const session = this.session;
 
-    const payload = {
-      controller,
-      action,
-      params,
-      session
-    };
+		const payload = {
+			controller,
+			action,
+			params,
+			session
+		};
 
-    const response: any = await this.ax.post(`/?t${get_date()}`, payload);
+		const response: any = await this.ax.post(`/?t${get_date()}`, payload);
 
-    if (response.errors) {
-      log(response.errors);
-    }
-    return this.merge_data(response.data);
-  }
+		if (response.errors) {
+			log(response.errors);
+		}
+		return this.merge_data(response.data);
+	}
 
-  // merges data into state object
-  merge_data: any = (data: any) => clash_obj(data, 'cache', 'response');
+	// merges data into state object
+	merge_data: any = (data: any) => clash_obj(data, 'cache', 'response');
 }
 
 export default new api();
