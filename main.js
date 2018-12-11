@@ -1,8 +1,8 @@
 import kingbot from './src';
 
-const gameworld = 'COM5';
-const email = 'tmfoltz@gmail.com';
-const password = 'Swimming168';
+const gameworld = '';
+const email = '';
+const password = '';
 const port = 3000;
 
 async function main(){

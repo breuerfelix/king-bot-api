@@ -14,7 +14,8 @@
 		}
 	},
 	"rules": {
-		"no-unused-vars": "warn",
+		"no-unused-vars": "off",
+		"no-mixed-spaces-and-tabs": "error",
 		"no-undef": "off",
 		"no-constant-condition": "off",
 		"indent": [
