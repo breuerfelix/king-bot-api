@@ -180,7 +180,7 @@ class trade_feature extends feature_item {
           vill2.storage['3'] < destination_iron &&
           vill2.storage['4'] < destination_crop) {
 
-          //await api.send_merchants(sourceVillage_id, destVillage_id, resources);
+          await api.send_merchants(sourceVillage_id, destVillage_id, resources);
           log(`Trade ${resources} sent from ${source_village_name} to ${destination_village_name}`);
         } else {
           log(`Trade conditions not meet.`)
