@@ -7,13 +7,13 @@ module.exports = {
 	entry: [
 		'@babel/polyfill',
 		'./frontend'
-	] ,
+	],
 
 	mode: 'production',
 
 	resolve: {
-		extensions: [ '.js', '.jsx' ],
-		modules: [ 'node_modules', 'frontend' ]
+		extensions: ['.js', '.jsx'],
+		modules: ['node_modules', 'frontend']
 	},
 
 	performance: {
@@ -37,8 +37,8 @@ module.exports = {
 						'@babel/env'
 					],
 					plugins: [
-						[ '@babel/plugin-proposal-decorators' , { legacy: true } ],
-						[ '@babel/plugin-transform-react-jsx', { pragma: 'h' } ],
+						['@babel/plugin-proposal-decorators', { legacy: true }],
+						['@babel/plugin-transform-react-jsx', { pragma: 'h' }],
 						'@babel/plugin-proposal-class-properties',
 						'@babel/plugin-proposal-object-rest-spread'
 					]
@@ -61,6 +61,7 @@ module.exports = {
 		hot: true,
 		inline: true,
 		progress: true,
+		port: 9000,
 
 		proxy: {
 			'/api': 'http://localhost:3000'

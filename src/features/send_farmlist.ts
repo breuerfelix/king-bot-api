@@ -83,7 +83,7 @@ class farm_feature extends feature_item {
 		const response = await api.get_cache(params);
 
 		const vill: Ivillage = village.find(village_name, response);
-		if(!vill) {
+		if (!vill) {
 			this.running = false;
 			return;
 		}
@@ -91,9 +91,9 @@ class farm_feature extends feature_item {
 		const village_id: number = vill.villageId;
 		const farmlist_ids: number[] = [];
 
-		for(let list of farmlists) {
+		for (let list of farmlists) {
 			const list_obj = farming.find(list, response);
-			if(!list_obj) {
+			if (!list_obj) {
 				this.running = false;
 				return;
 			}
@@ -102,12 +102,12 @@ class farm_feature extends feature_item {
 			farmlist_ids.push(list_id);
 		}
 
-		if(!farmlist_ids) {
+		if (!farmlist_ids) {
 			this.running = false;
 			return;
 		}
 
-		while(this.options.run) {
+		while (this.options.run) {
 			await api.send_farmlists(farmlist_ids, village_id);
 			log(`farmlists ${farmlists} sent from village ${village_name}`);
 

@@ -107,6 +107,18 @@ class api {
 		return await this.post('send', 'troops', params);
 	}
 
+
+	async send_merchants(sourceVillageId: number, destVillageId: number, resources: number[]): Promise<any> {
+		const params = {
+			destVillageId,
+			sourceVillageId,
+			resources,
+			recurrences: 1
+		};
+
+		return await this.post('sendResources', 'trade', params);
+	}
+
 	async start_adventure(type: number): Promise<void> {
 		const params = {
 			questId: (type == 0) ? 991 : 992,
@@ -129,10 +141,9 @@ class api {
 
 		const response: any = await this.ax.post(`/?t${get_date()}`, payload);
 
-		if(response.errors) {
+		if (response.errors) {
 			log(response.errors);
 		}
-
 		return this.merge_data(response.data);
 	}
 
