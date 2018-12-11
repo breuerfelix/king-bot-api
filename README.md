@@ -104,7 +104,7 @@ create a file names `own_main.js` which is going to be ignore by git, you can mo
 beeing active since the first day of this project **[@didadadida93](https://github.com/didadadida93)**  
 keeping the issue page alive **[@OneManDevz](https://github.com/OneManDevz)**  
 programming auto adventure **[@Tom-Boyd](https://github.com/Tom-Boyd)**  
-programming trade routes **[tmfoltz](https://github.com/tmfoltz)**  
+programming trade routes **[@tmfoltz](https://github.com/tmfoltz)**  
 
 ---
 
