@@ -8,24 +8,40 @@ export default class TradeRoute extends Component {
     name: 'trade route',
     farmlists: [],
     selected_farmlist: '',
-    origin_village_name: '',
+    source_village_name: '',
     destination_village_name: '',
     interval_min: '',
     interval_max: '',
-    wood: '',
-    clay: '',
-    iron: '',
-    crop: '',
+    send_wood: '',
+    send_clay: '',
+    send_iron: '',
+    send_crop: '',
+    source_wood:'',
+    source_clay:'',
+    source_iron:'',
+    source_crop:'',
+    destination_wood:'',
+    destination_clay:'',
+    destination_iron:'',
+    destination_crop:'',
     all_farmlists: [],
     all_villages: [],
     error_input_min: false,
     error_input_max: false,
-    error_origin_village: false,
+    error_source_village_name: false,
     error_destination_village: false,
-    error_wood: false,
-    error_clay: false,
-    error_iron: false,
-    error_crop: false,
+    error_send_wood: false,
+    error_send_clay: false,
+    error_send_iron: false,
+    error_send_crop: false,
+    error_source_wood: false,
+    error_source_clay: false,
+    error_source_iron: false,
+    error_source_crop: false,
+    error_destination_wood: false,
+    error_destination_clay: false,
+    error_destination_iron: false,
+    error_destination_crop: false
 
   }
 
@@ -39,20 +55,41 @@ export default class TradeRoute extends Component {
 
 
   submit = async e => {
-    console.log(this.state.all_villages)
     this.setState({
       error_input_min: (this.state.interval_min == ''),
       error_input_max: (this.state.interval_max == ''),
-      error_origin_village: (this.state.origin_village_name == ''),
-      error_destination_village: (this.state.destination_village_name == ''),
-      error_wood: (this.state.wood == ''),
-      error_clay: (this.state.clay == ''),
-      error_iron: (this.state.iron == ''),
-      error_crop: (this.state.crop == ''),
+      error_source_village_name: (this.state.source_village_name == ''),
+      error_destination_village_name: (this.state.destination_village_name == ''),
+      error_send_wood: (this.state.send_wood == ''),
+      error_send_clay: (this.state.send_clay == ''),
+      error_send_iron: (this.state.send_iron == ''),
+      error_send_crop: (this.state.send_crop == ''),
+      error_source_wood: (this.state.source_wood == ''),
+      error_source_clay: (this.state.source_clay == ''),
+      error_source_iron: (this.state.source_iron == ''),
+      error_source_crop: (this.state.source_crop == ''),
+      error_destination_wood: (this.state.destination_wood == ''),
+      error_destination_clay: (this.state.destination_clay == ''),
+      error_destination_iron: (this.state.destination_iron == ''),
+      error_destination_crop: (this.state.destination_crop == '')
     });
 
-    if (this.state.error_input_min || this.state.error_input_max || this.state.error_origin_village || this.state.error_destination_village ||
-      this.state.error_wood || this.state.error_clay || this.state.error_iron || this.state.error_crop) return;
+    if (this.state.error_input_min || 
+        this.state.error_input_max || 
+        this.state.error_source_village_name || 
+        this.state.error_destination_village_name ||
+        this.state.error_send_wood || 
+        this.state.error_send_clay || 
+        this.state.error_send_iron || 
+        this.state.error_send_crop ||
+        this.state.error_source_wood || 
+        this.state.error_source_clay || 
+        this.state.error_source_iron || 
+        this.state.error_source_crop ||
+        this.state.error_destination_wood || 
+        this.state.error_destination_clay || 
+        this.state.error_destination_iron || 
+        this.state.error_destination_crop) return;
 
     this.props.submit({ ...this.state });
   }
@@ -66,7 +103,19 @@ export default class TradeRoute extends Component {
   }
 
   render() {
-    const { interval_min, interval_max, all_villages, origin_village_name, destination_village_name, wood, clay, iron, crop } = this.state;
+    const { interval_min, interval_max, all_villages, source_village_name, destination_village_name, 
+       send_wood,
+       send_clay,
+       send_iron, 
+       send_crop,
+       source_wood,
+       source_clay,
+       source_iron, 
+       source_crop,
+       destination_wood,
+       destination_clay,
+       destination_iron, 
+       destination_crop } = this.state;
 
     const input_class_min = classNames({
       input: true,
@@ -80,34 +129,93 @@ export default class TradeRoute extends Component {
       'is-danger': this.state.error_input_max
     });
 
-    const village_select_class = classNames({
+    const source_village_select_class = classNames({
       select: true,
-      'is-danger': this.state.error_origin_village
+      'is-danger': this.state.error_source_village_name
     });
 
-    const wood_class = classNames({
-      input: true,
-      'is-radiusless': true,
-      'is-danger': this.state.error_wood
+    const destination_village_select_class = classNames({
+      select: true,
+      'is-danger': this.state.error_destination_village_name
     });
 
-    const clay_class = classNames({
+    const send_wood_class = classNames({
       input: true,
       'is-radiusless': true,
-      'is-danger': this.state.error_clay
+      'is-danger': this.state.error_send_wood
     });
 
-    const iron_class = classNames({
+    const send_clay_class = classNames({
       input: true,
       'is-radiusless': true,
-      'is-danger': this.state.error_iron
+      'is-danger': this.state.error_send_clay
     });
 
-    const crop_class = classNames({
+    const send_iron_class = classNames({
       input: true,
       'is-radiusless': true,
-      'is-danger': this.state.error_crop
+      'is-danger': this.state.error_send_iron
     });
+
+    const send_crop_class = classNames({
+      input: true,
+      'is-radiusless': true,
+      'is-danger': this.state.error_send_crop
+    });
+
+    const source_wood_class = classNames({
+      input: true,
+      'is-radiusless': true,
+      'is-danger': this.state.error_source_wood
+    });
+
+    const source_clay_class = classNames({
+      input: true,
+      'is-radiusless': true,
+      'is-danger': this.state.error_source_clay
+    });
+
+    const source_iron_class = classNames({
+      input: true,
+      'is-radiusless': true,
+      'is-danger': this.state.error_source_iron
+    });
+
+    const source_crop_class = classNames({
+      input: true,
+      'is-radiusless': true,
+      'is-danger': this.state.error_source_crop
+    });
+
+
+    const destination_wood_class = classNames({
+      input: true,
+      'is-radiusless': true,
+      'is-danger': this.state.error_destination_wood
+    });
+
+    const destination_clay_class = classNames({
+      input: true,
+      'is-radiusless': true,
+      'is-danger': this.state.error_destination_clay
+    });
+
+    const destination_iron_class = classNames({
+      input: true,
+      'is-radiusless': true,
+      'is-danger': this.state.error_destination_iron
+    });
+
+    const destination_crop_class = classNames({
+      input: true,
+      'is-radiusless': true,
+      'is-danger': this.state.error_destination_crop
+    });
+
+
+
+
+
 
     const villages = all_villages.map(village => <option value={village.data.name}>{village.data.name}</option>);
     return (
@@ -117,13 +225,13 @@ export default class TradeRoute extends Component {
           <div className="column">
 
             <div class="field">
-              <label class="label">select origin village</label>
+              <label class="label">select source village</label>
               <div class="control">
-                <div class={village_select_class}>
+                <div class={source_village_select_class}>
                   <select
                     class="is-radiusless"
-                    value={origin_village_name}
-                    onChange={(e) => this.setState({ origin_village_name: e.target.value })}
+                    value={source_village_name}
+                    onChange={(e) => this.setState({ source_village_name: e.target.value })}
                   >
                     {villages}
                   </select>
@@ -134,7 +242,7 @@ export default class TradeRoute extends Component {
             <div class="field">
               <label class="label">select destination village</label>
               <div class="control">
-                <div class={village_select_class}>
+                <div class={destination_village_select_class}>
                   <select
                     class="is-radiusless"
                     value={destination_village_name}
@@ -165,47 +273,123 @@ export default class TradeRoute extends Component {
             />
             <p class="help">provide a number</p>
 
+          <label style='margin-top: 2rem' class="label">Send (wood|clay|iron|crop)</label>
+            <input
+              class={send_wood_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={send_wood}
+              placeholder="min"
+              onChange={(e) => this.setState({ send_wood: e.target.value })}
+            />
+            {/* <label style='margin-top: 2rem' class="label">clay</label> */}
+            <input
+              class={send_clay_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={send_clay}
+              placeholder="min"
+              onChange={(e) => this.setState({ send_clay: e.target.value })}
+            />
+            {/* <label style='margin-top: 2rem' class="label">iron</label> */}
+            <input
+              class={send_iron_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={send_iron}
+              placeholder="min"
+              onChange={(e) => this.setState({ send_iron: e.target.value })}
+            />
+            {/* <label style='margin-top: 2rem' class="label">crop</label> */}
+            <input
+              class={send_crop_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={send_crop}
+              placeholder="min"
+              onChange={(e) => this.setState({ send_crop: e.target.value })}
+            />
+
+          <label style='margin-top: 2rem' class="label">When Source is greater than (wood|clay|iron|crop)</label>
+            <input
+              class={source_wood_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={source_wood}
+              placeholder="min"
+              onChange={(e) => this.setState({ source_wood: e.target.value })}
+            />
+            {/* <label style='margin-top: 2rem' class="label">clay</label> */}
+            <input
+              class={source_clay_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={source_clay}
+              placeholder="min"
+              onChange={(e) => this.setState({ source_clay: e.target.value })}
+            />
+            {/* <label style='margin-top: 2rem' class="label">iron</label> */}
+            <input
+              class={source_iron_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={source_iron}
+              placeholder="min"
+              onChange={(e) => this.setState({ source_iron: e.target.value })}
+            />
+            {/* <label style='margin-top: 2rem' class="label">crop</label> */}
+            <input
+              class={source_crop_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={source_crop}
+              placeholder="min"
+              onChange={(e) => this.setState({ source_crop: e.target.value })}
+            />
+
+            <label style='margin-top: 2rem' class="label">and Destination is less than (wood|clay|iron|crop)</label>
+            <input
+              class={destination_wood_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={destination_wood}
+              placeholder="min"
+              onChange={(e) => this.setState({ destination_wood: e.target.value })}
+            />
+            {/* <label style='margin-top: 2rem' class="label">clay</label> */}
+            <input
+              class={destination_clay_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={destination_clay}
+              placeholder="min"
+              onChange={(e) => this.setState({ destination_clay: e.target.value })}
+            />
+            {/* <label style='margin-top: 2rem' class="label">iron</label> */}
+            <input
+              class={destination_iron_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={destination_iron}
+              placeholder="min"
+              onChange={(e) => this.setState({ destination_iron: e.target.value })}
+            />
+            {/* <label style='margin-top: 2rem' class="label">crop</label> */}
+            <input
+              class={destination_crop_class}
+              style="width: 150px;margin-right: 10px;"
+              type="text"
+              value={destination_crop}
+              placeholder="min"
+              onChange={(e) => this.setState({ destination_crop: e.target.value })}
+            />
+
           </div>
 
-          <div className="column">
+          {/* <div className="column">
 
-            <label style='margin-top: 2rem' class="label">wood</label>
-            <input
-              class={wood_class}
-              style="width: 150px;margin-right: 10px;"
-              type="text"
-              value={wood}
-              placeholder="min"
-              onChange={(e) => this.setState({ wood: e.target.value })}
-            />
-            <label style='margin-top: 2rem' class="label">clay</label>
-            <input
-              class={clay_class}
-              style="width: 150px;margin-right: 10px;"
-              type="text"
-              value={clay}
-              placeholder="min"
-              onChange={(e) => this.setState({ clay: e.target.value })}
-            />
-            <label style='margin-top: 2rem' class="label">iron</label>
-            <input
-              class={iron_class}
-              style="width: 150px;margin-right: 10px;"
-              type="text"
-              value={iron}
-              placeholder="min"
-              onChange={(e) => this.setState({ iron: e.target.value })}
-            />
-            <label style='margin-top: 2rem' class="label">crop</label>
-            <input
-              class={crop_class}
-              style="width: 150px;margin-right: 10px;"
-              type="text"
-              value={crop}
-              placeholder="min"
-              onChange={(e) => this.setState({ crop: e.target.value })}
-            />
-          </div>
+            
+          </div> */}
 
         </div>
 

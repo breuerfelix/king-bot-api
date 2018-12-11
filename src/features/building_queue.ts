@@ -129,7 +129,7 @@ class queue extends feature_item {
 				if(this.able_to_build(queue_item.costs, village_obj)) {
 					const res: any = await api.upgrade_building(queue_item.type, queue_item.location, village_obj.villageId);
 					this.options.queue.shift();
-					console.log('upgrade building ' + queue_item.location + ' on village ' + village_obj.name);
+					log('upgrade building ' + queue_item.location + ' on village ' + village_obj.name);
 
 					if(!sleep_time) sleep_time = queue_item.upgrade_time;
 					else if(queue_item.upgrade_time < sleep_time) sleep_time = queue_item.upgrade_time;

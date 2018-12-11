@@ -7,14 +7,22 @@ import database from '../database';
 import uniqid from 'uniqid';
 
 interface Ioptions_trade extends Ioptions {
-  origin_village_name: string
+  source_village_name: string
   destination_village_name: string
   interval_min: number
   interval_max: number
-  wood: number
-  clay: number
-  iron: number
-  crop: number
+  send_wood: number
+  send_clay: number
+  send_iron: number
+  send_crop: number
+  source_wood: number
+  source_clay: number
+  source_iron: number
+  source_crop: number
+  destination_wood: number
+  destination_clay: number
+  destination_iron: number
+  destination_crop: number
 }
 
 class trade_route extends feature_collection {
@@ -29,14 +37,22 @@ class trade_route extends feature_collection {
   get_default_options(options: Ioptions): Ioptions_trade {
     return {
       ...options,
-      origin_village_name: '',
+      source_village_name: '',
       destination_village_name: '',
       interval_min: 0,
       interval_max: 0,
-      wood: 0,
-      clay: 0,
-      iron: 0,
-      crop: 0
+      send_wood: 0,
+      send_clay: 0,
+      send_iron: 0,
+      send_crop: 0,
+      source_wood: 0,
+      source_clay: 0,
+      source_iron: 0,
+      source_crop: 0,
+      destination_wood: 0,
+      destination_clay: 0,
+      destination_iron: 0,
+      destination_crop: 0
     };
   }
 }
@@ -45,20 +61,40 @@ class trade_feature extends feature_item {
   options: Ioptions_trade;
 
   set_options(options: Ioptions_trade): void {
-    const { uuid, run, error, origin_village_name, destination_village_name, interval_min, interval_max, wood, clay, iron, crop } = options;
+    const { uuid, run, error, source_village_name, destination_village_name, interval_min, interval_max, 
+      send_wood, 
+      send_clay, 
+      send_iron, 
+      send_crop,
+      source_wood,
+      source_clay,
+      source_iron,
+      source_crop,
+      destination_wood,
+      destination_clay,
+      destination_iron,
+      destination_crop } = options;
     this.options = {
       ...this.options,
       uuid,
       run,
       error,
-      origin_village_name,
+      source_village_name,
       destination_village_name,
       interval_min,
       interval_max,
-      wood,
-      clay,
-      iron,
-      crop
+      send_wood,
+      send_clay,
+      send_iron,
+      send_crop,
+      source_wood,
+      source_clay,
+      source_iron,
+      source_crop,
+      destination_wood,
+      destination_clay,
+      destination_iron,
+      destination_crop
     };
   }
 
@@ -74,8 +110,8 @@ class trade_feature extends feature_item {
   }
 
   get_description(): string {
-    const { origin_village_name, destination_village_name, interval_min, interval_max } = this.options;
-    return `${origin_village_name} -> ${destination_village_name} | ${interval_min} - ${interval_max}s`;
+    const { source_village_name, destination_village_name, interval_min, interval_max } = this.options;
+    return `${source_village_name} -> ${destination_village_name} | ${interval_min} - ${interval_max}s`;
   }
 
   get_long_description(): string {
@@ -85,14 +121,14 @@ class trade_feature extends feature_item {
   async run(): Promise<void> {
     log(`trading uuid: ${this.options.uuid} started`);
 
-    const { origin_village_name, destination_village_name, interval_min, interval_max, wood, clay, iron, crop } = this.options;
+    const { source_village_name, destination_village_name, interval_min, interval_max, send_wood, send_clay, send_iron, send_crop } = this.options;
 
     const params = [
       village.own_villages_ident,
     ];
 
     const response = await api.get_cache(params);
-    const vill: Ivillage = village.find(origin_village_name, response);
+    const vill: Ivillage = village.find(source_village_name, response);
     const vill2: Ivillage = village.find(destination_village_name, response);
     if (!vill) {
       this.running = false;
@@ -103,14 +139,14 @@ class trade_feature extends feature_item {
     const destVillage_id: number = vill2.villageId;
     while (this.options.run) {
       const response = await api.get_cache(params);
-      const vill: Ivillage = village.find(origin_village_name, response);
+      const vill: Ivillage = village.find(source_village_name, response);
       var resources = [0, 0, 0, 0, 0]
-      resources[1] = Math.min(wood, vill.storage['1']);
-      resources[2] = Math.min(clay, vill.storage['2']);
-      resources[3] = Math.min(iron, vill.storage['3']);
-      resources[4] = Math.min(crop, vill.storage['4']);
+      resources[1] = Math.min(send_wood, vill.storage['1']);
+      resources[2] = Math.min(send_clay, vill.storage['2']);
+      resources[3] = Math.min(send_iron, vill.storage['3']);
+      resources[4] = Math.min(send_crop, vill.storage['4']);
       await api.send_merchants(sourceVillage_id, destVillage_id, resources);
-      log(`Trade ${resources} sent from ${origin_village_name} to ${destination_village_name}`);
+      log(`Trade ${resources} sent from ${source_village_name} to ${destination_village_name}`);
 
 
       await sleep(get_random_int(interval_min, interval_max));
