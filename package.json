@@ -5,15 +5,14 @@
   "main": "index.js",
   "module": "main.js",
   "scripts": {
-    "test": "tsc && webpack",
+    "test": "tsc && webpack && npm run lint",
     "start": "ts-node main.js",
     "build": "webpack",
     "server": "webpack-dev-server --mode development",
     "gui": "ts-node main.js",
     "watch": "nodemon -e ts -w ./src -x npm run start",
-    "watch:serve": "ts-node --inspect src/index.ts",
-		"lint": "eslint --config .eslintrc.json **",
-		"fix": "eslint --config .eslintrc.json --fix **"
+		"lint": "eslint --config .eslintrc.json .",
+		"fix": "eslint --config .eslintrc.json --fix ."
   },
   "repository": {
     "type": "git",
