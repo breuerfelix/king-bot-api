@@ -133,7 +133,12 @@ async function login_to_gameworld(axios: AxiosInstance, gameworld: string, msid:
 	// get gameworld token
 	let mellonURL: any = `https://mellon-t5.traviangames.com/game-world/join/gameWorldId/${gameworldID}?msname=msid&msid=${msid}`;
 
-	res = await axios.get(mellonURL);
+	try {
+		res = await axios.get(mellonURL);
+	} catch {
+		throw('error login to gameworld. could you entered the wrong one?');
+	}
+
 	let rv: any = parse_token(res.data);
 
 	token_gameworld = rv.token;
@@ -241,9 +246,10 @@ async function test_lobby_connection(axios: AxiosInstance, session: string): Pro
 		session
 	};
 
-	const response = await axios.post(lobby_endpoint, payload);
-
-	return !response.data.error;
+	try {
+		const response = await axios.post(lobby_endpoint, payload);
+		return !response.data.error;
+	} catch { return false; }
 }
 
 async function test_gameworld_connection(axios: AxiosInstance, gameworld: string, session: string): Promise<boolean> {
@@ -257,9 +263,10 @@ async function test_gameworld_connection(axios: AxiosInstance, gameworld: string
 		session
 	};
 
-	const response = await axios.post(`https://${gameworld}.kingdoms.com/api/?c=cache&a=get&t${Date.now()}`, payload);
-
-	return !response.data.error;
+	try {
+		const response = await axios.post(`https://${gameworld}.kingdoms.com/api/?c=cache&a=get&t${Date.now()}`, payload);
+		return !response.data.error;
+	} catch { return false; }
 }
 
 export default manage_login;
