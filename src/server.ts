@@ -8,7 +8,7 @@ import { buildings } from './data';
 import { Ifeature_params, feature } from './features/feature';
 import { Ivillage, Ibuilding } from './interfaces';
 import { find_state_data } from './util';
-import { raise_fields, building_queue, finish_earlier, auto_adventure, send_farmlist, trade_route } from './features';
+import { raise_fields, building_queue, finish_earlier, auto_adventure, send_farmlist, trade_route, basic_farmlist } from './features';
 import { farming, village } from './gamedata';
 
 class server {
@@ -20,7 +20,8 @@ class server {
 		send_farmlist,
 		building_queue,
 		raise_fields,
-		trade_route
+		trade_route,
+		basic_farmlist
 	];
 
 	constructor() {
@@ -33,7 +34,7 @@ class server {
 		this.app.get('/api/allfeatures', (req: any, res: any) => {
 			let response: Ifeature_params[] = [];
 
-			for(let feat of this.features) response = [ ...response, ...feat.get_feature_params() ];
+			for (let feat of this.features) response = [...response, ...feat.get_feature_params()];
 
 			res.send(response);
 		});
@@ -44,8 +45,8 @@ class server {
 
 			let response: string = '';
 
-			for(let feat of this.features) {
-				if(feat.get_ident() == ident) {
+			for (let feat of this.features) {
+				if (feat.get_ident() == ident) {
 					response = feat.handle_request(req.body);
 					break;
 				}
@@ -53,11 +54,11 @@ class server {
 
 			res.send(response);
 		});
-		
+
 		this.app.get('/api/data', async (req: any, res: any) => {
 			const { ident } = req.query;
 
-			if(ident == 'villages') {
+			if (ident == 'villages') {
 				const villages = await village.get_own();
 				const data = find_state_data(village.own_villages_ident, villages);
 
@@ -65,7 +66,7 @@ class server {
 				return;
 			}
 
-			if(ident == 'farmlists') {
+			if (ident == 'farmlists') {
 				const farmlists = await farming.get_own();
 				const data = find_state_data(farming.farmlist_ident, farmlists);
 
@@ -73,23 +74,23 @@ class server {
 				return;
 			}
 
-			if(ident == 'buildings') {
+			if (ident == 'buildings') {
 				const { village_name } = req.query;
 				const village_data = await village.get_own();
 				const village_obj: Ivillage = village.find(village_name, village_data);
 
 				const queue_ident: string = village.building_collection_ident + village_obj.villageId;
 
-				const response: any[] = await api.get_cache([ queue_ident]);
+				const response: any[] = await api.get_cache([queue_ident]);
 
 				const rv = [];
 				const data = find_state_data(queue_ident, response);
 
-				for(let bd of data) {
+				for (let bd of data) {
 					const build: Ibuilding = bd.data;
-					
-					if(Number(build.buildingType) != 0) 
-						if(Number(build.lvl) > 0)
+
+					if (Number(build.buildingType) != 0)
+						if (Number(build.lvl) > 0)
 							rv.push(build);
 				}
 
@@ -98,12 +99,12 @@ class server {
 				return;
 			}
 
-			if(ident == 'buildingdata') {
+			if (ident == 'buildingdata') {
 				res.send(buildings);
 				return;
 			}
 
-			if(ident == 'settings') {
+			if (ident == 'settings') {
 				res.send({
 					email: settings.email,
 					gameworld: settings.gameworld
@@ -126,7 +127,7 @@ class server {
 		this.app.post('/api/inactivefinder', async (req: any, res: any) => {
 			const { action, data } = req.body;
 
-			if(action == 'get') {
+			if (action == 'get') {
 				const {
 					min_player_pop,
 					max_player_pop,
@@ -149,7 +150,7 @@ class server {
 				return;
 			}
 
-			if(action == 'toggle') {
+			if (action == 'toggle') {
 				const { farmlist, village } = data;
 				const response = await inactive_finder.add_inactive_player(farmlist, village);
 
@@ -175,7 +176,7 @@ class server {
 		this.app.listen(port, () => console.log(`server running on port ${port}!`));
 
 		// start all features on startup
-		for(let feat of this.features) feat.start_for_server();
+		for (let feat of this.features) feat.start_for_server();
 	}
 
 }

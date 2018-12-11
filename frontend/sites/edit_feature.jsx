@@ -6,6 +6,7 @@ import SendFarmlist from '../features/send_farmlist';
 import BuildingQueue from '../features/building_queue';
 import RaiseFields from '../features/raise_fields';
 import TradeRoute from '../features/trade_route';
+import BasicFarmlist from '../features/basic_farmlist';
 import uniqid from 'uniqid';
 
 import { connect } from 'unistore/preact';
@@ -18,7 +19,7 @@ const actions = store => ({
 			level
 		};
 
-		return { notifications: [ ...state.notifications, noti ] };
+		return { notifications: [...state.notifications, noti] };
 	}
 });
 
@@ -32,7 +33,7 @@ export default class EditFeature extends Component {
 	componentWillMount() {
 		const { ident, uuid } = this.props;
 
-		if(!ident || !uuid) {
+		if (!ident || !uuid) {
 			this.props.add_notification('provide ident and uuid for feature to edit !', 'error');
 			route('/');
 			return;
@@ -49,7 +50,7 @@ export default class EditFeature extends Component {
 		axios.post('/api/feature', payload).then(res => {
 			const { error, message, data } = res.data;
 
-			if(error) {
+			if (error) {
 				this.props.add_notification(message, 'error');
 				return;
 			}
@@ -84,7 +85,7 @@ export default class EditFeature extends Component {
 
 		const { error, message, data } = response.data;
 
-		if(error) {
+		if (error) {
 			this.props.add_notification(message, 'error');
 			return;
 		}
@@ -92,39 +93,42 @@ export default class EditFeature extends Component {
 		route('/');
 	}
 
-	render({}, { ident, name, long_description }) {
+	render({ }, { ident, name, long_description }) {
 		let feat = null;
 
-		switch(ident) {
+		switch (ident) {
 			case 'hero':
-				feat = <Adventure feature={ this.state } submit={ this.submit }/>;
+				feat = <Adventure feature={this.state} submit={this.submit} />;
 				break;
 			case 'farming':
-				feat = <SendFarmlist feature={ this.state } submit={ this.submit } delete={ this.delete } />;
+				feat = <SendFarmlist feature={this.state} submit={this.submit} delete={this.delete} />;
 				break;
 			case 'queue':
-				feat = <BuildingQueue feature={ this.state } submit={ this.submit } delete={ this.delete } />;
+				feat = <BuildingQueue feature={this.state} submit={this.submit} delete={this.delete} />;
 				break;
 			case 'raise_fields':
-				feat = <RaiseFields feature={ this.state } submit={ this.submit } delete={ this.delete } />;
+				feat = <RaiseFields feature={this.state} submit={this.submit} delete={this.delete} />;
 				break;
 			case 'trade_route':
-				feat = <TradeRoute feature={ this.state } submit={ this.submit } delete={ this.delete } />;
+				feat = <TradeRoute feature={this.state} submit={this.submit} delete={this.delete} />;
+				break;
+			case 'basic_farmlist':
+				feat = <BasicFarmlist feature={this.state} submit={this.submit} delete={this.delete} />;
 				break;
 		}
 
 		return (
 			<div>
-				<h1 className="subtitle is-4" style='margin-bottom: 2rem' align="center">{ name }
-					{ this.state.long_description && 
-					<a class="has-text-black" onClick={ e => this.props.add_notification(this.state.long_description, 'info') }>
-						<span class="icon is-large">
-							<i class="fas fa-info"></i>
-						</span>
-					</a>
+				<h1 className="subtitle is-4" style='margin-bottom: 2rem' align="center">{name}
+					{this.state.long_description &&
+						<a class="has-text-black" onClick={e => this.props.add_notification(this.state.long_description, 'info')}>
+							<span class="icon is-large">
+								<i class="fas fa-info"></i>
+							</span>
+						</a>
 					}
 				</h1>
-				{ feat }
+				{feat}
 			</div>
 		);
 	}
