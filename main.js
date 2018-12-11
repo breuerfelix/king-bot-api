@@ -6,7 +6,7 @@ const password = '';
 const port = 3000;
 
 async function main() {
-  kingbot.start_server(gameworld, email, password, port);
+	kingbot.start_server(gameworld, email, password, port);
 }
 
 if (process.argv[2] == '--gui') kingbot.start_server(gameworld, email, password, port);
