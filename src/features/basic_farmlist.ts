@@ -10,6 +10,7 @@ interface Ioptions_farm extends Ioptions {
 	village_name: string
 	interval_min: number
 	interval_max: number
+	farms: Array<any>
 }
 
 class basic_farmlist extends feature_collection {
@@ -26,7 +27,8 @@ class basic_farmlist extends feature_collection {
 			...options,
 			village_name: '',
 			interval_min: 0,
-			interval_max: 0
+			interval_max: 0,
+			farms: []
 		};
 	}
 }
@@ -35,7 +37,7 @@ class farm_feature extends feature_item {
 	options: Ioptions_farm;
 
 	set_options(options: Ioptions_farm): void {
-		const { uuid, run, error, village_name, interval_min, interval_max } = options;
+		const { uuid, run, error, village_name, interval_min, interval_max, farms } = options;
 		this.options = {
 			...this.options,
 			uuid,
@@ -43,7 +45,8 @@ class farm_feature extends feature_item {
 			error,
 			village_name,
 			interval_min,
-			interval_max
+			interval_max,
+			farms
 		};
 	}
 
@@ -68,7 +71,10 @@ class farm_feature extends feature_item {
 	}
 
 	async run(): Promise<void> {
+		const { village_name
+		} = this.options;
 
+		console.log(this.options)
 	}
 }
 

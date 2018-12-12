@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import InactiveTable from '../components/inactive_table';
 import DoubleInput from '../components/double_input';
 import InfoTitle from '../components/info_title';
+import BasicFarmlistTable from '../components/basic_farmlist_table';
 
 
 
@@ -56,10 +57,22 @@ export default class SendBasicFarmlist extends Component {
 		this.props.submit({ ...this.state });
 	}
 
+	unitChanged = async item => {
+		const { farms, inactives } = this.state;
+		console.log(1)
+		console.log(item)
+
+		var found = farms.find(function (farm) {
+			return item.villageId == farm.villageId
+		})
+
+		console.log(found)
+
+		return true;
+	}
+
 	clicked = async item => {
 		const { farms, inactives } = this.state;
-		console.log(item)
-		console.log(inactives[0])
 
 		farms.push(item)
 		this.setState({ farms: farms })
@@ -219,7 +232,7 @@ export default class SendBasicFarmlist extends Component {
 					<div className="column">
 					</div>
 				</div>
-				<InactiveTable content={farms} clicked={this.clicked} />
+				<BasicFarmlistTable content={farms} clicked={this.clicked} unitChanged={this.unitChanged} />
 				<hr></hr>
 
 				<InfoTitle title={name} description={this.description} />
