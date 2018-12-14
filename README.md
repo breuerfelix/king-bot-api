@@ -85,7 +85,7 @@ $ ./docker.sh
 ```
 the docker script will prompt you for a container name, what port you want the bot to run on and name of the file with credentials you just created.
 
-visit`http://localhost:3000 (or whatever port you chose)` to see the results.
+visit `http://localhost:3000` (or whatever port you chose) to see the results.
 
 # development
 
