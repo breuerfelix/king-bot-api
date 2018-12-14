@@ -81,10 +81,11 @@ pull image and start the container mounting the file:
 
 ```console
 $ docker pull scriptworld/king-bot-api
-$ docker container run -d -p 3000:3000 -v /path_to/your_credentials_file.txt:/usr/kingbot/assets/cred.txt --name kingbot scriptworld/king-bot-api
+$ ./docker.sh
 ```
+the docker script will prompt you for a container name, what port you want the bot to run on and name of the file with credentials you just created.
 
-open `http://localhost:3000` to see the results.
+visit`http://localhost:3000 (or whatever port you chose)` to see the results.
 
 # development
 
