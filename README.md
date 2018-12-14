@@ -71,7 +71,7 @@ after configuring you can close the browser window and the bot keeps running unt
 # docker
 
 there is also a docker image for this bot.  
-create a file with your credentials that can be mounted to the docker container:
+create a folder for the database and a file (`cred.txt`) with your credentials in this folder that can be mounted to the docker container:
 
 ```csv
 your_email;your_password;your_gameworld
@@ -81,9 +81,9 @@ pull image and start the container mounting the file:
 
 ```console
 $ docker pull scriptworld/king-bot-api
-$ ./docker.sh
+$ sudo bash ./docker.sh
 ```
-the docker script will prompt you for a container name, what port you want the bot to run on and name of the file with credentials you just created.
+the docker script will prompt you for a container name, what port you want the bot to run on and the absoulute path to the folder you just created.
 
 visit `http://localhost:3000` (or whatever port you chose) to see the results.
 
