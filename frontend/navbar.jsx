@@ -123,6 +123,9 @@ export default class NavBar extends Component {
 									<a className="navbar-item" onClick={ e => this.route('/inactive_finder') }>
 										inactive finder
 									</a>
+									<a className="navbar-item" onClick={ e => this.route('/logger') }>
+										logger
+									</a>
 								</div>
 							</div>
 

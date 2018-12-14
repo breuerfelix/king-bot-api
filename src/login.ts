@@ -1,5 +1,6 @@
 import qs from 'qs';
 import cheerio from 'cheerio';
+import logger from './logger';
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { clash_obj, log } from './util';
 import database from './database';
@@ -67,7 +68,7 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 	msid = html.substring(startIndex, endIndex);
 
 	msid = msid.substring(msid.indexOf(',') + 3, msid.lastIndexOf('"'));
-	console.log('msid: ' + msid);
+	logger.info('msid: ' + msid);
 	
 	// logs in with credentials from file
 	url = `https://mellon-t5.traviangames.com/authentication/login/ajax/form-validate?msid=${msid}&msname=msid`;
@@ -87,7 +88,7 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 	let rv: any = parse_token(res.data);
 	let tokenURL: string = rv.url;
 	token_lobby = rv.token;
-	console.log('token: ' + token_lobby);
+	logger.info('token: ' + token_lobby);
 
 	options = {
 		method: 'GET',
@@ -106,7 +107,7 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 
 	let sessionLink: string = cookies.headers.location;
 	session_lobby = sessionLink.substring(sessionLink.lastIndexOf('=') + 1);
-	console.log('sessionID: ' + session_lobby);
+	logger.info('sessionID: ' + session_lobby);
 
 	// last lobby session link, there are no information to get from for now
 	//let lastLobbyURL = 'https://lobby.kingdoms.com/' + sessionLink;
@@ -136,6 +137,7 @@ async function login_to_gameworld(axios: AxiosInstance, gameworld: string, msid:
 	try {
 		res = await axios.get(mellonURL);
 	} catch {
+		logger.error('error login to gameworld. could you entered the wrong one?');
 		throw('error login to gameworld. could you entered the wrong one?');
 	}
 
@@ -165,7 +167,7 @@ async function login_to_gameworld(axios: AxiosInstance, gameworld: string, msid:
 	// get new sessionID
 	let sessionLink = res.headers.location;
 	session_gameworld = sessionLink.substring(sessionLink.lastIndexOf('=') + 1);
-	console.log('new sessionID: ' + session_gameworld);
+	logger.info('new sessionID: ' + session_gameworld);
 
 	// last session link, there are no information to get from for now
 	//let gameworldURL = `https://${gameworld}.kingdoms.com/` + sessionLink;
