@@ -3,6 +3,7 @@ import path from 'path';
 import kingbot from './index';
 import api from './api';
 import settings from './settings';
+import logger from './logger';
 import { inactive_finder } from './extras';
 import { buildings } from './data';
 import { Ifeature_params, feature } from './features/feature';
@@ -112,6 +113,11 @@ class server {
 				return;
 			}
 
+			if(ident == 'logger') {
+				res.send(logger.log_list);
+				return;
+			}
+
 			res.send('error');
 		});
 
@@ -166,13 +172,12 @@ class server {
 
 		// handles all 404 requests to main page
 		this.app.get('*', (req: any, res: any) => {
-			//res.redirect('/');
 			res.sendFile(path.resolve(__dirname, '../public', 'index.html'));
 		});
 	}
 
 	async start(port: number) {
-		this.app.listen(port, () => console.log(`server running on port ${port}!`));
+		this.app.listen(port, () => logger.info(`server running on port ${port}!`));
 
 		// start all features on startup
 		for(let feat of this.features) feat.start_for_server();
