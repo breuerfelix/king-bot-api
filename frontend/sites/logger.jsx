@@ -25,7 +25,8 @@ export default class Logger extends Component {
 					<thead>
 						<tr>
 							<th style={ row_style }>level</th>
-							<th style={ row_style }>message</th>
+							<th style={ row_style }>group</th>
+							<th style='vertical-align: middle; text-align: left;'>message</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -42,6 +43,7 @@ class Log extends Component {
 		return (
 			<tr>
 				<td style='vertical-align: middle; text-align: center'>{ log.level }</td>
+				<td style='vertical-align: middle; text-align: center'>{ log.group }</td>
 				<td style='vertical-align: middle; text-align: left'>{ log.message }</td>
 			</tr>
 		);

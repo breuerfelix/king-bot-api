@@ -2,8 +2,9 @@ import winston from 'winston';
 import { format } from 'logform';
 
 interface log {
-	level: string,
+	level: string
 	message: string
+	group: string
 }
 
 class logger {
@@ -25,30 +26,33 @@ class logger {
 		});
 	}
 
-	info(obj: any): void {
+	info(obj: any, group: string = 'general'): void {
 		const message: string = this.get_string(obj);
 		this.log_inst.info(message);
 		this.log_list.push({
 			level: 'info',
-			message
+			message,
+			group
 		});
 	}
 
-	warn(obj: any): void {
+	warn(obj: any, group: string = 'general'): void {
 		const message: string = this.get_string(obj);
 		this.log_inst.warn(message);
 		this.log_list.push({
 			level: 'warn',
-			message
+			message,
+			group
 		});
 	}
 
-	error(obj: any): void {
+	error(obj: any, group: string = 'general'): void {
 		const message: string = this.get_string(obj);
 		this.log_inst.error(message);
 		this.log_list.push({
 			level: 'error',
-			message
+			message,
+			group
 		});
 	}
 
