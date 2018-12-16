@@ -4,6 +4,7 @@ import { village, player } from '../gamedata';
 import { Ivillage, Ibuilding_queue, Iresources, Iplayer } from '../interfaces';
 import { tribe } from '../data';
 import api from '../api';
+import logger from '../logger';
 import finish_earlier from './finish_earlier';
 import { buildings } from '../data';
 
@@ -78,7 +79,7 @@ class queue extends feature_item {
 	}
 
 	async run(): Promise<void> {
-		log(`building queue: ${this.options.uuid} started`);
+		logger.info(`building queue: ${this.options.uuid} started`, 'building queue');
 
 		while(this.options.run) {
 			const { village_name, queue } = this.options;
@@ -128,16 +129,31 @@ class queue extends feature_item {
 				// upgrade building here
 				if(this.able_to_build(queue_item.costs, village_obj)) {
 					const res: any = await api.upgrade_building(queue_item.type, queue_item.location, village_obj.villageId);
+					logger.info('upgrade building ' + queue_item.location + ' on village ' + village_obj.name, 'building queue');
+
+					// TODO save new options to database
 					this.options.queue.shift();
-					log('upgrade building ' + queue_item.location + ' on village ' + village_obj.name);
 
-					if(!sleep_time) sleep_time = queue_item.upgrade_time;
-					else if(queue_item.upgrade_time < sleep_time) sleep_time = queue_item.upgrade_time;
+					const upgrade_time: number = Number(queue_item.upgrade_time);
 
+					if(get_diff_time(upgrade_time) <= (5 * 60)) {
+						await api.finish_now(village_obj.villageId, 2);
+						logger.info('upgrade time less 5 min, instant finish!', 'building queue');
+
+						// only wait one second to build next building
+						sleep_time = 1;
+					}
+
+					if(!sleep_time) sleep_time = upgrade_time;
+					else if(upgrade_time < sleep_time) sleep_time = upgrade_time;
+				} else {
+					// check again later if there might be enough res
+					sleep_time = 60;
 				}
 			}
 
-			if(sleep_time && finish_earlier.running) sleep_time = sleep_time - (5 * 60) + 10;
+			if(sleep_time && sleep_time > (5 * 60 + 10) && finish_earlier.running)
+				sleep_time = sleep_time - (5 * 60) + 10;
 
 			// set save sleep time
 			if(!sleep_time || sleep_time <= 0) sleep_time = 120;
@@ -155,7 +171,7 @@ class queue extends feature_item {
 
 		this.running = false;
 		this.options.run = false;
-		log(`building queue: ${this.options.uuid} stopped`);
+		logger.info(`building queue: ${this.options.uuid} stopped`, 'building queue');
 	}
 
 	able_to_build(costs: Iresources, village: Ivillage): boolean {
