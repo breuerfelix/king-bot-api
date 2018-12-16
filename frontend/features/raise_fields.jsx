@@ -103,14 +103,14 @@ export default class RaiseFields extends Component {
 
 				<div className="columns">
 					<div className="column">
-						<button className="button is-success" onClick={ this.submit } style='margin-right: 1rem'>
+						<button className="button is-success is-radiusless" onClick={ this.submit } style='margin-right: 1rem'>
 							submit
 						</button>
-						<button className="button" onClick={ this.cancel } style='margin-right: 1rem'>
+						<button className="button is-radiusless" onClick={ this.cancel } style='margin-right: 1rem'>
 							cancel
 						</button>
 
-						<button className="button is-danger" onClick={ this.delete }>
+						<button className="button is-danger is-radiusless" onClick={ this.delete }>
 							delete
 						</button>
 					</div>
