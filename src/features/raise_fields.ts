@@ -212,7 +212,7 @@ class raise extends feature_item {
 				break;
 			}
 
-			if(sleep_time && finish_earlier.running) sleep_time = sleep_time - (5 * 60) + 10;
+			if(sleep_time && sleep_time > ((5 * 60) + 10) && finish_earlier.running) sleep_time = sleep_time - (5 * 60) + 10;
 
 			// set save sleep time
 			if(!sleep_time || sleep_time <= 0) sleep_time = 60;
