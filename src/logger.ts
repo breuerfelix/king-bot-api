@@ -19,6 +19,7 @@ class logger {
 		);
 
 		this.log_inst = winston.createLogger({
+			level: 'debug',
 			format: logFormat,
 			transports: [
 				new winston.transports.Console(),
@@ -54,6 +55,11 @@ class logger {
 			message,
 			group
 		});
+	}
+
+	debug(obj: any, group: string = 'general'): void {
+		const message: string = this.get_string(obj);
+		this.log_inst.debug(message);
 	}
 
 	get_string(obj: any): string {
