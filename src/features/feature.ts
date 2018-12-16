@@ -1,5 +1,6 @@
 import database from '../database';
 import uniqid from 'uniqid';
+import logger from '../logger';
 import { log, list_remove } from '../util';
 
 export interface Ifeature_params extends Ifeature, Ioptions {
@@ -93,7 +94,9 @@ export abstract class feature_single implements feature {
 		try {
 			this.running = true;
 			await this.run();
-		} catch {
+		} catch(e) {
+			logger.error(e);
+
 			this.running = false;
 			this.set_options({ ...this.get_options(), run: false, error: true });
 		}
