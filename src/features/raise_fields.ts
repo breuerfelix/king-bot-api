@@ -111,7 +111,7 @@ class raise extends feature_item {
 		if(queue_data.freeSlots[2] == 0) {
 			// set sleep time
 			const finished: number = queue_data.queues[2][0].finished;
-			logger.info('queue for raise field is not free for ' + String(finished) + ' seconds', 'raise fields');
+			logger.info('queue for raise field is not free for ' + String(get_diff_time(finished)) + ' seconds', 'raise fields');
 			return get_diff_time(finished);
 		}
 
