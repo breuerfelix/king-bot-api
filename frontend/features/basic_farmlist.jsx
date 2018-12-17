@@ -58,18 +58,32 @@ export default class SendBasicFarmlist extends Component {
 	}
 
 	unitChanged = async item => {
-		const { farms, inactives } = this.state;
-		console.log(1)
-		console.log(item)
+		const { farms } = this.state;
 
 		var found = farms.find(function (farm) {
-			return item.villageId == farm.villageId
+      return item.villageId == farm.villageId
 		})
 
-		console.log(found)
+    found.unit_type = item.unit_type;
+    found.unit_number = item.unit_number;
+    this.setState({ farms: farms })
+  }
+  
+  remove = async item => {
+    const { farms } = this.state;
 
-		return true;
-	}
+		var found = farms.find(function (farm) {
+      return item.villageId == farm.villageId
+    })
+
+    var index = farms.indexOf(found);
+    console.log(index)
+    if (index > -1) {
+      farms.splice(index, 1);
+    }
+    console.log(farms)
+    this.setState({ farms: farms })
+  }
 
 	clicked = async item => {
 		const { farms, inactives } = this.state;
@@ -232,7 +246,7 @@ export default class SendBasicFarmlist extends Component {
 					<div className="column">
 					</div>
 				</div>
-				<BasicFarmlistTable content={farms} clicked={this.clicked} unitChanged={this.unitChanged} />
+				<BasicFarmlistTable content={farms} clicked={this.remove} unitChanged={this.unitChanged} />
 				<hr></hr>
 
 				<InfoTitle title={name} description={this.description} />

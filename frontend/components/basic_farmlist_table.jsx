@@ -40,8 +40,16 @@ export default class BasicFarmlistTable extends Component {
 class Farm extends Component {
 	state = {
 		toggled: false,
-		unit_type: 0,
-		unit_number: 0
+    distance: null,
+    player_name: null,
+    village_name: null,
+    population: null,
+    x: null,
+    y: null,
+    tribeId: null, 
+    kingdom_tag: null, 
+    unit_number: 2, 
+    unit_type: 0
 	}
 
 	tribe_dict = {
@@ -53,13 +61,7 @@ class Farm extends Component {
 	render({ content, clicked, unitChanged }, { toggled }) {
 		let { distance, player_name, village_name, population, x, y, tribeId, kingdom_tag, unit_number, unit_type } = content;
 
-		if (unit_number == null) {
-			unit_number = this.state.unit_number;
-			content.unit_number = unit_number;
-		} if (unit_type == null) {
-			unit_type = this.state.unit_type;
-			content.unit_type = unit_type;
-		}
+    this.state = content;
 
 		distance = Number(distance).toFixed(1);
 		const coordinates = `( ${x} | ${y} )`;
@@ -104,14 +106,23 @@ class Farm extends Component {
 					<input
 						type="text"
 						value={unit_type}
-						placeholder="min"
+						placeholder="0"
 						onChange={async e => {
-							if (await unitChanged(content, e.target.value)) this.setState({ unit_type: e.target.value });
+              this.setState({ unit_type: e.target.value });
+              await unitChanged(this.state)
 						}}
 					/>
 				</td>
 				<td style={row_style}>
-					{unit_number}
+        <input
+						type="text"
+            value={unit_number}
+            placeholder="2"
+						onChange={async e => {
+              this.setState({ unit_number: e.target.value });
+              await unitChanged(this.state)
+						}}
+					/>
 				</td>
 				<td style={row_style}>
 					<a class="has-text-black" onClick={async e => {
