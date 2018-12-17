@@ -109,7 +109,7 @@ export default class NavBar extends Component {
 										trade route
 									</a>
 									<a className="navbar-item" onClick={e => this.get_new('basic_farmlist')}>
-										basic farmlist
+										travian minus farmlist
 									</a>
 								</div>
 							</div>
