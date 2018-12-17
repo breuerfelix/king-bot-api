@@ -10,8 +10,8 @@ interface Ioptions_farm extends Ioptions {
 	village_name: string
 	interval_min: number
 	interval_max: number
-  farms: Array<any>
-  
+	farms: Array<any>
+
 
 }
 
@@ -59,7 +59,7 @@ class farm_feature extends feature_item {
 	set_params(): void {
 		this.params = {
 			ident: 'basic_farmlist',
-			name: ' basic farmlist'
+			name: 'travian minus farmlist'
 		};
 	}
 
@@ -73,46 +73,48 @@ class farm_feature extends feature_item {
 	}
 
 	async run(): Promise<void> {
-    const { village_name, farms, interval_min, interval_max
-    } = this.options;
-    while (this.options.run) {
+		const { village_name, farms, interval_min, interval_max
+		} = this.options;
+		while (this.options.run) {
+			const params = [
+				village.own_villages_ident,
+			];
 
-      console.log(this.options)
+			const response = await api.get_cache(params);
+			const vill: Ivillage = village.find(village_name, response);
+			const village_id: number = vill.villageId;
+
+			farms.forEach(async function (farm) {
+				const units: Iunits = {
+					1: 0,
+					2: 0,
+					3: 0,
+					4: 0,
+					5: 0,
+					6: 0,
+					7: 0,
+					8: 0,
+					9: 0,
+					10: 0,
+					11: 0
+				};
+				console.log(farm)
+				if (farm.unit_type < 1 || farm.unit_type > 11 || farm.unit_number < 1) {
+					log(`Farm: ${farm.village_name} skipped. unit type (${farm.unit_type}) must be between 1 and 11. Unit number (${farm.unit_number}) must greater than 0`);
+				} else {
+					units[farm.unit_type] = parseInt(farm.unit_number, 10);
+					await api.send_units(village_id, farm.villageId, units, 4)
+				}
 
 
-      const params = [
-        village.own_villages_ident,
-      ];
-      
-      const response = await api.get_cache(params);
-      const vill: Ivillage = village.find(village_name, response);
-      const village_id: number = vill.villageId;
+			});
 
-      farms.forEach(async function(farm) {
-        const units: Iunits = {
-          1: 0,
-          2: 0,
-          3: 0,
-          4: 0,
-          5: 0,
-          6: 0,
-          7: 0,
-          8: 0,
-          9: 0,
-          10: 0,
-          11: 0
-        };
-
-        units[farm.unit_type] = parseInt(farm.unit_number,10);
-        await api.send_units(village_id, farm.villageId, units, 4)
-      });
-
-      await sleep(get_random_int(interval_min, interval_max));
-    }
+			await sleep(get_random_int(interval_min, interval_max));
+		}
 		log(`trading uuid: ${this.options.uuid} stopped`);
 		this.running = false;
 		this.options.run = false;
-  }
+	}
 
 }
 

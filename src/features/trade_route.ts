@@ -165,6 +165,7 @@ class trade_feature extends feature_item {
 			const vill: Ivillage = village.find(source_village_name, response);
 			const vill2: Ivillage = village.find(destination_village_name, response);
 			var resources = [0, 0, 0, 0, 0];
+
 			resources[1] = Math.min(send_wood, vill.storage['1']);
 			resources[2] = Math.min(send_clay, vill.storage['2']);
 			resources[3] = Math.min(send_iron, vill.storage['3']);
@@ -172,19 +173,21 @@ class trade_feature extends feature_item {
 			//If there are enough merchants
 			if (this.enough_merchants(merchant_response, resources)) {
 				//And source village has more than desired and destination has less than desired
-				if (vill.storage['1'] > source_wood &&
-					vill.storage['2'] > source_clay &&
-					vill.storage['3'] > source_iron &&
-					vill.storage['4'] > source_crop &&
-					vill2.storage['1'] < destination_wood &&
-					vill2.storage['2'] < destination_clay &&
-					vill2.storage['3'] < destination_iron &&
-					vill2.storage['4'] < destination_crop) {
+				if (vill.storage['1'] < source_wood || vill2.storage['1'] > destination_wood) {
+					resources[1] = 0
+				} if (vill.storage['2'] < source_clay || vill2.storage['2'] > destination_clay) {
+					resources[2] = 0
+				} if (vill.storage['3'] < source_iron || vill2.storage['3'] > destination_iron) {
+					resources[3] = 0
+				} if (vill.storage['4'] < source_crop || vill2.storage['4'] > destination_crop) {
+					resources[4] = 0
+				}
+				if (resources[1] + resources[2] + resources[3] + resources[4] > 0) {
 
 					await api.send_merchants(sourceVillage_id, destVillage_id, resources);
 					log(`Trade ${resources} sent from ${source_village_name} to ${destination_village_name}`);
 				} else {
-					log('Trade conditions not meet.');
+					log(`Trade conditions not met. ${resources}`);
 				}
 				await sleep(get_random_int(interval_min, interval_max));
 			} else {

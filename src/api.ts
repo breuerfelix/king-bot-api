@@ -102,9 +102,9 @@ class api {
 			redeployHero: false,
 			units,
 			spyMission
-    };
-    
-    console.log(params)
+		};
+
+		console.log(params)
 
 		return await this.post('send', 'troops', params);
 	}
@@ -146,6 +146,8 @@ class api {
 		if (response.errors) {
 			log(response.errors);
 		}
+
+		console.log(response)
 		return this.merge_data(response.data);
 	}
 
