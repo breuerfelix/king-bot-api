@@ -6,7 +6,6 @@ import classNames from 'classnames';
 export default class TradeRoute extends Component {
 	state = {
 		name: 'trade route',
-		farmlists: [],
 		selected_farmlist: '',
 		source_village_name: '',
 		destination_village_name: '',
@@ -24,7 +23,6 @@ export default class TradeRoute extends Component {
 		destination_clay: '',
 		destination_iron: '',
 		destination_crop: '',
-		all_farmlists: [],
 		all_villages: [],
 		error_input_min: false,
 		error_input_max: false,
@@ -54,11 +52,91 @@ export default class TradeRoute extends Component {
 			this.state.error_source_village_name ||
 			this.state.error_destination_village_name) return;
 
-		this.props.submit({ ...this.state });
+		const {
+			ident,
+			uuid,
+			source_village_name,
+			destination_village_name,
+			interval_min,
+			interval_max,
+			send_wood,
+			send_clay,
+			send_iron,
+			send_crop,
+			source_wood,
+			source_clay,
+			source_iron,
+			source_crop,
+			destination_wood,
+			destination_iron,
+			destination_clay,
+			destination_crop
+		} = this.state;
+
+		this.props.submit({
+			ident,
+			uuid,
+			source_village_name,
+			destination_village_name,
+			interval_min,
+			interval_max,
+			send_wood,
+			send_clay,
+			send_iron,
+			send_crop,
+			source_wood,
+			source_clay,
+			source_iron,
+			source_crop,
+			destination_wood,
+			destination_iron,
+			destination_clay,
+			destination_crop
+		});
 	}
 
 	delete = async e => {
-		this.props.delete({ ...this.state });
+		const {
+			ident,
+			uuid,
+			source_village_name,
+			destination_village_name,
+			interval_min,
+			interval_max,
+			send_wood,
+			send_clay,
+			send_iron,
+			send_crop,
+			source_wood,
+			source_clay,
+			source_iron,
+			source_crop,
+			destination_wood,
+			destination_iron,
+			destination_clay,
+			destination_crop
+		} = this.state;
+
+		this.props.delete({
+			ident,
+			uuid,
+			source_village_name,
+			destination_village_name,
+			interval_min,
+			interval_max,
+			send_wood,
+			send_clay,
+			send_iron,
+			send_crop,
+			source_wood,
+			source_clay,
+			source_iron,
+			source_crop,
+			destination_wood,
+			destination_iron,
+			destination_clay,
+			destination_crop
+		});
 	}
 
 	cancel = async e => {

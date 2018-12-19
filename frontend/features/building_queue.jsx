@@ -36,11 +36,13 @@ export default class BuildingQueue extends Component {
 
 		if(this.state.error_village) return;
 
-		this.props.submit({ ...this.state });
+		const { ident, uuid, village_name, queue } = this.state;
+		this.props.submit({ ident, uuid, village_name, queue });
 	}
 
 	delete = async e => {
-		this.props.delete({ ...this.state });
+		const { ident, uuid, village_name, queue } = this.state;
+		this.props.delete({ ident, uuid, village_name, queue });
 	}
 
 	cancel = async e => {
@@ -210,14 +212,15 @@ export default class BuildingQueue extends Component {
 							<div class="control">
 								<div class={ village_select_class }>
 									<select 
+										class='is-radiusless'
 										value={ village_name } 
 										onChange={ this.village_changes }
 									>
 										{ villages }
 									</select>
 								</div>
-								<a className="button is-success" style="margin-left: 3rem; margin-right: 1rem" onClick={ this.submit }>submit</a>
-								<a className="button is-danger" onClick={ this.delete }>delete</a>
+								<a className="button is-success is-radiusless" style="margin-left: 3rem; margin-right: 1rem" onClick={ this.submit }>submit</a>
+								<a className="button is-danger is-radiusless" onClick={ this.delete }>delete</a>
 
 							</div>
 						</div>

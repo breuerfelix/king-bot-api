@@ -47,11 +47,13 @@ export default class SendFarmlist extends Component {
 
 		if(this.state.error_input_min || this.state.error_input_max || this.state.error_village || this.state.error_farmlist) return;
 
-		this.props.submit({ ...this.state });
+		const { ident, uuid, farmlists, village_name, interval_min, interval_max } = this.state;
+		this.props.submit({ ident, uuid, farmlists, village_name, interval_min, interval_max });
 	}
 
 	delete = async e => {
-		this.props.delete({ ...this.state });
+		const { ident, uuid, farmlists, village_name, interval_min, interval_max } = this.state;
+		this.props.delete({ ident, uuid, farmlists, village_name, interval_min, interval_max });
 	}
 
 	cancel = async e => {
