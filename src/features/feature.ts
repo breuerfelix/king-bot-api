@@ -131,6 +131,8 @@ export abstract class feature_single implements feature {
 		}
 
 		if(action == 'update') {
+			console.log(payload)
+			console.log(payload.feature)
 			res = this.update({ ...payload.feature });
 			this.save();
 

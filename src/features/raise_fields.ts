@@ -110,7 +110,18 @@ class raise extends feature_item {
 		// skip if resource slot is used
 		if(queue_data.freeSlots[2] == 0) {
 			// set sleep time
-			const finished: number = queue_data.queues[2][0].finished;
+			let finished: number = null;
+
+			if(queue_data.queues[2].length) {
+				finished = queue_data.queues[2][0].finished;
+			} else if(queue_data.queues[1].length) {
+				finished = queue_data.queues[1][0].finished;
+			} else {
+				logger.error('error calculating queue time! queue object:');
+				logger.error(queue_data.queues);
+				return null;
+			}
+
 			logger.info('queue for raise field is not free for ' + String(get_diff_time(finished)) + ' seconds', 'raise fields');
 			return get_diff_time(finished);
 		}

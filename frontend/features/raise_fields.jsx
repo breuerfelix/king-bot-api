@@ -29,11 +29,13 @@ export default class RaiseFields extends Component {
 
 		if(this.state.error_village) return;
 
-		this.props.submit({ ...this.state });
+		const { ident, uuid, village_name, crop, wood, clay, iron } = this.state;
+		this.props.submit({ ident, uuid, village_name, crop, wood, clay });
 	}
 
 	delete = async e => {
-		this.props.delete({ ...this.state });
+		const { ident, uuid, village_name, crop, wood, clay, iron } = this.state;
+		this.props.delete({ ident, uuid, village_name, crop, wood, clay });
 	}
 
 	cancel = async e => {
@@ -82,6 +84,7 @@ export default class RaiseFields extends Component {
 							<div class="control">
 								<div class={ village_select_class }>
 									<select 
+										class="is-radiusless"
 										value={ village_name } 
 										onChange={ (e) => this.setState({ village_name: e.target.value }) }
 									>

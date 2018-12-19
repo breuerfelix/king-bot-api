@@ -61,18 +61,20 @@ export default class EditFeature extends Component {
 	}
 
 	submit = async feature => {
+		const { uuid, ident } = this.state;
 		const payload = {
 			action: 'update',
-			feature: { ...feature }
+			feature: { uuid, ident, ...feature }
 		};
 
 		this.send_request(payload);
 	}
 
 	delete = async feature => {
+		const { uuid, ident } = this.state;
 		const payload = {
 			action: 'delete',
-			feature: { ...feature }
+			feature: { ident, uuid, ...feature }
 		};
 
 		this.send_request(payload);

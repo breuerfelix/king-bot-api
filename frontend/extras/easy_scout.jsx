@@ -148,10 +148,10 @@ export default class EasyScout extends Component {
 
 				<div className="columns">
 					<div className="column">
-						<button className="button is-success" onClick={ this.submit } style='margin-right: 1rem'>
+						<button className="button is-success is-radiusless" onClick={ this.submit } style='margin-right: 1rem'>
 							submit
 						</button>
-						<button className="button" onClick={ this.cancel } style='margin-right: 1rem'>
+						<button className="button is-radiusless" onClick={ this.cancel } style='margin-right: 1rem'>
 							cancel
 						</button>
 					</div>
