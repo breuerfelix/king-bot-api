@@ -119,6 +119,7 @@ class raise extends feature_item {
 			} else {
 				logger.error('error calculating queue time! queue object:');
 				logger.error(queue_data.queues);
+				this.options.error = true;
 				return null;
 			}
 
