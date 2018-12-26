@@ -91,7 +91,22 @@ export default class SendBasicFarmlist extends Component {
 		farms.push(item)
 		this.setState({ farms: farms })
 		return true;
-	}
+  }
+  
+  sort = async e => {
+    const { farms } = this.state;
+    function compare(a,b) {
+      if (a.distance < b.distance)
+        return -1;
+      if (a.distance > b.distance)
+        return 1;
+      return 0;
+    }
+    
+    farms.sort(compare);
+
+    this.setState({farms:farms})
+  }
 
 	search = async e => {
 		if (this.state.loading) return;
@@ -246,6 +261,9 @@ export default class SendBasicFarmlist extends Component {
 					<div className="column">
 					</div>
 				</div>
+        <button className='button is-radiusless' style='margin-right: 1rem' onClick={this.sort}>
+          sort
+        </button>
 				<BasicFarmlistTable content={farms} clicked={this.remove} unitChanged={this.unitChanged} />
 				<hr></hr>
 
