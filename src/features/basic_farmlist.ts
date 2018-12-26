@@ -98,12 +98,17 @@ class farm_feature extends feature_item {
 					10: 0,
 					11: 0
 				};
-				console.log(farm)
 				if (farm.unit_type < 1 || farm.unit_type > 11 || farm.unit_number < 1) {
 					log(`Farm: ${farm.village_name} skipped. unit type (${farm.unit_type}) must be between 1 and 11. Unit number (${farm.unit_number}) must greater than 0`);
 				} else {
-					units[farm.unit_type] = parseInt(farm.unit_number, 10);
-					await api.send_units(village_id, farm.villageId, units, 4)
+          units[farm.unit_type] = parseInt(farm.unit_number, 10);
+          if(units[farm.unit_type] == 4){
+            log("Scouting")
+            api.send_units(village_id, farm.villageId, units, 6)
+          }else{
+            await api.send_units(village_id, farm.villageId, units, 4)
+          }
+					await sleep(Math.random())//Sleep between 0 and 1 second
 				}
 
 
