@@ -52,6 +52,21 @@ class api {
 		return this.merge_data(response.data);
 	}
 
+	async get_report(sourceVillageId: number): Promise<any> {
+		const params = {
+			"collection": "search",
+			"start": 0, "count": 1,
+			"filters": [
+				"1", "2", "3",
+				{ "villageId": sourceVillageId }
+			],
+			"alsoGetTotalNumber": true
+		}
+
+		return await this.post('getLastReports', 'reports', params);
+	}
+
+
 	async send_farmlists(lists: number[], village_id: number): Promise<any> {
 		const params = {
 			listIds: lists,

@@ -98,17 +98,34 @@ class farm_feature extends feature_item {
 					10: 0,
 					11: 0
 				};
-				if (farm.unit_type < 1 || farm.unit_type > 11 || farm.unit_number < 1 || farm.priority == 0) {
-					log(`Farm: ${farm.village_name} skipped. unit type (${farm.unit_type}) must be between 1 and 11. Unit number (${farm.unit_number}) must greater than 0`);
+				if (farm.unit_type < 1 || farm.unit_type > 11 || farm.unit_number < 1 || farm.priority <= 0) {
+					log(`Farm: ${farm.village_name} skipped.`);
 				} else {
-          units[farm.unit_type] = parseInt(farm.unit_number, 10);
-          if(units[farm.unit_type] == 4){
-            log("Scouting")
-            api.send_units(village_id, farm.villageId, units, 6)
-          }else{
-            await api.send_units(village_id, farm.villageId, units, 4)
-          }
-					await sleep(Math.random())//Sleep between 0 and 1 second
+
+					var reports = await api.get_report(farm.villageId);
+					reports = reports.reports
+					var attack = true;
+					if (reports.length > 0) {
+						const report = reports[0];
+						if (report.attackerTroopLossSum > 0) {
+							attack = false;
+						}
+
+					}
+
+					units[farm.unit_type] = parseInt(farm.unit_number, 10);
+					if (attack) {
+						if (units[farm.unit_type] == 4) {
+							log("Scouting")
+							await api.send_units(village_id, farm.villageId, units, 6)
+						} else {
+							await api.send_units(village_id, farm.villageId, units, 4)
+						}
+					} else {
+						log(`Farm: ${farm.village_name} had losses last time. Skipping`)
+						farm.priority = -1;
+					}
+					await sleep(1 + Math.random())//Sleep between 0 and 1 second
 				}
 
 
