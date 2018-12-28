@@ -66,6 +66,7 @@ export default class SendBasicFarmlist extends Component {
 
     found.unit_type = item.unit_type;
     found.unit_number = item.unit_number;
+    found.priority = item.priority;
     this.setState({ farms: farms })
   }
   
@@ -77,11 +78,9 @@ export default class SendBasicFarmlist extends Component {
     })
 
     var index = farms.indexOf(found);
-    console.log(index)
     if (index > -1) {
       farms.splice(index, 1);
     }
-    console.log(farms)
     this.setState({ farms: farms })
   }
 
@@ -95,15 +94,36 @@ export default class SendBasicFarmlist extends Component {
   
   sort = async e => {
     const { farms } = this.state;
-    function compare(a,b) {
-      if (a.distance < b.distance)
-        return -1;
-      if (a.distance > b.distance)
-        return 1;
-      return 0;
+    function distance(a,b) {
+      var apn = Number(a.priority)
+      var bpn = Number(b.priority)
+      var adn = Number(a.distance)
+      var bdn = Number(b.distance)
+      if(apn == null) apn = 10;
+      if(bpn == null) bpn = 10;
+      if (apn < bpn)
+      {
+          return -1;
+      }
+      else if (apn > bpn)
+      {
+          return 1;
+      }
+      else
+      {
+          if (adn < bdn)
+          {
+              return -1;
+          }
+          else if (adn > bdn)
+          {
+              return 1;
+          }
+          return 0;
+      }
     }
     
-    farms.sort(compare);
+    farms.sort(distance);
 
     this.setState({farms:farms})
   }
