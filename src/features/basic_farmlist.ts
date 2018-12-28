@@ -98,7 +98,7 @@ class farm_feature extends feature_item {
 					10: 0,
 					11: 0
 				};
-				if (farm.unit_type < 1 || farm.unit_type > 11 || farm.unit_number < 1) {
+				if (farm.unit_type < 1 || farm.unit_type > 11 || farm.unit_number < 1 || farm.priority == 0) {
 					log(`Farm: ${farm.village_name} skipped. unit type (${farm.unit_type}) must be between 1 and 11. Unit number (${farm.unit_number}) must greater than 0`);
 				} else {
           units[farm.unit_type] = parseInt(farm.unit_number, 10);
