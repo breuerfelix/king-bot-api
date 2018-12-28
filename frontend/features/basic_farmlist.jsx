@@ -31,7 +31,9 @@ export default class SendBasicFarmlist extends Component {
 		inactives: [],
 		farms: [],
 		loading: false,
-		message: ''
+		message: '',
+		newFarm_x: '',
+		newFarm_y: '',
 	}
 
 	componentWillMount() {
@@ -61,72 +63,95 @@ export default class SendBasicFarmlist extends Component {
 		const { farms } = this.state;
 
 		var found = farms.find(function (farm) {
-      return item.villageId == farm.villageId
+			return item.villageId == farm.villageId
 		})
 
-    found.unit_type = item.unit_type;
-    found.unit_number = item.unit_number;
-    found.priority = item.priority;
-    this.setState({ farms: farms })
-  }
-  
-  remove = async item => {
-    const { farms } = this.state;
+		found.unit_type = item.unit_type;
+		found.unit_number = item.unit_number;
+		found.priority = item.priority;
+		this.setState({ farms: farms })
+	}
+
+	remove = async item => {
+		const { farms } = this.state;
 
 		var found = farms.find(function (farm) {
-      return item.villageId == farm.villageId
-    })
+			return item.villageId == farm.villageId
+		})
 
-    var index = farms.indexOf(found);
-    if (index > -1) {
-      farms.splice(index, 1);
-    }
-    this.setState({ farms: farms })
-  }
+		var index = farms.indexOf(found);
+		if (index > -1) {
+			farms.splice(index, 1);
+		}
+		this.setState({ farms: farms })
+	}
 
 	clicked = async item => {
-		const { farms, inactives } = this.state;
+		const { farms } = this.state;
 
-		farms.push(item)
+		var duplicate = false;
+		farms.forEach(function (farm) {
+			if (farm.villageId == item.villageId) duplicate = true;
+		})
+		if (!duplicate) farms.push(item)
 		this.setState({ farms: farms })
 		return true;
-  }
-  
-  sort = async e => {
-    const { farms } = this.state;
-    function distance(a,b) {
-      var apn = Number(a.priority)
-      var bpn = Number(b.priority)
-      var adn = Number(a.distance)
-      var bdn = Number(b.distance)
-      if(apn == null) apn = 10;
-      if(bpn == null) bpn = 10;
-      if (apn < bpn)
-      {
-          return -1;
-      }
-      else if (apn > bpn)
-      {
-          return 1;
-      }
-      else
-      {
-          if (adn < bdn)
-          {
-              return -1;
-          }
-          else if (adn > bdn)
-          {
-              return 1;
-          }
-          return 0;
-      }
-    }
-    
-    farms.sort(distance);
+	}
 
-    this.setState({farms:farms})
-  }
+	addFarm = async e => {
+		const { farms, newFarm_x, newFarm_y } = this.state;
+		console.log(e)
+		console.log(newFarm_x)
+		console.log(newFarm_y)
+		var x = Number(newFarm_x);
+		var y = Number(newFarm_y);
+		const villageID = 536887296 + x + (y * 32768)
+		const params = [
+			`Village: ${villageID}`
+		];
+		let response = await axios.post('/api/findVillage', params);
+		const village = response.data[0].data;
+		console.log(village)
+		var farm = {};
+		farm.villageId = village.villageId;
+		farm.isCity = village.isTown;
+		farm.village_name = village.name;
+		farm.population = village.population;
+		farm.isMainVillage = village.isMainVillage;
+		farm.distance = null;
+		console.log(farms[0])
+	}
+
+	sort = async e => {
+		const { farms } = this.state;
+		function distance(a, b) {
+			var apn = Number(a.priority)
+			var bpn = Number(b.priority)
+			var adn = Number(a.distance)
+			var bdn = Number(b.distance)
+			if (apn == null) apn = 10;
+			if (bpn == null) bpn = 10;
+			if (apn < bpn) {
+				return -1;
+			}
+			else if (apn > bpn) {
+				return 1;
+			}
+			else {
+				if (adn < bdn) {
+					return -1;
+				}
+				else if (adn > bdn) {
+					return 1;
+				}
+				return 0;
+			}
+		}
+
+		farms.sort(distance);
+
+		this.setState({ farms: farms })
+	}
 
 	search = async e => {
 		if (this.state.loading) return;
@@ -190,7 +215,7 @@ export default class SendBasicFarmlist extends Component {
 	}
 
 	render() {
-		const { interval_min, interval_max, all_villages, village_name, inactives, farms, message, min_player_pop, max_player_pop, min_village_pop, max_village_pop, min_distance, max_distance, inactive_for, loading } = this.state;
+		const { interval_min, interval_max, all_villages, village_name, inactives, farms, message, min_player_pop, max_player_pop, min_village_pop, max_village_pop, min_distance, max_distance, inactive_for, loading, newFarm_x, newFarm_y } = this.state;
 
 		const input_class_min = classNames({
 			input: true,
@@ -281,8 +306,25 @@ export default class SendBasicFarmlist extends Component {
 					<div className="column">
 					</div>
 				</div>
-        <button className='button is-radiusless' style='margin-right: 1rem' onClick={this.sort}>
-          sort
+				<input
+					style="width: 150px;"
+					type="text"
+					value={newFarm_x}
+					placeholder="0"
+					onChange={(e) => this.setState({ newFarm_x: e.target.value })}
+				/>
+				<input
+					style="width: 150px;"
+					type="text"
+					value={newFarm_y}
+					placeholder="0"
+					onChange={(e) => this.setState({ newFarm_y: e.target.value })}
+				/>
+				<button className='button is-radiusless' style='margin-right: 1rem' onClick={this.addFarm}>
+					add farm
+				</button>
+				<button className='button is-radiusless' style='margin-right: 1rem' onClick={this.sort}>
+					sort
         </button>
 				<BasicFarmlistTable content={farms} clicked={this.remove} unitChanged={this.unitChanged} />
 				<hr></hr>
