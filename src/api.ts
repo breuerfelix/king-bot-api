@@ -102,7 +102,8 @@ class api {
 			redeployHero: false,
 			units,
 			spyMission
-		};
+    };
+    
 		return await this.post('send', 'troops', params);
 	}
 

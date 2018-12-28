@@ -28,7 +28,6 @@ export default class SendBasicFarmlist extends Component {
 		min_distance: '',
 		max_distance: '',
 		inactive_for: '',
-		inactives: [],
 		farms: [],
 		loading: false,
 		message: ''
@@ -129,7 +128,9 @@ export default class SendBasicFarmlist extends Component {
   }
 
 	search = async e => {
-		if (this.state.loading) return;
+    if (this.state.loading) return;
+    const { farms } = this.state;
+
 
 		this.setState({
 			error_village: (this.state.village_name == '')
@@ -169,7 +170,15 @@ export default class SendBasicFarmlist extends Component {
 
 		let response = await axios.post('/api/inactivefinder', payload);
 
-		const { error, data, message } = response.data;
+    const { error, data, message } = response.data;
+    
+    data.forEach(function(inactive) {
+      farms.forEach(function(farm){
+        if(inactive.villageId == farm.villageId){
+          inactive.toggled = true;
+        }
+      });
+    });
 
 		this.setState({ inactives: [...data], loading: false });
 
