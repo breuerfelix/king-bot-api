@@ -147,7 +147,6 @@ class api {
 			log(response.errors);
 		}
 
-		console.log(response)
 		return this.merge_data(response.data);
 	}
 
