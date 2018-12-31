@@ -109,6 +109,16 @@ class api {
 
 	}
 
+	async check_target(villageId: number, destVillageId: number): Promise<any> {
+		const params = {
+			destVillageId,
+			villageId,
+			"movementType": 5
+		}
+
+		return await this.post('checkTarget', 'troops', params);
+	}
+
 	async send_units(villageId: number, destVillageId: number, units: Iunits, movementType: number, spyMission: string = 'resources'): Promise<any> {
 		const params = {
 			destVillageId,

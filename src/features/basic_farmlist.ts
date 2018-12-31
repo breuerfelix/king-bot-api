@@ -72,6 +72,7 @@ class farm_feature extends feature_item {
 		return 'this feature will just send the farmlist in a given interval.';
 	}
 
+
 	async run(): Promise<void> {
 		const { village_name, farms, interval_min, interval_max
 		} = this.options;
@@ -105,6 +106,10 @@ class farm_feature extends feature_item {
 					var reports = await api.get_report(farm.villageId);
 					reports = reports.reports
 					var attack = true;
+					if (changed(farm)) {
+						var attack = false;
+					}
+
 					if (reports.length > 0) {
 						const report = reports[0];
 						if (report.attackerTroopLossSum > 0) {
@@ -117,9 +122,9 @@ class farm_feature extends feature_item {
 					if (attack) {
 						if (units[farm.unit_type] == 4) {
 							log("Scouting")
-							await api.send_units(village_id, farm.villageId, units, 6)
+							//await api.send_units(village_id, farm.villageId, units, 6)
 						} else {
-							await api.send_units(village_id, farm.villageId, units, 4)
+							//await api.send_units(village_id, farm.villageId, units, 4)
 						}
 					} else {
 						log(`Farm: ${farm.village_name} had losses last time. Skipping`)
@@ -136,6 +141,27 @@ class farm_feature extends feature_item {
 		log(`trading uuid: ${this.options.uuid} stopped`);
 		this.running = false;
 		this.options.run = false;
+
+		async function changed(farm: any): Promise<boolean> {
+			const params = [
+				village.own_villages_ident,
+			];
+
+			const response = await api.get_cache(params);
+			const vill: Ivillage = village.find(village_name, response);
+			const sourceVillage_id: number = vill.villageId;
+
+
+			const responses = await api.check_target(sourceVillage_id, farm.villageId);
+
+			if (farm.player_name != responses.destPlayerName) { //farm.village_name != responses.villageName
+				farm.priority = -2;
+				log(farm)
+				return true;
+			}
+			return false;
+		}
+
 	}
 
 }
