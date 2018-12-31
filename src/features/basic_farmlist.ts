@@ -122,9 +122,9 @@ class farm_feature extends feature_item {
 					if (attack) {
 						if (units[farm.unit_type] == 4) {
 							log("Scouting")
-							//await api.send_units(village_id, farm.villageId, units, 6)
+							await api.send_units(village_id, farm.villageId, units, 6)
 						} else {
-							//await api.send_units(village_id, farm.villageId, units, 4)
+							await api.send_units(village_id, farm.villageId, units, 4)
 						}
 					} else {
 						log(`Farm: ${farm.village_name} had losses last time. Skipping`)
