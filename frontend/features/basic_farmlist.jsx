@@ -99,27 +99,45 @@ export default class SendBasicFarmlist extends Component {
 	}
 
 	addFarm = async e => {
-		const { farms, newFarm_x, newFarm_y } = this.state;
-		console.log(e)
-		console.log(newFarm_x)
-		console.log(newFarm_y)
+		const { village_name, farms, newFarm_x, newFarm_y } = this.state;
 		var x = Number(newFarm_x);
 		var y = Number(newFarm_y);
 		const villageID = 536887296 + x + (y * 32768)
-		const params = [
+		var response = await axios.post('/api/ownvillagenametoid', { village_name })
+		const sourceVillageID = response.data;
+		var params = {
+			sourceVillage: sourceVillageID,
+			destinationVillage: villageID
+		};
+		response = await axios.post('/api/findvillage2', params);
+		const check_target_data = response.data
+
+		params = [
 			`Village: ${villageID}`
 		];
-		let response = await axios.post('/api/findVillage', params);
+		response = await axios.post('/api/findvillage', params);
 		const village = response.data[0].data;
-		console.log(village)
 		var farm = {};
 		farm.villageId = village.villageId;
 		farm.isCity = village.isTown;
 		farm.village_name = village.name;
 		farm.population = village.population;
 		farm.isMainVillage = village.isMainVillage;
-		farm.distance = null;
-		console.log(farms[0])
+		farm.distance = check_target_data.distance;
+		farm.kingdomId = "?";
+		farm.kingdom_tag = "?";
+		farm.playerId = village.playerId;
+		farm.tribeId = village.tribeId;
+		farm.player_name = check_target_data.destPlayerName;
+		farm.x = x;
+		farm.y = y;
+
+		var duplicate = false;
+		farms.forEach(function (testfarm) {
+			if (testfarm.villageId == farm.villageId) duplicate = true;
+		})
+		if (!duplicate) farms.push(farm)
+		this.setState({ farms: farms })
 	}
 
 	sort = async e => {
