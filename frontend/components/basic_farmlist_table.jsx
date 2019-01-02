@@ -113,6 +113,7 @@ class Farm extends Component {
 				</td>
 				<td style={row_style}>
 					<input
+						style="width: 50px;"
 						type="text"
 						value={unit_type}
 						placeholder="0"
@@ -124,6 +125,7 @@ class Farm extends Component {
 				</td>
 				<td style={row_style}>
 					<input
+						style="width: 50px;"
 						type="text"
 						value={unit_number}
 						placeholder="2"
@@ -135,6 +137,7 @@ class Farm extends Component {
 				</td>
 				<td style={row_style}>
 					<input
+						style="width: 50px;"
 						type="text"
 						value={priority}
 						placeholder="10"
