@@ -124,9 +124,22 @@ class server {
 			res.send('success');
 		});
 
-		this.app.post('/api/findVillage', async (req: any, res: any) => {
+		this.app.post('/api/findvillage', async (req: any, res: any) => {
 			const response = await api.get_cache(req.body);
 			res.send(response)
+		});
+
+
+		this.app.post('/api/findvillage2', async (req: any, res: any) => {
+			const response = await api.check_target(req.body.sourceVillage, req.body.destinationVillage);
+			res.send(response);
+		});
+
+		this.app.post('/api/ownvillagenametoid', async (req: any, res: any) => {
+			const village_data = await village.get_own();
+			const village_obj: Ivillage = village.find(req.body.village_name, village_data);
+			const sourceVillage_id: number = village_obj.villageId;
+			res.send(sourceVillage_id);
 		});
 
 		this.app.post('/api/inactivefinder', async (req: any, res: any) => {
