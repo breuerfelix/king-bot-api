@@ -95,7 +95,27 @@ export default class SendBasicFarmlist extends Component {
 		if (!duplicate) farms.push(item)
 		this.setState({ farms: farms })
 		return true;
-	}
+  }
+  
+  calcUnitsNeeded = async item => {
+    const {farms, interval_min, interval_max} = this.state;
+    var unit1 = 0;
+    var unit3 = 0;
+    var unit5 = 0
+    const avgDst = (Number(interval_min)+Number(interval_max))/2
+    console.log(avgDst)
+    farms.forEach(function(farm) {
+      if(farm.unit_type == 1){
+        unit1 += ((farm.distance * 2 / 6) * (3600 / avgDst))
+      }else if(farm.unit_type == 3){
+        unit3 += ((farm.distance * 2 / 7) * (3600 / avgDst))
+      }else if(farm.unit_type == 5){
+        unit5 += ((farm.distance * 2 / 14) * (3600 / avgDst))
+      }
+    });
+    
+    console.log(`unit1: ${unit1} \n unit3: ${unit3} \n unit5: ${unit5}`)
+  }
 
 	addFarm = async e => {
 		const { village_name, farms, newFarm_x, newFarm_y } = this.state;
@@ -347,11 +367,14 @@ export default class SendBasicFarmlist extends Component {
 					placeholder="0"
 					onChange={(e) => this.setState({ newFarm_y: e.target.value })}
 				/>
-				<button className='button is-radiusless' style='margin-right: 1rem' onClick={this.addFarm}>
+				<button className='button is-radiusless is-success' style='margin-right: 1rem' onClick={this.addFarm}>
 					add farm
 				</button>
 				<button className='button is-radiusless' style='margin-right: 1rem' onClick={this.sort}>
 					sort
+        </button>
+        <button className='button is-radiusless' style='margin-right: 1rem' onClick={this.calcUnitsNeeded}>
+					units needed
         </button>
 				<BasicFarmlistTable content={farms} clicked={this.remove} unitChanged={this.unitChanged} />
 				<hr></hr>
