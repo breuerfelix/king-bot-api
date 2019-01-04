@@ -111,6 +111,9 @@ export default class NavBar extends Component {
 									<a className="navbar-item" onClick={e => this.get_new('basic_farmlist')}>
 										travian minus farmlist
 									</a>
+                  <a className="navbar-item" onClick={e => this.get_new('timed_attack')}>
+										timed attack
+									</a>
 								</div>
 							</div>
 
