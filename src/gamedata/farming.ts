@@ -10,7 +10,7 @@ class farming {
 
 		const farmlist = lists.find((x: any) => x.data.listName.toLowerCase() == name.toLowerCase());
 
-		if(!farmlist) {
+		if (!farmlist) {
 			log(`couldn't find farmlist ${name} !`);
 			return null;
 		}
@@ -19,7 +19,7 @@ class farming {
 	}
 
 	async get_own(): Promise<any> {
-		return await api.get_cache([ this.farmlist_ident ]);
+		return await api.get_cache([this.farmlist_ident]);
 	}
 }
 
