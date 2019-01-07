@@ -3,7 +3,7 @@ import { tribe } from './data';
 export interface Ifarmlist {
 	listId: number;
 	listName: string;
-	lastSent: Date;
+	lastSent: number;
 	lastChanged: Date;
 	units: Ifarmlist_units;
 	orderNr: number;
@@ -24,7 +24,7 @@ export interface Ifarmlist_entry {
 	coords: Icoordinates;
 	isOasis: boolean;
 	lastReport: {
-		time: Date;
+		time: number;
 		notificationType: number;
 		raidedResSum: number;
 		capacity: number;

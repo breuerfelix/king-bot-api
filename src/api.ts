@@ -67,13 +67,14 @@ class api {
 	}
 
 
-	async send_farmlists(lists: number[], village_id: number): Promise<any> {
+	async send_farmlists(listId: number, entryIds: number[], village_id: number): Promise<any> {
 		const params = {
-			listIds: lists,
+			listId: listId,
+			entryIds: entryIds,
 			villageId: village_id
 		};
 
-		return await this.post('startFarmListRaid', 'troops', params);
+		return await this.post('startPartialFarmListRaid', 'troops', params);
 	}
 
 	async toggle_farmlist_entry(villageId: number, listId: number): Promise<any> {
@@ -127,8 +128,8 @@ class api {
 			redeployHero: false,
 			units,
 			spyMission
-    };
-    
+		};
+
 		return await this.post('send', 'troops', params);
 	}
 
