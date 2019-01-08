@@ -114,7 +114,8 @@ class server {
 			}
 
 			if(ident == 'logger') {
-				res.send(logger.log_list);
+				// send latest 100 logs to frontend
+				res.send(logger.log_list.slice(-100));
 				return;
 			}
 
@@ -177,7 +178,7 @@ class server {
 	}
 
 	async start(port: number) {
-		this.app.listen(port, () => logger.info(`server running on => http://localhost:${port}!`));
+		this.app.listen(port, () => logger.info(`server running on => http://localhost:${port}`));
 
 		// start all features on startup
 		for(let feat of this.features) feat.start_for_server();
