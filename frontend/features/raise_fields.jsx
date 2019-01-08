@@ -30,12 +30,12 @@ export default class RaiseFields extends Component {
 		if(this.state.error_village) return;
 
 		const { ident, uuid, village_name, crop, wood, clay, iron } = this.state;
-		this.props.submit({ ident, uuid, village_name, crop, wood, clay });
+		this.props.submit({ ident, uuid, village_name, crop, wood, clay, iron });
 	}
 
 	delete = async e => {
 		const { ident, uuid, village_name, crop, wood, clay, iron } = this.state;
-		this.props.delete({ ident, uuid, village_name, crop, wood, clay });
+		this.props.delete({ ident, uuid, village_name, crop, wood, clay, iron });
 	}
 
 	cancel = async e => {
