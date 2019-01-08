@@ -19,7 +19,7 @@ async function manage_login(axios: AxiosInstance, email: string, password: strin
 	let db_gameworld = database.get('account.gameworld').value();
 
 	if(db_email === email) {
-		log('found lobby session in database...');
+		logger.info('found lobby session in database...', 'login');
 
 		// get credentials from database
 		const { session_lobby, cookies_lobby, msid } = database.get('account').value();
@@ -27,23 +27,27 @@ async function manage_login(axios: AxiosInstance, email: string, password: strin
 		axios.defaults.headers['Cookie'] = cookies_lobby;
 
 		if(await test_lobby_connection(axios, session_lobby)) {
-			log('database lobby connection successful');
+			logger.info('database lobby connection successful', 'login');
 
 			if(db_gameworld === gameworld) {
-				log('found gameworld session in database ...');
+				logger.info('found gameworld session in database ...', 'login');
 
 				// get credentials from database
 				const { session_gameworld, cookies_gameworld } = database.get('account').value();
 
 				axios.defaults.headers['Cookie'] += cookies_gameworld;
 				if(await test_gameworld_connection(axios, gameworld, session_gameworld)) {
-					log('database gameworld connection successful');
+					logger.info('database gameworld connection successful', 'login');
 					return;
+				} else {
+					logger.warn('database connection to gameworld failed', 'login');
 				}
 			}
 
 			await login_to_gameworld(axios, gameworld, msid, session_lobby);	
 			return;
+		} else {
+			logger.warn('database connection to lobby failed', 'login');
 		}
 	}
 
@@ -68,7 +72,7 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 	msid = html.substring(startIndex, endIndex);
 
 	msid = msid.substring(msid.indexOf(',') + 3, msid.lastIndexOf('"'));
-	logger.info('msid: ' + msid);
+	logger.info('msid: ' + msid, 'login');
 	
 	// logs in with credentials from file
 	url = `https://mellon-t5.traviangames.com/authentication/login/ajax/form-validate?msid=${msid}&msname=msid`;
@@ -88,7 +92,7 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 	let rv: any = parse_token(res.data);
 	let tokenURL: string = rv.url;
 	token_lobby = rv.token;
-	logger.info('token: ' + token_lobby);
+	logger.info('token: ' + token_lobby, 'login');
 
 	options = {
 		method: 'GET',
@@ -107,13 +111,13 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 
 	let sessionLink: string = cookies.headers.location;
 	session_lobby = sessionLink.substring(sessionLink.lastIndexOf('=') + 1);
-	logger.info('sessionID: ' + session_lobby);
+	logger.info('sessionID: ' + session_lobby, 'login');
 
 	// last lobby session link, there are no information to get from for now
 	//let lastLobbyURL = 'https://lobby.kingdoms.com/' + sessionLink;
 	//await axios.get(lastLobbyURL);
 	
-	log('logged into lobby with account ' + email);
+	logger.info('logged into lobby with account ' + email, 'login');
 	
 	// set values to database
 	database.set('account.msid', msid).write();
@@ -144,7 +148,7 @@ async function login_to_gameworld(axios: AxiosInstance, gameworld: string, msid:
 	let rv: any = parse_token(res.data);
 
 	token_gameworld = rv.token;
-	console.log('new token: ' + token_gameworld);
+	logger.info('new token: ' + token_gameworld, 'login');
 
 	res = await axios.get(rv.url);
 
@@ -167,13 +171,13 @@ async function login_to_gameworld(axios: AxiosInstance, gameworld: string, msid:
 	// get new sessionID
 	let sessionLink = res.headers.location;
 	session_gameworld = sessionLink.substring(sessionLink.lastIndexOf('=') + 1);
-	logger.info('new sessionID: ' + session_gameworld);
+	logger.info('new sessionID: ' + session_gameworld, 'login');
 
 	// last session link, there are no information to get from for now
 	//let gameworldURL = `https://${gameworld}.kingdoms.com/` + sessionLink;
 	//await axios.get(gameworldURL);
 	
-	log('logged into gameworld ' + gameworld);
+	logger.info('logged into gameworld ' + gameworld, 'login');
 
 	// set values to database
 	database.set('account.token_gameworld', token_gameworld).write();
