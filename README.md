@@ -90,6 +90,7 @@ visit `http://localhost:3000` (or whatever port you chose) to see the results.
 
 # development
 
+if you wanna use the command `npm run dev` or `npm run watch` you need to insert your credentials into `dev_main.js`.  
 you can also create a file names `cred.txt` in the root folder which contains your login credentials:
 
 ```csv
