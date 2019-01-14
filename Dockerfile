@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:10
 
 WORKDIR /usr/kingbot
 
@@ -8,4 +8,4 @@ RUN npm install && npm run build
 
 EXPOSE 3000
 
-CMD ["npm", "run", "gui"]
+CMD ["npm", "start"]

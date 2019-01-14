@@ -6,11 +6,12 @@
   "module": "main.js",
   "scripts": {
     "test": "tsc && webpack && npm run lint",
-    "start": "ts-node main.js",
-    "build": "webpack",
+    "start": "node main.js",
+    "dev": "ts-node dev_main.js",
+    "build": "tsc && webpack",
     "server": "webpack-dev-server --mode development",
-    "gui": "ts-node main.js",
-    "watch": "nodemon -e ts -w ./src -x npm run start",
+    "gui": "npm start",
+    "watch": "nodemon -e ts -w ./src -x npm run dev",
     "lint": "eslint --config .eslintrc.json --ext js --ext ts --ext jsx .",
     "lint-fix": "eslint --config .eslintrc.json --fix --ext js --ext ts --ext jsx ."
   },

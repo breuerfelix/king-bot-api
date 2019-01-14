@@ -1,15 +1,13 @@
-import kingbot from './src';
+var kingbot = require('./dist').default;
 
-const gameworld = '';
-const email = '';
-const password = '';
-const port = 3000;
+var gameworld = '';
+var email = '';
+var password = '';
+var port = 3000;
 
-async function main() {
+function main() {
 	kingbot.start_server(gameworld, email, password, port);
 }
 
 if (process.argv[2] == '--gui') kingbot.start_server(gameworld, email, password, port);
 else main();
-
-export { };
