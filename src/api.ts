@@ -52,13 +52,29 @@ class api {
 		return this.merge_data(response.data);
 	}
 
-	async send_farmlists(lists: number[], village_id: number): Promise<any> {
+	async get_report(sourceVillageId: number): Promise<any> {
 		const params = {
-			listIds: lists,
+			"collection": "search",
+			"start": 0, "count": 1,
+			"filters": [
+				"1", "2", "3",
+				{ "villageId": sourceVillageId }
+			],
+			"alsoGetTotalNumber": true
+		}
+
+		return await this.post('getLastReports', 'reports', params);
+	}
+
+
+	async send_farmlists(listId: number, entryIds: number[], village_id: number): Promise<any> {
+		const params = {
+			listId: listId,
+			entryIds: entryIds,
 			villageId: village_id
 		};
 
-		return await this.post('startFarmListRaid', 'troops', params);
+		return await this.post('startPartialFarmListRaid', 'troops', params);
 	}
 
 	async toggle_farmlist_entry(villageId: number, listId: number): Promise<any> {
@@ -92,6 +108,16 @@ class api {
 
 		return await this.post('bookFeature', 'premiumFeature', params);
 
+	}
+
+	async check_target(villageId: number, destVillageId: number): Promise<any> {
+		const params = {
+			destVillageId,
+			villageId,
+			"movementType": 5
+		}
+
+		return await this.post('checkTarget', 'troops', params);
 	}
 
 	async send_units(villageId: number, destVillageId: number, units: Iunits, movementType: number, spyMission: string = 'resources'): Promise<any> {
@@ -144,6 +170,7 @@ class api {
 		if (response.errors) {
 			log(response.errors);
 		}
+
 		return this.merge_data(response.data);
 	}
 
