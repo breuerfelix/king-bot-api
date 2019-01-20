@@ -18,7 +18,7 @@ async function manage_login(axios: AxiosInstance, email: string, password: strin
 	let db_email = database.get('account.email').value();
 	let db_gameworld = database.get('account.gameworld').value();
 
-	if(db_email === email) {
+	if (db_email === email) {
 		logger.info('found lobby session in database...', 'login');
 
 		// get credentials from database
@@ -26,17 +26,17 @@ async function manage_login(axios: AxiosInstance, email: string, password: strin
 
 		axios.defaults.headers['Cookie'] = cookies_lobby;
 
-		if(await test_lobby_connection(axios, session_lobby)) {
+		if (await test_lobby_connection(axios, session_lobby)) {
 			logger.info('database lobby connection successful', 'login');
 
-			if(db_gameworld === gameworld) {
+			if (db_gameworld === gameworld) {
 				logger.info('found gameworld session in database ...', 'login');
 
 				// get credentials from database
 				const { session_gameworld, cookies_gameworld } = database.get('account').value();
 
 				axios.defaults.headers['Cookie'] += cookies_gameworld;
-				if(await test_gameworld_connection(axios, gameworld, session_gameworld)) {
+				if (await test_gameworld_connection(axios, gameworld, session_gameworld)) {
 					logger.info('database gameworld connection successful', 'login');
 					return;
 				} else {
@@ -142,7 +142,7 @@ async function login_to_gameworld(axios: AxiosInstance, gameworld: string, msid:
 		res = await axios.get(mellonURL);
 	} catch {
 		logger.error('error login to gameworld. could you entered the wrong one?');
-		throw('error login to gameworld. could you entered the wrong one?');
+		throw ('error login to gameworld. could you entered the wrong one?');
 	}
 
 	let rv: any = parse_token(res.data);
@@ -236,7 +236,7 @@ async function get_gameworld_id(axios: AxiosInstance, session: string, gameworld
 	let gameworld_id: string = '';
 
 	gameworlds.forEach((x: any) => {
-		if(x.data.worldName.toLowerCase() === gameworld_string)
+		if (x.data.worldName.toLowerCase() === gameworld_string)
 			gameworld_id = x.data.consumersId;
 	});
 

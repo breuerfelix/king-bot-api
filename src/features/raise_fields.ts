@@ -82,7 +82,7 @@ class raise extends feature_item {
 	get_description(): string {
 		const { village_name } = this.options;
 
-		if(!village_name) return '-';
+		if (!village_name) return '-';
 
 		return village_name;
 	}
@@ -108,13 +108,13 @@ class raise extends feature_item {
 		const queue_data: Ibuilding_queue = find_state_data(village.building_queue_ident + village_obj.villageId, response);
 
 		// skip if resource slot is used
-		if(queue_data.freeSlots[2] == 0) {
+		if (queue_data.freeSlots[2] == 0) {
 			// set sleep time
 			let finished: number = null;
 
-			if(queue_data.queues[2].length) {
+			if (queue_data.queues[2].length) {
 				finished = queue_data.queues[2][0].finished;
-			} else if(queue_data.queues[1].length) {
+			} else if (queue_data.queues[1].length) {
 				finished = queue_data.queues[1][0].finished;
 			} else {
 				logger.error('error calculating queue time! queue object:');
@@ -135,7 +135,7 @@ class raise extends feature_item {
 		const temp_res_prod: number[] = [];
 		const temp_dict: { [index: number]: number } = {};
 
-		for(let res in village_obj.production) {
+		for (let res in village_obj.production) {
 			// let prod: number = village_obj.production[res];
 			let current_res: number = Number(village_obj.storage[res]);
 			let storage: number = Number(village_obj.storageCapacity[res]);
@@ -144,7 +144,7 @@ class raise extends feature_item {
 			let percent: number = current_res / (storage / 100);
 
 			// add 30 percent storage to crop, since its not that needed
-			if(res == '4') percent += 30;
+			if (res == '4') percent += 30;
 		
 			temp_res_prod.push(percent);
 			temp_dict[percent] = Number(res);
@@ -153,7 +153,7 @@ class raise extends feature_item {
 		// sort lowest is first by number
 		temp_res_prod.sort((x1, x2) => Number(x1) - Number(x2));
 
-		for(let prod of temp_res_prod) {
+		for (let prod of temp_res_prod) {
 			sorted_res_types.push(temp_dict[prod]);
 		}
 
@@ -162,16 +162,16 @@ class raise extends feature_item {
 		let done: boolean = true;
 
 		// iterate over resource by its priority based on production
-		for(let res of sorted_res_types) {
+		for (let res of sorted_res_types) {
 			let lowest_building: Ibuilding = this.lowest_building_by_type(res, village_data);
 
-			if(!lowest_building) continue;
+			if (!lowest_building) continue;
 
 			// build until all res fields are this lvl
-			if(Number(lowest_building.lvl) < Number(this.options[this.building_type_reverse[res]])) {
+			if (Number(lowest_building.lvl) < Number(this.options[this.building_type_reverse[res]])) {
 				done = false;
 
-				if(this.able_to_build(lowest_building, village_obj)) {
+				if (this.able_to_build(lowest_building, village_obj)) {
 					upgrade_building = lowest_building;
 					break;
 				}
@@ -182,12 +182,12 @@ class raise extends feature_item {
 		}
 
 		// all fields are raised
-		if(done) {
+		if (done) {
 			logger.info('raise fields done !', 'raise fields');
 			return null;
 		}
 
-		if(upgrade_building) {
+		if (upgrade_building) {
 			// upgrade building
 			const res: any = await api.upgrade_building(upgrade_building.buildingType, upgrade_building.locationId, village_obj.villageId);
 			logger.info('upgrade building ' + upgrade_building.locationId + ' on village ' + village_obj.name, 'raise fields');
@@ -195,7 +195,7 @@ class raise extends feature_item {
 			const upgrade_time: number = Number(upgrade_building.upgradeTime);
 
 			// check if building time is less than 5 min
-			if(get_diff_time(upgrade_time) <= (5 * 60)) {
+			if (get_diff_time(upgrade_time) <= (5 * 60)) {
 				await api.finish_now(village_obj.villageId, 2);
 				logger.info('upgrade time less 5 min, instant finish!', 'raise fields');
 
@@ -204,8 +204,8 @@ class raise extends feature_item {
 			}
 
 			// set sleep time
-			if(!sleep_time) sleep_time = upgrade_time;
-			else if(upgrade_building.upgradeTime < sleep_time) sleep_time = upgrade_time;
+			if (!sleep_time) sleep_time = upgrade_time;
+			else if (upgrade_building.upgradeTime < sleep_time) sleep_time = upgrade_time;
 		}
 
 		return sleep_time;
@@ -214,21 +214,21 @@ class raise extends feature_item {
 	async run(): Promise<void> {
 		logger.info(`raise fields: ${this.options.uuid} started`, 'raise fields');
 
-		while(this.options.run) {
+		while (this.options.run) {
 			let sleep_time: number = await this.upgrade_field();
 			logger.debug('return sleep time is ' + String(sleep_time));
 
 			// all fields are raised
-			if(!sleep_time) {
+			if (!sleep_time) {
 				logger.info('finished raising fields.', 'raise fields');
 				break;
 			}
 
-			if(sleep_time && sleep_time > ((5 * 60) + 10) && finish_earlier.running) sleep_time = sleep_time - (5 * 60) + 10;
+			if (sleep_time && sleep_time > ((5 * 60) + 10) && finish_earlier.running) sleep_time = sleep_time - (5 * 60) + 10;
 
 			// set save sleep time
-			if(!sleep_time || sleep_time <= 0) sleep_time = 60;
-			if(sleep_time > 300) sleep_time = 300;
+			if (!sleep_time || sleep_time <= 0) sleep_time = 60;
+			if (sleep_time > 300) sleep_time = 300;
 
 			logger.debug('actual sleep time is ' + String(sleep_time));
 			await sleep(sleep_time);
@@ -240,8 +240,8 @@ class raise extends feature_item {
 	}
 
 	able_to_build(building: Ibuilding, village: Ivillage): boolean {
-		for(let res in village.storage)
-			if(Number(village.storage[res]) < Number(building.upgradeCosts[res])) return false;
+		for (let res in village.storage)
+			if (Number(village.storage[res]) < Number(building.upgradeCosts[res])) return false;
 
 		return true;
 	}
@@ -249,17 +249,17 @@ class raise extends feature_item {
 	lowest_building_by_type(type: number, building_collection: Ibuilding_collection[]): Ibuilding {
 		let rv: Ibuilding = null;
 		
-		for(let building of building_collection) {
+		for (let building of building_collection) {
 			const bd: Ibuilding = building.data;
 
-			if(bd.buildingType != type) continue;
+			if (bd.buildingType != type) continue;
 
-			if(!rv) {
+			if (!rv) {
 				rv = bd;
 				continue;
 			}
 
-			if(Number(bd.lvl) < Number(rv.lvl)) rv = bd;
+			if (Number(bd.lvl) < Number(rv.lvl)) rv = bd;
 		}
 
 		return rv;

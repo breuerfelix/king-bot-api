@@ -88,7 +88,7 @@ class auto_adventure extends feature_single {
 
 		const player_data: Iplayer = await player.get();
 
-		while(this.options.run) {
+		while (this.options.run) {
 			const { type, min_health } = this.options;
 
 			// get hero data
@@ -98,12 +98,12 @@ class auto_adventure extends feature_single {
 			if (hero.adventurePoints > 0 && !hero.isMoving && hero.status == 0 && Number(hero.health) > min_health){
 				let send: boolean = false;
 
-				if(type == adventure_type.short && Number(hero.adventurePoints) > 0)
+				if (type == adventure_type.short && Number(hero.adventurePoints) > 0)
 					send = true;
-				else if(type == adventure_type.long && Number(hero.adventurePoints > 1))
+				else if (type == adventure_type.long && Number(hero.adventurePoints > 1))
 					send = true;
 
-				if(send) {
+				if (send) {
 					await api.start_adventure(type);
 					log('sent hero on adventure');
 				}
@@ -112,9 +112,9 @@ class auto_adventure extends feature_single {
 			const diff_time: number = get_diff_time(hero.untilTime);
 			let sleep_time: number = 60;
 
-			if(diff_time > 0) sleep_time = diff_time + 5;
-			if(sleep_time <= 0) sleep_time = 300;
-			if(sleep_time > 500) sleep_time = 500;
+			if (diff_time > 0) sleep_time = diff_time + 5;
+			if (sleep_time <= 0) sleep_time = 300;
+			if (sleep_time > 500) sleep_time = 500;
 
 			await sleep(sleep_time);
 		}

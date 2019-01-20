@@ -42,7 +42,7 @@ export default class Feature extends Component {
 
 		let status = props.feature.run ? 'online' : 'offline';
 
-		if(this.state.error) status = 'error';
+		if (this.state.error) status = 'error';
 
 		this.setState({
 			status,
@@ -66,7 +66,7 @@ export default class Feature extends Component {
 
 		const { error, message, data } = res.data;
 
-		if(error) {
+		if (error) {
 			this.props.add_notification(message, 'error');
 			return;
 		}
@@ -91,7 +91,7 @@ export default class Feature extends Component {
 
 		const { data, error, message } = res.data;
 		
-		if(error) {
+		if (error) {
 			this.props.add_notification(message, 'error');
 			this.setState({ 
 				status: 'error',

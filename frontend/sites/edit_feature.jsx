@@ -32,7 +32,7 @@ export default class EditFeature extends Component {
 	componentWillMount() {
 		const { ident, uuid } = this.props;
 
-		if(!ident || !uuid) {
+		if (!ident || !uuid) {
 			this.props.add_notification('provide ident and uuid for feature to edit !', 'error');
 			route('/');
 			return;
@@ -49,7 +49,7 @@ export default class EditFeature extends Component {
 		axios.post('/api/feature', payload).then(res => {
 			const { error, message, data } = res.data;
 
-			if(error) {
+			if (error) {
 				this.props.add_notification(message, 'error');
 				return;
 			}
@@ -86,7 +86,7 @@ export default class EditFeature extends Component {
 
 		const { error, message, data } = response.data;
 
-		if(error) {
+		if (error) {
 			this.props.add_notification(message, 'error');
 			return;
 		}
@@ -97,7 +97,7 @@ export default class EditFeature extends Component {
 	render({}, { ident, name, long_description }) {
 		let feat = null;
 
-		switch(ident) {
+		switch (ident) {
 			case 'hero':
 				feat = <Adventure feature={ this.state } submit={ this.submit }/>;
 				break;
