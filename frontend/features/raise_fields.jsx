@@ -27,7 +27,7 @@ export default class RaiseFields extends Component {
 	submit = async (e) => {
 		this.setState({ error_village: (this.state.village_name == '') });
 
-		if(this.state.error_village) return;
+		if (this.state.error_village) return;
 
 		const { ident, uuid, village_name, crop, wood, clay, iron } = this.state;
 		this.props.submit({ ident, uuid, village_name, crop, wood, clay, iron });

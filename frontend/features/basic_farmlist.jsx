@@ -62,27 +62,27 @@ export default class SendBasicFarmlist extends Component {
 		const { farms } = this.state;
 
 		var found = farms.find(function (farm) {
-			return item.villageId == farm.villageId
-		})
+			return item.villageId == farm.villageId;
+		});
 
 		found.unit_type = item.unit_type;
 		found.unit_number = item.unit_number;
 		found.priority = item.priority;
-		this.setState({ farms: farms })
+		this.setState({ farms: farms });
 	}
 
 	remove = async item => {
 		const { farms } = this.state;
 
 		var found = farms.find(function (farm) {
-			return item.villageId == farm.villageId
-		})
+			return item.villageId == farm.villageId;
+		});
 
 		var index = farms.indexOf(found);
 		if (index > -1) {
 			farms.splice(index, 1);
 		}
-		this.setState({ farms: farms })
+		this.setState({ farms: farms });
 	}
 
 	clicked = async item => {
@@ -91,45 +91,45 @@ export default class SendBasicFarmlist extends Component {
 		var duplicate = false;
 		farms.forEach(function (farm) {
 			if (farm.villageId == item.villageId) duplicate = true;
-		})
-		if (!duplicate) farms.push(item)
-		this.setState({ farms: farms })
+		});
+		if (!duplicate) farms.push(item);
+		this.setState({ farms: farms });
 		return true;
-  }
-  
-  calcUnitsNeeded = async item => {
-    const {farms, interval_min, interval_max} = this.state;
-    var unit1 = 0;
-    var unit3 = 0;
-    var unit5 = 0
-    const avgDst = (Number(interval_min)+Number(interval_max))/2
-    console.log(avgDst)
-    farms.forEach(function(farm) {
-      if(farm.unit_type == 1){
-        unit1 += ((farm.distance * 2 / 6) * (3600 / avgDst))
-      }else if(farm.unit_type == 3){
-        unit3 += ((farm.distance * 2 / 7) * (3600 / avgDst))
-      }else if(farm.unit_type == 5){
-        unit5 += ((farm.distance * 2 / 14) * (3600 / avgDst))
-      }
-    });
-    
-    console.log(`unit1: ${unit1} \n unit3: ${unit3} \n unit5: ${unit5}`)
-  }
+	}
+
+calcUnitsNeeded = async item => {
+	const { farms, interval_min, interval_max } = this.state;
+	var unit1 = 0;
+	var unit3 = 0;
+	var unit5 = 0;
+	const avgDst = (Number(interval_min)+Number(interval_max))/2;
+	console.log(avgDst);
+	farms.forEach(function(farm) {
+		if (farm.unit_type == 1){
+			unit1 += ((farm.distance * 2 / 6) * (3600 / avgDst));
+		} else if (farm.unit_type == 3){
+			unit3 += ((farm.distance * 2 / 7) * (3600 / avgDst));
+		} else if (farm.unit_type == 5){
+			unit5 += ((farm.distance * 2 / 14) * (3600 / avgDst));
+		}
+	});
+
+	console.log(`unit1: ${unit1} \n unit3: ${unit3} \n unit5: ${unit5}`);
+}
 
 	addFarm = async e => {
 		const { village_name, farms, newFarm_x, newFarm_y } = this.state;
 		var x = Number(newFarm_x);
 		var y = Number(newFarm_y);
-		const villageID = 536887296 + x + (y * 32768)
-		var response = await axios.post('/api/ownvillagenametoid', { village_name })
+		const villageID = 536887296 + x + (y * 32768);
+		var response = await axios.post('/api/ownvillagenametoid', { village_name });
 		const sourceVillageID = response.data;
 		var params = {
 			sourceVillage: sourceVillageID,
 			destinationVillage: villageID
 		};
 		response = await axios.post('/api/findvillage2', params);
-		const check_target_data = response.data
+		const check_target_data = response.data;
 
 		params = [
 			`Village: ${villageID}`
@@ -143,8 +143,8 @@ export default class SendBasicFarmlist extends Component {
 		farm.population = village.population;
 		farm.isMainVillage = village.isMainVillage;
 		farm.distance = check_target_data.distance;
-		farm.kingdomId = "?";
-		farm.kingdom_tag = "?";
+		farm.kingdomId = '?';
+		farm.kingdom_tag = '?';
 		farm.playerId = village.playerId;
 		farm.tribeId = village.tribeId;
 		farm.player_name = check_target_data.destPlayerName;
@@ -154,18 +154,18 @@ export default class SendBasicFarmlist extends Component {
 		var duplicate = false;
 		farms.forEach(function (testfarm) {
 			if (testfarm.villageId == farm.villageId) duplicate = true;
-		})
-		if (!duplicate) farms.push(farm)
-		this.setState({ farms: farms })
+		});
+		if (!duplicate) farms.push(farm);
+		this.setState({ farms: farms });
 	}
 
 	sort = async e => {
 		const { farms } = this.state;
 		function distance(a, b) {
-			var apn = Number(a.priority)
-			var bpn = Number(b.priority)
-			var adn = Number(a.distance)
-			var bdn = Number(b.distance)
+			var apn = Number(a.priority);
+			var bpn = Number(b.priority);
+			var adn = Number(a.distance);
+			var bdn = Number(b.distance);
 			if (apn == null) apn = 10;
 			if (bpn == null) bpn = 10;
 			if (apn < bpn) {
@@ -187,12 +187,12 @@ export default class SendBasicFarmlist extends Component {
 
 		farms.sort(distance);
 
-		this.setState({ farms: farms })
+		this.setState({ farms: farms });
 	}
 
 	search = async e => {
-    if (this.state.loading) return;
-    const { farms } = this.state;
+		if (this.state.loading) return;
+		const { farms } = this.state;
 
 
 		this.setState({
@@ -233,15 +233,15 @@ export default class SendBasicFarmlist extends Component {
 
 		let response = await axios.post('/api/inactivefinder', payload);
 
-    const { error, data, message } = response.data;
+		const { error, data, message } = response.data;
     
-    data.forEach(function(inactive) {
-      farms.forEach(function(farm){
-        if(inactive.villageId == farm.villageId){
-          inactive.toggled = true;
-        }
-      });
-    });
+		data.forEach(function(inactive) {
+			farms.forEach(function(farm){
+				if (inactive.villageId == farm.villageId){
+					inactive.toggled = true;
+				}
+			});
+		});
 
 		this.setState({ inactives: [...data], loading: false });
 
@@ -372,10 +372,10 @@ export default class SendBasicFarmlist extends Component {
 				</button>
 				<button className='button is-radiusless' style='margin-right: 1rem' onClick={this.sort}>
 					sort
-        </button>
-        <button className='button is-radiusless' style='margin-right: 1rem' onClick={this.calcUnitsNeeded}>
+				</button>
+				<button className='button is-radiusless' style='margin-right: 1rem' onClick={this.calcUnitsNeeded}>
 					units needed
-        </button>
+				</button>
 				<BasicFarmlistTable content={farms} clicked={this.remove} unitChanged={this.unitChanged} />
 				<hr></hr>
 

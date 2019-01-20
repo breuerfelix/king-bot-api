@@ -76,9 +76,9 @@ class Farm extends Component {
 		};
 
 		function color() {
-			if (priority == 0 || unit_number == 0 || unit_type == 0) return "#FF0000";
-			if (priority == -1) return "#FFA500"
-			return '#000000'
+			if (priority == 0 || unit_number == 0 || unit_type == 0) return '#FF0000';
+			if (priority == -1) return '#FFA500';
+			return '#000000';
 		}
 
 		const icon = classNames({
@@ -119,7 +119,7 @@ class Farm extends Component {
 						placeholder="0"
 						onChange={async e => {
 							this.setState({ unit_type: e.target.value });
-							await unitChanged(this.state)
+							await unitChanged(this.state);
 						}}
 					/>
 				</td>
@@ -131,7 +131,7 @@ class Farm extends Component {
 						placeholder="2"
 						onChange={async e => {
 							this.setState({ unit_number: e.target.value });
-							await unitChanged(this.state)
+							await unitChanged(this.state);
 						}}
 					/>
 				</td>
@@ -143,7 +143,7 @@ class Farm extends Component {
 						placeholder="10"
 						onChange={async e => {
 							this.setState({ priority: e.target.value });
-							await unitChanged(this.state)
+							await unitChanged(this.state);
 						}}
 					/>
 				</td>
