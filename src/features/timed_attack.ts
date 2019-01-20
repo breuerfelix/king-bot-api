@@ -43,26 +43,26 @@ class timed_attack extends feature_collection {
 		return {
 			...options,
 			village_name: '',
-      wait_time: 60,
-      target_x: 0,
-      target_y: 0,
-      target_villageId: 0,
-      target_village_name: '',
-      target_playerId: '',
-      target_player_name: '',
-      target_distance: 0,
-      target_tribeId: 0,
-      t1: 0,
-      t2: 0,
-      t3: 0,
-      t4: 0,
-      t5: 0,
-      t6: 0,
-      t7: 0,
-      t8: 0,
-      t9: 0,
-      t10: 0,
-      t11: 0
+			wait_time: 60,
+			target_x: 0,
+			target_y: 0,
+			target_villageId: 0,
+			target_village_name: '',
+			target_playerId: '',
+			target_player_name: '',
+			target_distance: 0,
+			target_tribeId: 0,
+			t1: 0,
+			t2: 0,
+			t3: 0,
+			t4: 0,
+			t5: 0,
+			t6: 0,
+			t7: 0,
+			t8: 0,
+			t9: 0,
+			t10: 0,
+			t11: 0
 		};
 	}
 }
@@ -72,53 +72,53 @@ class timed_attack_feature extends feature_item {
 
 	set_options(options: Ioptions_timed_attack): void {
 		const { uuid, run, error, village_name,
-      wait_time,
-      target_x,
-      target_y,
-      target_villageId,
-      target_village_name,
-      target_playerId,
-      target_player_name,
-      target_tribeId,
-      target_distance,
-      t1,
-      t2,
-      t3,
-      t4,
-      t5,
-      t6,
-      t7,
-      t8,
-      t9,
-      t10,
-      t11} = options;
+			wait_time,
+			target_x,
+			target_y,
+			target_villageId,
+			target_village_name,
+			target_playerId,
+			target_player_name,
+			target_tribeId,
+			target_distance,
+			t1,
+			t2,
+			t3,
+			t4,
+			t5,
+			t6,
+			t7,
+			t8,
+			t9,
+			t10,
+			t11 } = options;
 
 		this.options = {
 			...this.options,
 			uuid,
 			run,
 			error,
-      village_name,
-      wait_time,
-      target_x,
-      target_y,
-      target_villageId,
-      target_village_name,
-      target_playerId,
-      target_player_name,
-      target_tribeId,
-      target_distance,
-      t1,
-      t2,
-      t3,
-      t4,
-      t5,
-      t6,
-      t7,
-      t8,
-      t9,
-      t10,
-      t11
+			village_name,
+			wait_time,
+			target_x,
+			target_y,
+			target_villageId,
+			target_village_name,
+			target_playerId,
+			target_player_name,
+			target_tribeId,
+			target_distance,
+			t1,
+			t2,
+			t3,
+			t4,
+			t5,
+			t6,
+			t7,
+			t8,
+			t9,
+			t10,
+			t11
       
 		};
 	}
@@ -130,12 +130,12 @@ class timed_attack_feature extends feature_item {
 	set_params(): void {
 		this.params = {
 			ident: 'timed_attack',
-      name: 'timed attack'
+			name: 'timed attack'
 		};
 	}
 
 	get_description(): string {
-		const { village_name, target_village_name} = this.options;
+		const { village_name, target_village_name } = this.options;
 		return `${village_name} -> ${target_village_name} : ${this.options.wait_time}`;
 	}
 
@@ -144,59 +144,59 @@ class timed_attack_feature extends feature_item {
 	}
 
 	async run(): Promise<void> {
-    log(`attack timer uuid: ${this.options.uuid} started`);
+		log(`attack timer uuid: ${this.options.uuid} started`);
 
 		var { village_name, target_villageId, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11 } = this.options;
 
-    const params = [
-      village.own_villages_ident,
-    ];
+		const params = [
+			village.own_villages_ident,
+		];
 
-    const response = await api.get_cache(params);
-    const vill: Ivillage = village.find(village_name, response);
-    const sourceVillage_id = vill.villageId;
-    const units: Iunits = {
-      1: Number(t1),
-      2: Number(t2),
-      3: Number(t3),
-      4: Number(t4),
-      5: Number(t5),
-      6: Number(t6),
-      7: Number(t7),
-      8: Number(t8),
-      9: Number(t9),
-      10: Number(t10),
-      11: Number(t11)
-    };
+		const response = await api.get_cache(params);
+		const vill: Ivillage = village.find(village_name, response);
+		const sourceVillage_id = vill.villageId;
+		const units: Iunits = {
+			1: Number(t1),
+			2: Number(t2),
+			3: Number(t3),
+			4: Number(t4),
+			5: Number(t5),
+			6: Number(t6),
+			7: Number(t7),
+			8: Number(t8),
+			9: Number(t9),
+			10: Number(t10),
+			11: Number(t11)
+		};
 
-    while (this.options.run) {
-      log(this.options.wait_time)
-      this.options.wait_time = this.options.wait_time - 1;
-      this.set_options(this.options);
+		while (this.options.run) {
+			log(this.options.wait_time);
+			this.options.wait_time = this.options.wait_time - 1;
+			this.set_options(this.options);
 
       
       
-      if(this.options.wait_time == 0){
-        log('attacking')
-        log(sourceVillage_id)
-        log(target_villageId)
-        log(units)
-        var response2 = await api.send_units(sourceVillage_id, target_villageId, units, 3)
-        console.log(response)
-        this.running = false;
-        this.options.run = false
-      }
-      else{
-        await sleep(1);
-      }
+			if (this.options.wait_time == 0){
+				log('attacking');
+				log(sourceVillage_id);
+				log(target_villageId);
+				log(units);
+				var response2 = await api.send_units(sourceVillage_id, target_villageId, units, 3);
+				console.log(response);
+				this.running = false;
+				this.options.run = false;
+			}
+			else {
+				await sleep(1);
+			}
       
 
-    }
+		}
 
-    log(`attack timer uuid: ${this.options.uuid} stopped`);
+		log(`attack timer uuid: ${this.options.uuid} stopped`);
 		this.running = false;
 		this.options.run = false;
-  }
+	}
 }
 
 export default new timed_attack();

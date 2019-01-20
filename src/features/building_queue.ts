@@ -69,7 +69,7 @@ class queue extends feature_item {
 
 		let des: string = village_name;
 
-		if(!village_name) return '-';
+		if (!village_name) return '-';
 
 		return des;
 	}
@@ -81,9 +81,9 @@ class queue extends feature_item {
 	async run(): Promise<void> {
 		logger.info(`building queue: ${this.options.uuid} started`, 'building queue');
 
-		while(this.options.run) {
+		while (this.options.run) {
 			const { village_name, queue } = this.options;
-			if(queue.length < 1) break;
+			if (queue.length < 1) break;
 			const queue_item: Iqueue = queue[0];
 
 			let params: string[] = [];
@@ -103,31 +103,31 @@ class queue extends feature_item {
 
 			let free: boolean = true;
 
-			if(queue_item.type < 5) {
+			if (queue_item.type < 5) {
 				// resource slot
-				if(queue_data.freeSlots[2] == 0) free = false;
+				if (queue_data.freeSlots[2] == 0) free = false;
 			} else {
 				// building slot
-				if(queue_data.freeSlots[1] == 0) free = false;
+				if (queue_data.freeSlots[1] == 0) free = false;
 			}
 
 			let finished: number;
-			if(!free) {
-				if(queue_data.queues[2][0])
+			if (!free) {
+				if (queue_data.queues[2][0])
 					finished = queue_data.queues[2][0].finished;
-				else if(queue_data.queues[1][0])
+				else if (queue_data.queues[1][0])
 					finished = queue_data.queues[1][0].finished;
 			}
 
-			if(finished) {
+			if (finished) {
 				const res_time: number = get_diff_time(finished);
 
-				if(res_time > 0) sleep_time = res_time;
+				if (res_time > 0) sleep_time = res_time;
 			}
 
-			if(free) {
+			if (free) {
 				// upgrade building here
-				if(this.able_to_build(queue_item.costs, village_obj)) {
+				if (this.able_to_build(queue_item.costs, village_obj)) {
 					const res: any = await api.upgrade_building(queue_item.type, queue_item.location, village_obj.villageId);
 					logger.info('upgrade building ' + queue_item.location + ' on village ' + village_obj.name, 'building queue');
 
@@ -136,7 +136,7 @@ class queue extends feature_item {
 
 					const upgrade_time: number = Number(queue_item.upgrade_time);
 
-					if(get_diff_time(upgrade_time) <= (5 * 60)) {
+					if (get_diff_time(upgrade_time) <= (5 * 60)) {
 						await api.finish_now(village_obj.villageId, 2);
 						logger.info('upgrade time less 5 min, instant finish!', 'building queue');
 
@@ -144,26 +144,26 @@ class queue extends feature_item {
 						sleep_time = 1;
 					}
 
-					if(!sleep_time) sleep_time = upgrade_time;
-					else if(upgrade_time < sleep_time) sleep_time = upgrade_time;
+					if (!sleep_time) sleep_time = upgrade_time;
+					else if (upgrade_time < sleep_time) sleep_time = upgrade_time;
 				} else {
 					// check again later if there might be enough res
 					sleep_time = 60;
 				}
 			}
 
-			if(sleep_time && sleep_time > ((5 * 60) + 10) && finish_earlier.running)
+			if (sleep_time && sleep_time > ((5 * 60) + 10) && finish_earlier.running)
 				sleep_time = sleep_time - (5 * 60) + 10;
 
 			// set save sleep time
-			if(!sleep_time || sleep_time <= 0) sleep_time = 120;
-			if(sleep_time > 300) sleep_time = 300;
+			if (!sleep_time || sleep_time <= 0) sleep_time = 120;
+			if (sleep_time > 300) sleep_time = 300;
 
-			if(free) {
+			if (free) {
 				// start fast over for romans, if next is resource field
 				const player_data: Iplayer = await player.get();
 				const own_tribe: tribe = player_data.tribeId;
-				if(own_tribe == tribe.roman) sleep_time = 10;
+				if (own_tribe == tribe.roman) sleep_time = 10;
 			}
 
 			await sleep(sleep_time);
@@ -175,8 +175,8 @@ class queue extends feature_item {
 	}
 
 	able_to_build(costs: Iresources, village: Ivillage): boolean {
-		for(let res in village.storage)
-			if(Number(village.storage[res]) < Number(costs[res])) return false;
+		for (let res in village.storage)
+			if (Number(village.storage[res]) < Number(costs[res])) return false;
 
 		return true;
 	}

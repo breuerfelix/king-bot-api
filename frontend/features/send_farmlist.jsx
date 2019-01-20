@@ -2,7 +2,7 @@ import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
 import axios from 'axios';
 import classNames from 'classnames';
-import FarmlistTable from '../components/farmlist_table'
+import FarmlistTable from '../components/farmlist_table';
 
 export default class SendFarmlist extends Component {
 	state = {
@@ -33,15 +33,15 @@ export default class SendFarmlist extends Component {
 		var farmlist = {};
 		farmlist.village_name = village_name;
 		farmlist.farmlist = selected_farmlist;
-		farmlists.push(farmlist)
-		this.setState({ farmlists })
+		farmlists.push(farmlist);
+		this.setState({ farmlists });
 	}
 
 	remove_farmlist = async e => {
 		const { farmlists } = this.state;
-		console.log(farmlists)
+		console.log(farmlists);
 		farmlists.pop(e);
-		this.setState({ farmlists })
+		this.setState({ farmlists });
 	}
 
 	submit = async e => {

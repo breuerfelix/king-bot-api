@@ -22,8 +22,8 @@ class server {
 		building_queue,
 		raise_fields,
 		trade_route,
-    basic_farmlist,
-    timed_attack
+		basic_farmlist,
+		timed_attack
 	];
 
 	constructor() {
@@ -115,7 +115,7 @@ class server {
 				return;
 			}
 
-			if(ident == 'logger') {
+			if (ident == 'logger') {
 				// send latest 100 logs to frontend
 				res.send(logger.log_list.slice(-100));
 				return;
@@ -134,7 +134,7 @@ class server {
 
 		this.app.post('/api/findvillage', async (req: any, res: any) => {
 			const response = await api.get_cache(req.body);
-			res.send(response)
+			res.send(response);
 		});
 
 

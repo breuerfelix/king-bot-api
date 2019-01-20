@@ -41,26 +41,26 @@ export function get_diff_time(time: number): number {
 export function clash_obj(merge_obj: any, ident: string, ident2: string = ''): any {
 	let rv: any = {};
 
-	if(!merge_obj) return merge_obj;
+	if (!merge_obj) return merge_obj;
 
 	// TODO prettify this function a little bit
 	// merges response and cache together, response overwrites cache
-	if(ident2) {
-		if(merge_obj[ident] && merge_obj[ident2]) {
+	if (ident2) {
+		if (merge_obj[ident] && merge_obj[ident2]) {
 			merge_obj = merge(merge_obj[ident], merge_obj[ident2]);
-		} else if(merge_obj[ident]) {
+		} else if (merge_obj[ident]) {
 			merge_obj = merge_obj[ident];
-		} else if(merge_obj[ident2]) {
+		} else if (merge_obj[ident2]) {
 			merge_obj = merge_obj[ident2];
 		}
 	} else {
-		if(merge_obj[ident]) merge_obj = merge_obj[ident];
+		if (merge_obj[ident]) merge_obj = merge_obj[ident];
 	}
 
-	if(Array.isArray(merge_obj)) {
+	if (Array.isArray(merge_obj)) {
 		rv = [];
 
-		for(let i = 0; i < merge_obj.length; i++) {
+		for (let i = 0; i < merge_obj.length; i++) {
 			rv.push(clash_obj(merge_obj[i], ident, ident2));
 		}
 
@@ -68,11 +68,11 @@ export function clash_obj(merge_obj: any, ident: string, ident2: string = ''): a
 	}
 
 
-	if(is_object(merge_obj)) {
+	if (is_object(merge_obj)) {
 		rv = {};
 
 		let keys = Object.keys(merge_obj);
-		for(let i = 0; i < keys.length; i++) {
+		for (let i = 0; i < keys.length; i++) {
 			rv[keys[i]] = clash_obj(merge_obj[keys[i]], ident, ident2);
 		}
 

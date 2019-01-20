@@ -103,14 +103,14 @@ class farm_feature extends feature_item {
 
 				const list_obj = farming.find(entry.farmlist, response);
 
-				const lastSent: number = list_obj.lastSent
+				const lastSent: number = list_obj.lastSent;
 				const now: number = new Date().getTime() / 1000;
 
 				if ((now - lastSent) > interval_min) {
 					farmlist_id = list_obj.listId;
 
-					params = []
-					params = [`Collection:FarmListEntry:${farmlist_id}`]
+					params = [];
+					params = [`Collection:FarmListEntry:${farmlist_id}`];
 					var listResponse = await api.get_cache(params);
 
 					const entryIds: number[] = [];
@@ -119,7 +119,7 @@ class farm_feature extends feature_item {
 							const farm = data.data;
 							if (farm.lastReport) {
 								if (farm.lastReport.notificationType == '1') {
-									entryIds.push(farm.entryId)
+									entryIds.push(farm.entryId);
 								}
 							}
 						});
@@ -132,9 +132,9 @@ class farm_feature extends feature_item {
 						log(`farmlist: ${entry.farmlist} skipped. List was empty?`);
 					}
 				} else {
-					log(`farmlist: ${entry.farmlist} sent too recently. skipping until next time`)
+					log(`farmlist: ${entry.farmlist} sent too recently. skipping until next time`);
 				}
-			};
+			}
 
 
 			await sleep(get_random_int(interval_min, interval_max));

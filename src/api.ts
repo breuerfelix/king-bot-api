@@ -54,14 +54,14 @@ class api {
 
 	async get_report(sourceVillageId: number): Promise<any> {
 		const params = {
-			"collection": "search",
-			"start": 0, "count": 1,
-			"filters": [
-				"1", "2", "3",
-				{ "villageId": sourceVillageId }
+			'collection': 'search',
+			'start': 0, 'count': 1,
+			'filters': [
+				'1', '2', '3',
+				{ 'villageId': sourceVillageId }
 			],
-			"alsoGetTotalNumber": true
-		}
+			'alsoGetTotalNumber': true
+		};
 
 		return await this.post('getLastReports', 'reports', params);
 	}
@@ -114,8 +114,8 @@ class api {
 		const params = {
 			destVillageId,
 			villageId,
-			"movementType": 5
-		}
+			'movementType': 5
+		};
 
 		return await this.post('checkTarget', 'troops', params);
 	}

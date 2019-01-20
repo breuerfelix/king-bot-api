@@ -11,8 +11,6 @@ interface Ioptions_farm extends Ioptions {
 	interval_min: number
 	interval_max: number
 	farms: Array<any>
-
-
 }
 
 class basic_farmlist extends feature_collection {
@@ -74,8 +72,7 @@ class farm_feature extends feature_item {
 
 
 	async run(): Promise<void> {
-		const { village_name, farms, interval_min, interval_max
-		} = this.options;
+		const { village_name, farms, interval_min, interval_max } = this.options;
 		while (this.options.run) {
 			const params = [
 				village.own_villages_ident,
@@ -85,13 +82,12 @@ class farm_feature extends feature_item {
 			const vill: Ivillage = village.find(village_name, response);
 			const village_id: number = vill.villageId;
 
-
-
 			async function asyncForEach(array: any, callback: any) {
 				for (let index = 0; index < array.length; index++) {
 					await callback(array[index], index, array);
 				}
 			}
+
 			async function sendAttack(farm: any) {
 				const units: Iunits = {
 					1: 0,
@@ -106,7 +102,7 @@ class farm_feature extends feature_item {
 					10: 0,
 					11: 0
 				};
-				console.log(farm.village_name)
+				console.log(farm.village_name);
 				var attack = true;
 				if (farm.unit_type < 1 || farm.unit_type > 11 || farm.unit_number < 1 || farm.priority <= 0) {
 					attack = false;
@@ -125,18 +121,18 @@ class farm_feature extends feature_item {
 					if (responses.destPlayerName == null || farm.player_name != responses.destPlayerName) { //farm.village_name != responses.villageName
 						farm.priority = -2;
 						attack = false;
-						log(`Farm: ${farm.village_name} no longer exists.`)
+						log(`Farm: ${farm.village_name} no longer exists.`);
 					}
 
 				}
 				if (attack) {
 					var reports = await api.get_report(farm.villageId);
-					reports = reports.reports
+					reports = reports.reports;
 
 					if (reports.length > 0) {
 						const report = reports[0];
 						if (report.attackerTroopLossSum > 0) {
-							log(`Farm: ${farm.village_name} had losses.`)
+							log(`Farm: ${farm.village_name} had losses.`);
 							attack = false;
 							farm.priority = -3;
 						}
@@ -146,9 +142,9 @@ class farm_feature extends feature_item {
 				if (attack) {
 					units[farm.unit_type] = parseInt(farm.unit_number, 10);
 					if (units[farm.unit_type] == 4) {
-						await api.send_units(village_id, farm.villageId, units, 6)
+						await api.send_units(village_id, farm.villageId, units, 6);
 					} else {
-						await api.send_units(village_id, farm.villageId, units, 4)
+						await api.send_units(village_id, farm.villageId, units, 4);
 					}
 				}
 			}
@@ -159,19 +155,15 @@ class farm_feature extends feature_item {
 				await sleep(.25);
 			});
 
-			log("Farm list sent")
+			log('Farm list sent');
 			await sleep(get_random_int(interval_min, interval_max));
 		}
+
 		log(`basic farmlist uuid: ${this.options.uuid} stopped`);
+
 		this.running = false;
 		this.options.run = false;
-
-
-
-
-
 	}
-
 }
 
 export default new basic_farmlist();

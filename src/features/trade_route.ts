@@ -174,13 +174,13 @@ class trade_feature extends feature_item {
 			if (this.enough_merchants(merchant_response, resources)) {
 				//And source village has more than desired and destination has less than desired
 				if (vill.storage['1'] < source_wood || vill2.storage['1'] > destination_wood) {
-					resources[1] = 0
+					resources[1] = 0;
 				} if (vill.storage['2'] < source_clay || vill2.storage['2'] > destination_clay) {
-					resources[2] = 0
+					resources[2] = 0;
 				} if (vill.storage['3'] < source_iron || vill2.storage['3'] > destination_iron) {
-					resources[3] = 0
+					resources[3] = 0;
 				} if (vill.storage['4'] < source_crop || vill2.storage['4'] > destination_crop) {
-					resources[4] = 0
+					resources[4] = 0;
 				}
 				if (resources[1] + resources[2] + resources[3] + resources[4] > 0) {
 
