@@ -8,7 +8,6 @@ import uniqid from 'uniqid';
 
 interface Ioptions_farm extends Ioptions {
 	farmlists: string[]
-	village_name: string
 	interval_min: number
 	interval_max: number
 }
@@ -26,9 +25,8 @@ class send_farmlist extends feature_collection {
 		return {
 			...options,
 			farmlists: [],
-			village_name: '',
 			interval_min: 0,
-			interval_max: 0
+			interval_max: 0,
 		};
 	}
 }
@@ -37,16 +35,15 @@ class farm_feature extends feature_item {
 	options: Ioptions_farm;
 
 	set_options(options: Ioptions_farm): void {
-		const { uuid, run, error, farmlists, village_name, interval_min, interval_max } = options;
+		const { uuid, run, error, farmlists, interval_min, interval_max } = options;
 		this.options = {
 			...this.options,
 			uuid,
 			run,
 			error,
 			farmlists,
-			village_name,
 			interval_min,
-			interval_max
+			interval_max,
 		};
 	}
 
@@ -62,8 +59,8 @@ class farm_feature extends feature_item {
 	}
 
 	get_description(): string {
-		const { village_name, interval_min, interval_max } = this.options;
-		return `${village_name} / ${interval_min} - ${interval_max} s`;
+		const { interval_min, interval_max } = this.options;
+		return `Farming: ${interval_min} - ${interval_max} s`;
 	}
 
 	get_long_description(): string {
@@ -73,8 +70,8 @@ class farm_feature extends feature_item {
 	async run(): Promise<void> {
 		log(`farming uuid: ${this.options.uuid} started`);
 
-		const { village_name, farmlists, interval_min, interval_max } = this.options;
-		const params = [
+		const { farmlists, interval_min, interval_max } = this.options;
+		var params = [
 			village.own_villages_ident,
 			farming.farmlist_ident
 		];
@@ -82,34 +79,63 @@ class farm_feature extends feature_item {
 		// fetch farmlists
 		const response = await api.get_cache(params);
 
-		const vill: Ivillage = village.find(village_name, response);
-		if (!vill) {
-			this.running = false;
-			return;
-		}
 
-		const village_id: number = vill.villageId;
-		const farmlist_ids: number[] = [];
 
-		for (let list of farmlists) {
-			const list_obj = farming.find(list, response);
-			if (!list_obj) {
-				this.running = false;
-				return;
+		async function asyncForEach(array: any, callback: any) {
+			for (let index = 0; index < array.length; index++) {
+				await callback(array[index], index, array);
 			}
-
-			const list_id: number = list_obj.listId;
-			farmlist_ids.push(list_id);
 		}
 
-		if (!farmlist_ids) {
-			this.running = false;
-			return;
-		}
 
 		while (this.options.run) {
-			await api.send_farmlists(farmlist_ids, village_id);
-			log(`farmlists ${farmlists} sent from village ${village_name}`);
+
+
+			asyncForEach(farmlists, async (farm: any) => {
+				sendFarmlist(farm);
+				await sleep(.25);
+			});
+
+			async function sendFarmlist(entry: any) {
+				const vill: Ivillage = village.find(entry.village_name, response);
+				const village_id: number = vill.villageId;
+				var farmlist_id: number = NaN;
+
+				const list_obj = farming.find(entry.farmlist, response);
+
+				const lastSent: number = list_obj.lastSent;
+				const now: number = new Date().getTime() / 1000;
+
+				if ((now - lastSent) > interval_min) {
+					farmlist_id = list_obj.listId;
+
+					params = [];
+					params = [`Collection:FarmListEntry:${farmlist_id}`];
+					var listResponse = await api.get_cache(params);
+
+					const entryIds: number[] = [];
+					if (listResponse.length > 0) {
+						listResponse[0].data.forEach((data: any) => {
+							const farm = data.data;
+							if (farm.lastReport) {
+								if (farm.lastReport.notificationType == '1') {
+									entryIds.push(farm.entryId);
+								}
+							}
+						});
+
+						await api.send_farmlists(farmlist_id, entryIds, village_id);
+						log(`farmlist: ${entry.farmlist} sent from village ${entry.village_name}`);
+					} else {
+
+
+						log(`farmlist: ${entry.farmlist} skipped. List was empty?`);
+					}
+				} else {
+					log(`farmlist: ${entry.farmlist} sent too recently. skipping until next time`);
+				}
+			}
+
 
 			await sleep(get_random_int(interval_min, interval_max));
 		}
