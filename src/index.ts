@@ -16,17 +16,17 @@ class kingbot {
 	}
 
 	async login(gameworld: string, email: string = '', password: string = ''): Promise<void> {
-		if(!email || !password || !gameworld) {
+		if (!email || !password || !gameworld) {
 			let cred: any = settings.read_credentials();
 
-			if(cred) {
+			if (cred) {
 				email = cred.email;
 				password = cred.password;
 				gameworld = cred.gameworld;
 			}
 		}
 
-		if(!email || !password || !gameworld) {
+		if (!email || !password || !gameworld) {
 			log('please provide email, password and gameworld');
 			process.exit();
 			return;
@@ -47,16 +47,16 @@ class kingbot {
 		const response = await api.get_cache(params);
 
 		const vill: Ivillage = village.find(village_name, response);
-		if(!vill) return;
+		if (!vill) return;
 
 		const village_id: number = vill.villageId;
 
 		const list_obj = farming.find(farmlist_name, response);
-		if(!list_obj) return;
+		if (!list_obj) return;
 
 		const list_id: number = list_obj.listId;
 
-		if(!list_id) return;
+		if (!list_id) return;
 
 		const player_data: Iplayer = await player.get();
 		const own_tribe: tribe = player_data.tribeId;
@@ -76,11 +76,11 @@ class kingbot {
 		};
 
 		// scouts are on different positions
-		if(own_tribe == tribe.gaul) units[3] = amount;
+		if (own_tribe == tribe.gaul) units[3] = amount;
 		else units[4] = amount;
 
 		// send scouts
-		for(let target of list_obj.villageIds) {
+		for (let target of list_obj.villageIds) {
 			await api.send_units(village_id, target, units, 6, mission);
 		}
 	}

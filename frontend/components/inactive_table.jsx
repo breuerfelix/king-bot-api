@@ -89,7 +89,7 @@ class Inactive extends Component {
 				</td>
 				<td style={ row_style }>
 					<a class="has-text-black" onClick={ async e => {
-						if(await clicked(content)) this.setState({ toggled: !toggled });
+						if (await clicked(content)) this.setState({ toggled: !toggled });
 					} }>
 						<span class="icon is-medium">
 							<i class={ icon }></i>

@@ -24,7 +24,7 @@ export default class SendFarmlist extends Component {
 			...this.props.feature
 		});
 
-		if(this.state.farmlists.length > 0) this.setState({ selected_farmlist: this.state.farmlists[0] });
+		if (this.state.farmlists.length > 0) this.setState({ selected_farmlist: this.state.farmlists[0] });
 
 		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data }));
 		axios.get('/api/data?ident=farmlists').then(res => this.setState({ all_farmlists: res.data }));
@@ -45,7 +45,7 @@ export default class SendFarmlist extends Component {
 			error_village: (this.state.village_name == '')
 		});
 
-		if(this.state.error_input_min || this.state.error_input_max || this.state.error_village || this.state.error_farmlist) return;
+		if (this.state.error_input_min || this.state.error_input_max || this.state.error_village || this.state.error_farmlist) return;
 
 		const { ident, uuid, farmlists, village_name, interval_min, interval_max } = this.state;
 		this.props.submit({ ident, uuid, farmlists, village_name, interval_min, interval_max });

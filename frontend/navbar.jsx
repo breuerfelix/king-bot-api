@@ -44,7 +44,7 @@ export default class NavBar extends Component {
 
 		const { error, message, data } = res.data;
 
-		if(error) {
+		if (error) {
 			this.props.add_notification(message, 'error');
 			return;
 		}

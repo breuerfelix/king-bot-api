@@ -10,7 +10,7 @@ class farming {
 
 		const farmlist = lists.find((x: any) => x.data.listName.toLowerCase() == name.toLowerCase());
 
-		if(!farmlist) {
+		if (!farmlist) {
 			log(`couldn't find farmlist ${name} !`);
 			return null;
 		}

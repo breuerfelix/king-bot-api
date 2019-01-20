@@ -15,7 +15,7 @@ class village {
 
 		const village = villages.find((x: any) => x.data.name.toLowerCase() == name.toLowerCase());
 
-		if(!village) {
+		if (!village) {
 			log(`couldn't find village ${name} !`);
 			return null;
 		}

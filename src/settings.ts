@@ -16,7 +16,7 @@ class settings {
 	read_credentials() {
 		const filename: string = this.assets_folder + this.credentials_name;
 
-		if(!fs.existsSync(filename)) return null;
+		if (!fs.existsSync(filename)) return null;
 
 		let cred: string = fs.readFileSync(filename, 'utf-8');
 		let cred_array: string[] = cred.trim().split(';');
