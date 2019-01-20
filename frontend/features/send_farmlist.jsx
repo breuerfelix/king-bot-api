@@ -16,7 +16,9 @@ export default class SendFarmlist extends Component {
 		all_villages: [],
 		error_input_min: false,
 		error_input_max: false,
-		error_farmlists: false
+		error_farmlist: false,
+		error_farmlists: false,
+		error_village: false
 	}
 
 	componentWillMount() {
@@ -30,37 +32,48 @@ export default class SendFarmlist extends Component {
 
 	add_farmlist = async e => {
 		const { village_name, selected_farmlist, farmlists } = this.state;
-		var farmlist = {};
-		farmlist.village_name = village_name;
-		farmlist.farmlist = selected_farmlist;
+
+		this.setState({
+			error_farmlist: !this.state.selected_farmlist,
+			error_village: !this.state.village_name
+		});
+
+		if (this.state.error_village || this.state.error_farmlist) return;
+
+		let farmlist = {
+			village_name,
+			farmlist: selected_farmlist
+		};
+
 		farmlists.push(farmlist);
 		this.setState({ farmlists });
 	}
 
-	remove_farmlist = async e => {
+	remove_farmlist = e => {
 		const { farmlists } = this.state;
-		console.log(farmlists);
-		farmlists.pop(e);
+
+		farmlists.splice(farmlists.indexOf(e), 1);
+
 		this.setState({ farmlists });
 	}
 
-	submit = async e => {
+	submit = e => {
 		this.setState({
 			error_input_min: (this.state.interval_min == ''),
 			error_input_max: (this.state.interval_max == ''),
-			error_farmlists: (this.state.farmlists == []),
+			error_farmlists: this.state.farmlists.length < 1
 		});
 
-		if (this.state.error_input_min || this.state.error_input_max || this.state.error_village || this.state.error_farmlist) return;
+		if (this.state.error_input_min || this.state.error_input_max || this.state.error_farmlists) return;
 
-		const { ident, uuid, farmlists, village_name, interval_min, interval_max } = this.state;
-		this.props.submit({ ident, uuid, farmlists, village_name, interval_min, interval_max });
+		const { ident, uuid, farmlists, interval_min, interval_max } = this.state;
+		this.props.submit({ ident, uuid, farmlists, interval_min, interval_max });
 	}
 
 
-	delete = async e => {
-		const { ident, uuid, farmlists, village_name, interval_min, interval_max } = this.state;
-		this.props.delete({ ident, uuid, farmlists, village_name, interval_min, interval_max });
+	delete = e => {
+		const { ident, uuid, farmlists, interval_min, interval_max } = this.state;
+		this.props.delete({ ident, uuid, farmlists, interval_min, interval_max });
 	}
 
 	cancel = async e => {
@@ -114,9 +127,7 @@ export default class SendFarmlist extends Component {
 							add farmlist
 						</button>
 
-
-
-						<label style='margin-top: 10rem' class="label">interval in seconds (min / max)</label>
+						<label style='margin-top: 2rem' class="label">interval in seconds (min / max)</label>
 						<input
 							class={input_class_min}
 							style="width: 150px;margin-right: 10px;"
@@ -153,7 +164,6 @@ export default class SendFarmlist extends Component {
 								</div>
 							</div>
 						</div>
-
 
 					</div>
 
