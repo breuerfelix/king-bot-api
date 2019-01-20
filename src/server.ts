@@ -36,7 +36,7 @@ class server {
 		this.app.get('/api/allfeatures', (req: any, res: any) => {
 			let response: Ifeature_params[] = [];
 
-			for (let feat of this.features) response = [...response, ...feat.get_feature_params()];
+			for (let feat of this.features) response = [ ...response, ...feat.get_feature_params() ];
 
 			res.send(response);
 		});
