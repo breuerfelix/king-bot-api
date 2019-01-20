@@ -19,7 +19,7 @@ class farming {
 	}
 
 	async get_own(): Promise<any> {
-		return await api.get_cache([ this.farmlist_ident ]);
+		return await api.get_cache([this.farmlist_ident]);
 	}
 }
 

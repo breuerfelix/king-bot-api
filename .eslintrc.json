@@ -16,7 +16,6 @@
 	"rules": {
 		"keyword-spacing": "error",
 		"no-unused-vars": "off",
-		"no-mixed-spaces-and-tabs": "error",
 		"no-undef": "off",
 		"no-constant-condition": "off",
 		"object-curly-spacing": [
@@ -30,6 +29,7 @@
 				"SwitchCase": 1
 			}
 		],
+		"no-mixed-spaces-and-tabs": "error",
 		"linebreak-style": [
 			"error",
 			"unix"
