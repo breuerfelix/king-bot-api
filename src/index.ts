@@ -9,13 +9,28 @@ import { send_farmlist, auto_adventure, finish_earlier, adventure_type, building
 import { farming, village, player } from './gamedata';
 
 class kingbot {
-	async start_server(gameworld: string = '', email: string = '', password: string = '', port: number = 3000) {
-		await this.login(gameworld, email, password);
+	async start_server(
+		gameworld: string = '',
+		email: string = '',
+		password: string = '',
+		sitter_type: string = '',
+		sitter_name: string = '',
+		port: number = 3000
+	) {
+		await settings.init();
+		await this.login(gameworld, email, password, sitter_type, sitter_name);
 
 		server.start(port);
 	}
 
-	async login(gameworld: string, email: string = '', password: string = ''): Promise<void> {
+	async login(
+		gameworld: string,
+		email: string = '',
+		password: string = '',
+		sitter_type: string = '',
+		sitter_name: string = ''
+	): Promise<void> {
+
 		if (!email || !password || !gameworld) {
 			let cred: any = settings.read_credentials();
 
@@ -23,6 +38,8 @@ class kingbot {
 				email = cred.email;
 				password = cred.password;
 				gameworld = cred.gameworld;
+				sitter_name = cred.sitter_name;
+				sitter_type = cred.sitter_type;
 			}
 		}
 
@@ -34,7 +51,7 @@ class kingbot {
 
 		//console.log(`start login to gameworld ${gameworld} with account ${email} ...`);
 		log('start login...');
-		await api.login(email, password, gameworld);
+		await api.login(email, password, gameworld, sitter_type, sitter_name);
 	}
 
 	async scout(farmlist_name: string, village_name: string, amount: number = 1, mission: string = 'resources') {
