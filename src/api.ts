@@ -52,13 +52,15 @@ class api {
 		return this.merge_data(response.data);
 	}
 
+	// TODO better program this api call
 	async get_report(sourceVillageId: number): Promise<any> {
 		const params = {
-			'collection': 'search',
-			'start': 0, 'count': 1,
-			'filters': [
+			collection: 'search',
+			start: 0,
+			count: 1,
+			filters: [
 				'1', '2', '3',
-				{ 'villageId': sourceVillageId }
+				{ villageId: sourceVillageId }
 			],
 			'alsoGetTotalNumber': true
 		};
@@ -67,7 +69,7 @@ class api {
 	}
 
 
-	async send_farmlists(listId: number, entryIds: number[], village_id: number): Promise<any> {
+	async send_partial_farmlists(listId: number, entryIds: number[], village_id: number): Promise<any> {
 		const params = {
 			listId: listId,
 			entryIds: entryIds,
@@ -75,6 +77,15 @@ class api {
 		};
 
 		return await this.post('startPartialFarmListRaid', 'troops', params);
+	}
+
+	async send_farmlists(lists: number[], village_id: number): Promise<any> {
+		const params = {
+			listIds: lists,
+			villageId: village_id
+		};
+
+		return await this.post('startFarmListRaid', 'troops', params);
 	}
 
 	async toggle_farmlist_entry(villageId: number, listId: number): Promise<any> {

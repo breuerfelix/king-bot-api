@@ -10,6 +10,7 @@ import { farming, village, player } from './gamedata';
 
 class kingbot {
 	async start_server(gameworld: string = '', email: string = '', password: string = '', port: number = 3000) {
+		await settings.init();
 		await this.login(gameworld, email, password);
 
 		server.start(port);

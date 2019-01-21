@@ -1,4 +1,4 @@
-import { log, find_state_data, sleep, list_remove, get_random_int } from '../util';
+import { log, find_state_data, sleep, list_remove, get_random_int, get_date } from '../util';
 import { Ifarmlist, Ivillage } from '../interfaces';
 import { Ifeature, Irequest, feature_collection, feature_item, Ioptions } from './feature';
 import { farming, village } from '../gamedata';
@@ -7,6 +7,7 @@ import database from '../database';
 import uniqid from 'uniqid';
 
 interface Ioptions_farm extends Ioptions {
+	village_name: string
 	farmlists: string[]
 	interval_min: number
 	interval_max: number
@@ -24,6 +25,7 @@ class send_farmlist extends feature_collection {
 	get_default_options(options: Ioptions): Ioptions_farm {
 		return {
 			...options,
+			village_name: '',
 			farmlists: [],
 			interval_min: 0,
 			interval_max: 0,
@@ -35,15 +37,16 @@ class farm_feature extends feature_item {
 	options: Ioptions_farm;
 
 	set_options(options: Ioptions_farm): void {
-		const { uuid, run, error, farmlists, interval_min, interval_max } = options;
+		const { uuid, run, error, village_name, farmlists, interval_min, interval_max } = options;
 		this.options = {
 			...this.options,
 			uuid,
 			run,
 			error,
+			village_name,
 			farmlists,
 			interval_min,
-			interval_max,
+			interval_max
 		};
 	}
 
@@ -59,8 +62,8 @@ class farm_feature extends feature_item {
 	}
 
 	get_description(): string {
-		const { interval_min, interval_max } = this.options;
-		return `Farming: ${interval_min} - ${interval_max} s`;
+		const { interval_min, interval_max, village_name } = this.options;
+		return `${village_name} / ${interval_min} - ${interval_max} s`;
 	}
 
 	get_long_description(): string {
@@ -79,63 +82,32 @@ class farm_feature extends feature_item {
 		// fetch farmlists
 		const response = await api.get_cache(params);
 
-
-
-		async function asyncForEach(array: any, callback: any) {
-			for (let index = 0; index < array.length; index++) {
-				await callback(array[index], index, array);
-			}
-		}
-
-
 		while (this.options.run) {
 
+			const { interval_min, village_name, farmlists } = this.options;
 
-			asyncForEach(farmlists, async (farm: any) => {
-				sendFarmlist(farm);
-				await sleep(.25);
-			});
+			const vill: Ivillage = village.find(village_name, response);
+			const village_id: number = vill.villageId;
 
-			async function sendFarmlist(entry: any) {
-				const vill: Ivillage = village.find(entry.village_name, response);
-				const village_id: number = vill.villageId;
-				var farmlist_id: number = NaN;
+			const farmlist_ids: number[] = [];
 
-				const list_obj = farming.find(entry.farmlist, response);
+			for (let farm of farmlists) {
+				let farmlist_id: number = NaN;
+				const list_obj = farming.find(farm, response);
 
-				const lastSent: number = list_obj.lastSent;
-				const now: number = new Date().getTime() / 1000;
+				const lastSent: number = Number(list_obj.lastSent);
+				const now: number = get_date();
 
-				if ((now - lastSent) > interval_min) {
-					farmlist_id = list_obj.listId;
-
-					params = [];
-					params = [`Collection:FarmListEntry:${farmlist_id}`];
-					var listResponse = await api.get_cache(params);
-
-					const entryIds: number[] = [];
-					if (listResponse.length > 0) {
-						listResponse[0].data.forEach((data: any) => {
-							const farm = data.data;
-							if (farm.lastReport) {
-								if (farm.lastReport.notificationType == '1') {
-									entryIds.push(farm.entryId);
-								}
-							}
-						});
-
-						await api.send_farmlists(farmlist_id, entryIds, village_id);
-						log(`farmlist: ${entry.farmlist} sent from village ${entry.village_name}`);
-					} else {
-
-
-						log(`farmlist: ${entry.farmlist} skipped. List was empty?`);
-					}
-				} else {
-					log(`farmlist: ${entry.farmlist} sent too recently. skipping until next time`);
+				if ((now - lastSent) < interval_min) {
+					log(`farmlist: ${farm} sent too recently. skipping until next time`);
+					continue;
 				}
+
+				farmlist_ids.push(list_obj.listId);
 			}
 
+			await api.send_farmlists(farmlist_ids, village_id);
+			log(`farmlists: ${farmlists} sent from village ${village_name}`);
 
 			await sleep(get_random_int(interval_min, interval_max));
 		}

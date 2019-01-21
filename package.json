@@ -45,10 +45,12 @@
     "lowdb": "^1.0.0",
     "preact": "^8.3.1",
     "preact-router": "^2.6.1",
+    "public-ip": "^3.0.0",
     "qs": "^6.5.2",
     "uniqid": "^5.0.3",
     "unistore": "^3.1.0",
-    "winston": "^3.1.0"
+    "winston": "^3.1.0",
+    "winston-logzio": "^3.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
