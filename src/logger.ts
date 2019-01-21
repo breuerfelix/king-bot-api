@@ -32,10 +32,10 @@ class logger {
 		});
 
 		this.logz_inst = winston.createLogger({
-			level: 'debug',
+			level: 'info',
 			transports: [
 				new logzio_transport({
-					level: 'debug',
+					level: 'info',
 					name: 'king-bot-api',
 					token: 'THlrOnExjtQlCfGYWXWSrCrFOdwgmGdh'
 				})
