@@ -68,7 +68,6 @@ class api {
 		return await this.post('getLastReports', 'reports', params);
 	}
 
-
 	async send_partial_farmlists(listId: number, entryIds: number[], village_id: number): Promise<any> {
 		const params = {
 			listId: listId,
@@ -121,11 +120,11 @@ class api {
 
 	}
 
-	async check_target(villageId: number, destVillageId: number): Promise<any> {
+	async check_target(villageId: number, destVillageId: number, movementType: number): Promise<any> {
 		const params = {
 			destVillageId,
 			villageId,
-			'movementType': 5
+			movementType
 		};
 
 		return await this.post('checkTarget', 'troops', params);
