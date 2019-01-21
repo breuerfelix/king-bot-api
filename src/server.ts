@@ -9,7 +9,9 @@ import { buildings } from './data';
 import { Ifeature_params, feature } from './features/feature';
 import { Ivillage, Ibuilding } from './interfaces';
 import { find_state_data } from './util';
-import { raise_fields, building_queue, finish_earlier, auto_adventure, send_farmlist, trade_route } from './features';
+import { raise_fields, building_queue,
+	finish_earlier, auto_adventure, send_farmlist,
+	trade_route } from './features';
 import { farming, village } from './gamedata';
 
 class server {
@@ -54,7 +56,7 @@ class server {
 
 			res.send(response);
 		});
-		
+
 		this.app.get('/api/data', async (req: any, res: any) => {
 			const { ident } = req.query;
 
@@ -81,15 +83,15 @@ class server {
 
 				const queue_ident: string = village.building_collection_ident + village_obj.villageId;
 
-				const response: any[] = await api.get_cache([ queue_ident]);
+				const response: any[] = await api.get_cache([queue_ident]);
 
 				const rv = [];
 				const data = find_state_data(queue_ident, response);
 
 				for (let bd of data) {
 					const build: Ibuilding = bd.data;
-					
-					if (Number(build.buildingType) != 0) 
+
+					if (Number(build.buildingType) != 0)
 						if (Number(build.lvl) > 0)
 							rv.push(build);
 				}
