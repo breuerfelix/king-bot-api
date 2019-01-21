@@ -74,7 +74,7 @@ class farm_feature extends feature_item {
 		log(`farming uuid: ${this.options.uuid} started`);
 
 		const { farmlists, interval_min, interval_max } = this.options;
-		var params = [
+		const params = [
 			village.own_villages_ident,
 			farming.farmlist_ident
 		];
