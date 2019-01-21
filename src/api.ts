@@ -18,8 +18,8 @@ class api {
 		this.ax.defaults.headers['User-Agent'] = 'Chrome/51.0.2704.63';
 	}
 
-	async login(email: string, password: string, gameworld: string) {
-		await manage_login(this.ax, email, password, gameworld);
+	async login(email: string, password: string, gameworld: string, sitter_type: string, sitter_name: string) {
+		await manage_login(this.ax, email, password, gameworld, sitter_type, sitter_name);
 
 		// assign login credentials
 		const { session_gameworld, token_gameworld, msid } = database.get('account').value();

@@ -9,14 +9,28 @@ import settings from './settings';
 const ci = cheerio;
 const lobby_endpoint: string = 'https://lobby.kingdoms.com/api/index.php';
 
-async function manage_login(axios: AxiosInstance, email: string, password: string, gameworld: string): Promise<any> {
+async function manage_login(
+	axios: AxiosInstance,
+	email: string,
+	password: string,
+	gameworld: string,
+	sitter_type: string,
+	sitter_name: string
+): Promise<any> {
+
 	gameworld = gameworld.toLowerCase();
+	sitter_type = sitter_type.toLowerCase();
+	sitter_name = sitter_name.toLowerCase();
 
 	settings.email = email;
 	settings.gameworld = gameworld;
+	settings.sitter_name = sitter_name;
+	settings.sitter_type = sitter_type;
 
 	let db_email = database.get('account.email').value();
 	let db_gameworld = database.get('account.gameworld').value();
+	let db_sitter_type = database.get('account.sitter_type').value();
+	let db_sitter_name = database.get('account.sitter_name').value();
 
 	if (db_email === email) {
 		logger.info('found lobby session in database...', 'login');
@@ -29,7 +43,7 @@ async function manage_login(axios: AxiosInstance, email: string, password: strin
 		if (await test_lobby_connection(axios, session_lobby)) {
 			logger.info('database lobby connection successful', 'login');
 
-			if (db_gameworld === gameworld) {
+			if (db_gameworld === gameworld && db_sitter_name === sitter_name && db_sitter_type === sitter_type) {
 				logger.info('found gameworld session in database ...', 'login');
 
 				// get credentials from database
@@ -44,7 +58,7 @@ async function manage_login(axios: AxiosInstance, email: string, password: strin
 				}
 			}
 
-			await login_to_gameworld(axios, gameworld, msid, session_lobby);	
+			await login_to_gameworld(axios, gameworld, sitter_type, sitter_name, msid, session_lobby);	
 			return;
 		} else {
 			logger.warn('database connection to lobby failed', 'login');
@@ -54,7 +68,7 @@ async function manage_login(axios: AxiosInstance, email: string, password: strin
 
 	const { msid, session_lobby } = await login_to_lobby(axios, email, password);
 
-	await login_to_gameworld(axios, gameworld, msid, session_lobby);
+	await login_to_gameworld(axios, gameworld, sitter_type, sitter_name, msid, session_lobby);
 
 	return;
 }
@@ -129,20 +143,35 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 	return { msid, session_lobby, token_lobby, cookies_lobby };
 }
 
-async function login_to_gameworld(axios: AxiosInstance, gameworld: string, msid: string, session_lobby: string): Promise<any> {
+async function login_to_gameworld(
+	axios: AxiosInstance,
+	gameworld: string,
+	sitter_type: string,
+	sitter_name: string,
+	msid: string,
+	session_lobby: string
+): Promise<any> {
+
 	let res: AxiosResponse, options: AxiosRequestConfig, token_gameworld: string, session_gameworld: string;
 	gameworld = gameworld.toLowerCase();
 
-	let gameworldID: string = await get_gameworld_id(axios, session_lobby, gameworld);
+	let mellonURL: string;
 
-	// get gameworld token
-	let mellonURL: any = `https://mellon-t5.traviangames.com/game-world/join/gameWorldId/${gameworldID}?msname=msid&msid=${msid}`;
+	if (sitter_type && sitter_name) {
+		// login to sitter or dual account
+		let avatarID: string = await get_avatar_id(axios, session_lobby, gameworld, sitter_type, sitter_name);
+		mellonURL = `https://mellon-t5.traviangames.com/game-world/join-as-guest/avatarId/${avatarID}?msname=msid&msid=${msid}`;
+	} else {
+		// login to normal gameworld
+		let gameworldID: string = await get_gameworld_id(axios, session_lobby, gameworld);
+		mellonURL = `https://mellon-t5.traviangames.com/game-world/join/gameWorldId/${gameworldID}?msname=msid&msid=${msid}`;
+	}
 
 	try {
 		res = await axios.get(mellonURL);
 	} catch {
-		logger.error('error login to gameworld. could you entered the wrong one?');
-		throw ('error login to gameworld. could you entered the wrong one?');
+		logger.error('error login to gameworld. could you entered the wrong one?', 'login');
+		process.exit();
 	}
 
 	let rv: any = parse_token(res.data);
@@ -184,6 +213,8 @@ async function login_to_gameworld(axios: AxiosInstance, gameworld: string, msid:
 	database.set('account.session_gameworld', session_gameworld).write();
 	database.set('account.cookies_gameworld', cookies_gameworld).write();
 	database.set('account.gameworld', gameworld).write();
+	database.set('account.sitter_type', sitter_type).write();
+	database.set('account.sitter_name', sitter_name).write();
 
 	return { session_gameworld, token_gameworld, cookies_gameworld };
 }
@@ -241,6 +272,47 @@ async function get_gameworld_id(axios: AxiosInstance, session: string, gameworld
 	});
 
 	return gameworld_id;
+}
+
+async function get_avatar_id(
+	axios: AxiosInstance,
+	session: string,
+	gameworld_string: string,
+	sitter_type: string,
+	sitter_name: string
+): Promise<string> {
+
+	// ignore sitter type for now
+
+	// there are only 4 sitter spots right now, but just to be safe
+	const sitterArray: string[] = [];
+	for (let i = 0; i < 10; i++) {
+		sitterArray.push('Collection:Sitter:' + i);
+	}
+
+	const payload: object = {
+		action: 'get',
+		controller: 'cache',
+		params: {
+			names: sitterArray
+		},
+		session
+	};
+
+	const res: AxiosResponse = await axios.post(lobby_endpoint, payload);
+	let sitters: any = clash_obj(res.data, 'cache', 'response');
+
+	for (let sitter of sitters) {
+		if (sitter.data.length < 1) continue;
+		let s_data = sitter.data[0].data;
+
+		if (s_data.worldName.toLowerCase() == gameworld_string && s_data.avatarName.toLowerCase() == sitter_name) {
+			return s_data.avatarIdentifier;
+		}
+	}
+
+	logger.error(`sitter_name: ${sitter_name} and gameworld: ${gameworld_string} do not match with any sitter spot.`, 'login');
+	process.exit();
 }
 
 async function test_lobby_connection(axios: AxiosInstance, session: string): Promise<boolean> {

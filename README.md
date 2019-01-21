@@ -57,9 +57,10 @@ after configuring you can close the browser window and the bot keeps running unt
 
 ## features
 
+-   login as normal player, dual or sitter
 -   send farmlist in interval
 -   endless building queue
--	auto raise fields
+-   auto raise fields
 -   auto adventure
 -   finish 5 min earlier
 -   inactive finder
@@ -74,10 +75,12 @@ after configuring you can close the browser window and the bot keeps running unt
 # docker
 
 there is also a docker image for this bot.  
-create a folder for the database and a file (`cred.txt`) with your credentials in this folder that can be mounted to the docker container:
+create a folder for the database and a file (`cred.txt`) with your credentials in this folder that can be mounted to the docker container.  
+`sitter_type` could be 'sitter' or 'dual'. `sitter_name` should be the ingame avatar nickname of the target gameworld.  
+sitter information is optional.
 
 ```csv
-your_email;your_password;your_gameworld
+your_email;your_password;your_gameworld;sitter_type;sitter_name
 ```
 
 pull image and start the container mounting the file:
