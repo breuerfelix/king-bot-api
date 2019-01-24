@@ -9,8 +9,6 @@ import uniqid from 'uniqid';
 interface Ioptions_timed_attack extends Ioptions {
   village_name: string,
   wait_time: number,
-  target_x: number,
-  target_y: number,
   target_villageId: number,
   target_village_name: string,
   target_playerId: string,
@@ -28,24 +26,24 @@ interface Ioptions_timed_attack extends Ioptions {
   t9: number,
   t10: number,
   t11: number,
+  date: string,
+  time: string
 }
 
 class timed_attack extends feature_collection {
-	get_ident(): string {
-		return 'timed_attack';
-	}
+  get_ident(): string {
+    return 'timed_attack';
+  }
 
-	get_new_item(options: Ioptions_timed_attack): timed_attack_feature {
-		return new timed_attack_feature({ ...options });
-	}
+  get_new_item(options: Ioptions_timed_attack): timed_attack_feature {
+    return new timed_attack_feature({ ...options });
+  }
 
-	get_default_options(options: Ioptions): Ioptions_timed_attack {
-		return {
-			...options,
-			village_name: '',
+  get_default_options(options: Ioptions): Ioptions_timed_attack {
+    return {
+      ...options,
+      village_name: '',
       wait_time: 60,
-      target_x: 0,
-      target_y: 0,
       target_villageId: 0,
       target_village_name: '',
       target_playerId: '',
@@ -62,19 +60,19 @@ class timed_attack extends feature_collection {
       t8: 0,
       t9: 0,
       t10: 0,
-      t11: 0
-		};
-	}
+      t11: 0,
+      date: '',
+      time: ''
+    };
+  }
 }
 
 class timed_attack_feature extends feature_item {
-	options: Ioptions_timed_attack;
+  options: Ioptions_timed_attack;
 
-	set_options(options: Ioptions_timed_attack): void {
-		const { uuid, run, error, village_name,
+  set_options(options: Ioptions_timed_attack): void {
+    const { uuid, run, error, village_name,
       wait_time,
-      target_x,
-      target_y,
       target_villageId,
       target_village_name,
       target_playerId,
@@ -91,17 +89,17 @@ class timed_attack_feature extends feature_item {
       t8,
       t9,
       t10,
-      t11} = options;
+      t11,
+      date,
+      time } = options;
 
-		this.options = {
-			...this.options,
-			uuid,
-			run,
-			error,
+    this.options = {
+      ...this.options,
+      uuid,
+      run,
+      error,
       village_name,
       wait_time,
-      target_x,
-      target_y,
       target_villageId,
       target_village_name,
       target_playerId,
@@ -118,36 +116,37 @@ class timed_attack_feature extends feature_item {
       t8,
       t9,
       t10,
-      t11
-      
-		};
-	}
+      t11,
+      date,
+      time
 
-	get_options(): Ioptions_timed_attack {
-		return { ...this.options };
-	}
+    };
+  }
 
-	set_params(): void {
-		this.params = {
-			ident: 'timed_attack',
+  get_options(): Ioptions_timed_attack {
+    return { ...this.options };
+  }
+
+  set_params(): void {
+    this.params = {
+      ident: 'timed_attack',
       name: 'timed attack'
-		};
-	}
+    };
+  }
 
-	get_description(): string {
-		const { village_name, target_village_name} = this.options;
-		return `${village_name} -> ${target_village_name} : ${this.options.wait_time}`;
-	}
+  get_description(): string {
+    const { village_name, target_village_name } = this.options;
+    return `${village_name} -> ${target_village_name} : ${this.options.wait_time}`;
+  }
 
-	get_long_description(): string {
-		return 'sends merchants from the origin village to the desination at a given interval.';
-	}
+  get_long_description(): string {
+    return 'sends merchants from the origin village to the desination at a given interval.';
+  }
 
-	async run(): Promise<void> {
+  async run(): Promise<void> {
     log(`attack timer uuid: ${this.options.uuid} started`);
 
-		var { village_name, target_villageId, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11 } = this.options;
-
+    var { village_name, target_villageId, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, date, time } = this.options;
     const params = [
       village.own_villages_ident,
     ];
@@ -168,15 +167,15 @@ class timed_attack_feature extends feature_item {
       10: Number(t10),
       11: Number(t11)
     };
+    const dateTime = new Date(date + "T" + time + "Z");
+    const dateTimeSec = dateTime.getTime();
 
     while (this.options.run) {
-      log(this.options.wait_time)
-      this.options.wait_time = this.options.wait_time - 1;
       this.set_options(this.options);
+      var currentTime = Date.now();
 
-      
-      
-      if(this.options.wait_time == 0){
+
+      if (dateTimeSec - currentTime < 500) {
         log('attacking')
         log(sourceVillage_id)
         log(target_villageId)
@@ -186,16 +185,16 @@ class timed_attack_feature extends feature_item {
         this.running = false;
         this.options.run = false
       }
-      else{
+      else {
         await sleep(1);
       }
-      
+
 
     }
 
     log(`attack timer uuid: ${this.options.uuid} stopped`);
-		this.running = false;
-		this.options.run = false;
+    this.running = false;
+    this.options.run = false;
   }
 }
 
