@@ -66,8 +66,18 @@ class api {
 		return await this.post('getLastReports', 'reports', params);
 	}
 
+	async send_farmlists(lists: number[], village_id: number): Promise<any> {
 
-	async send_farmlists(listId: number, entryIds: number[], village_id: number): Promise<any> {
+		const params = {
+			listIds: lists,
+			villageId: village_id
+		};
+
+		return await this.post('startFarmListRaid', 'troops', params);
+	}
+
+
+	async send_farmlists_partial(listId: number, entryIds: number[], village_id: number): Promise<any> {
 		const params = {
 			listId: listId,
 			entryIds: entryIds,
@@ -84,6 +94,16 @@ class api {
 		};
 
 		return await this.post('toggleEntry', 'farmList', params);
+	}
+
+	async copy_farmlist_entry(villageId: number, newListId: number, entryId: number): Promise<any> {
+		const params = {
+			villageId,
+			newListId,
+			entryId
+		}
+		console.log(params)
+		return await this.post('copyEntry', 'farmList', params);
 	}
 
 	async upgrade_building(buildingType: number, locationId: number, villageId: number): Promise<any> {

@@ -168,11 +168,11 @@ class timed_attack_feature extends feature_item {
       11: Number(t11)
     };
     const dateTime = new Date(date + "T" + time + "Z");
-    const dateTimeSec = dateTime.getTime();
+    const dateTimeSec = dateTime.getTime() + 3600000;
 
     while (this.options.run) {
       this.set_options(this.options);
-      var currentTime = Date.now();
+      var currentTime = Date.now() + 3600000; //Convert to game time.
 
 
       if (dateTimeSec - currentTime < 500) {
