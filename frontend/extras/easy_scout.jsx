@@ -44,7 +44,7 @@ export default class EasyScout extends Component {
 			error_amount: (this.state.amount == '')
 		});
 
-		if(this.state.error_village || this.state.error_farmlist || this.state.error_amount) return;
+		if (this.state.error_village || this.state.error_farmlist || this.state.error_amount) return;
 
 		const payload = {
 			list_name: this.state.selected_farmlist,
@@ -54,7 +54,7 @@ export default class EasyScout extends Component {
 		};
 
 		const response = await axios.post('/api/easyscout', payload);
-		if(response.data == 'success') route('/');
+		if (response.data == 'success') route('/');
 	}
 
 	cancel = async e => {
@@ -148,10 +148,10 @@ export default class EasyScout extends Component {
 
 				<div className="columns">
 					<div className="column">
-						<button className="button is-success" onClick={ this.submit } style='margin-right: 1rem'>
+						<button className="button is-success is-radiusless" onClick={ this.submit } style='margin-right: 1rem'>
 							submit
 						</button>
-						<button className="button" onClick={ this.cancel } style='margin-right: 1rem'>
+						<button className="button is-radiusless" onClick={ this.cancel } style='margin-right: 1rem'>
 							cancel
 						</button>
 					</div>

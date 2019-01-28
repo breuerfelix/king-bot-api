@@ -48,7 +48,7 @@ export default class InactiveFinder extends Component {
 			error_farmlist: (selected_farmlist == '')
 		});
 
-		if(this.state.error_farmlist) return false;
+		if (this.state.error_farmlist) return false;
 
 		this.setState({ error_farmlist: false });
 
@@ -64,7 +64,7 @@ export default class InactiveFinder extends Component {
 
 		const { error } = response.data;
 
-		if(error) {
+		if (error) {
 			this.props.handle_response(response.data);
 			return false;
 		}
@@ -73,13 +73,13 @@ export default class InactiveFinder extends Component {
 	}
 
 	search = async e => {
-		if(this.state.loading) return;
+		if (this.state.loading) return;
 
 		this.setState({ 
 			error_village: (this.state.village_name == '')
 		});
 
-		if(this.state.error_village) return;
+		if (this.state.error_village) return;
 
 		this.setState({ loading: true, message: '', inactives: [] });
 
@@ -118,7 +118,7 @@ export default class InactiveFinder extends Component {
 
 		this.setState({ inactives: [ ...data ], loading: false });
 
-		if(error) {
+		if (error) {
 			this.props.handle_response(response.data);
 			return;
 		}

@@ -23,7 +23,7 @@ export default class BuildingQueue extends Component {
 	}
 
 	componentDidMount() {
-		if(this.state.village_name) this.village_changes({ target: { value: this.state.village_name } });
+		if (this.state.village_name) this.village_changes({ target: { value: this.state.village_name } });
 
 		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data }));
 		axios.get('/api/data?ident=buildingdata').then(res => this.setState({ buildings_dict: res.data }));
@@ -34,13 +34,15 @@ export default class BuildingQueue extends Component {
 			error_village: (this.state.village_name == '')
 		});
 
-		if(this.state.error_village) return;
+		if (this.state.error_village) return;
 
-		this.props.submit({ ...this.state });
+		const { ident, uuid, village_name, queue } = this.state;
+		this.props.submit({ ident, uuid, village_name, queue });
 	}
 
 	delete = async e => {
-		this.props.delete({ ...this.state });
+		const { ident, uuid, village_name, queue } = this.state;
+		this.props.delete({ ident, uuid, village_name, queue });
 	}
 
 	cancel = async e => {
@@ -48,7 +50,7 @@ export default class BuildingQueue extends Component {
 	}
 
 	village_changes = async e => {
-		if(!e.target.value) return;
+		if (!e.target.value) return;
 
 		this.setState({ village_name: e.target.value });
 
@@ -56,8 +58,8 @@ export default class BuildingQueue extends Component {
 		let res = [];
 		let bd = [];
 
-		for(let item of response.data) {
-			if(Number(item.buildingType) > 4) {
+		for (let item of response.data) {
+			if (Number(item.buildingType) > 4) {
 				bd.push(item);
 				continue;
 			}
@@ -129,7 +131,7 @@ export default class BuildingQueue extends Component {
 		};
 
 		let buildings_options = [];
-		if(buildings_dict) {
+		if (buildings_dict) {
 			buildings_options = buildings.map(building => 
 				<tr>
 					<td style={ header_style }>{ building.locationId }</td>
@@ -147,7 +149,7 @@ export default class BuildingQueue extends Component {
 		}
 
 		let resource_options = [];
-		if(buildings_dict) {
+		if (buildings_dict) {
 			resource_options = resources.map(building => 
 				<tr>
 					<td style={ header_style }>{ building.locationId }</td>
@@ -165,7 +167,7 @@ export default class BuildingQueue extends Component {
 		}
 
 		let queue_options = [];
-		if(buildings_dict) {
+		if (buildings_dict) {
 			queue_options = queue.map((building, index) => 
 				<tr>
 					<td style={ header_style }>{ index + 1 }</td>
@@ -210,14 +212,15 @@ export default class BuildingQueue extends Component {
 							<div class="control">
 								<div class={ village_select_class }>
 									<select 
+										class='is-radiusless'
 										value={ village_name } 
 										onChange={ this.village_changes }
 									>
 										{ villages }
 									</select>
 								</div>
-								<a className="button is-success" style="margin-left: 3rem; margin-right: 1rem" onClick={ this.submit }>submit</a>
-								<a className="button is-danger" onClick={ this.delete }>delete</a>
+								<a className="button is-success is-radiusless" style="margin-left: 3rem; margin-right: 1rem" onClick={ this.submit }>submit</a>
+								<a className="button is-danger is-radiusless" onClick={ this.delete }>delete</a>
 
 							</div>
 						</div>
