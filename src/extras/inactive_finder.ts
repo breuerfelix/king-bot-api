@@ -13,7 +13,7 @@ class inactive_finder {
 		const temp_data: any = await farming.get_own();
 		const farmlist_data: Ifarmlist = farming.find(farmlist, temp_data);
 
-		if(!farmlist_data) {
+		if (!farmlist_data) {
 			return {
 				error: true,
 				message: 'could not find given farmlist',
@@ -46,7 +46,7 @@ class inactive_finder {
 		const village_data = await village.get_own();
 		const found_village: Ivillage = village.find(village_name, village_data);
 		
-		if(!found_village) {
+		if (!found_village) {
 			return {
 				error: true,
 				message: `village: ${ village_name } not found.`,
@@ -69,7 +69,7 @@ class inactive_finder {
 		`.replace(/\s/g, '');
 
 		const res: any = await axios.get(this.url + query);
-		if(res.data.error) {
+		if (res.data.error) {
 			return res.data;
 		}
 
@@ -78,40 +78,40 @@ class inactive_finder {
 
 		const villages_farmlist: Array<number> = [];
 
-		for(let farm of data) {
+		for (let farm of data) {
 			const farm_data: Ifarmlist = farm.data;
-			for(let id of farm_data.villageIds) {
+			for (let id of farm_data.villageIds) {
 				villages_farmlist.push(Number(id));
 			}
 		}
 
 		const rv: any[] = [];
 
-		for(let farm of res.data.data) {
-			if(villages_farmlist.indexOf(Number(farm.villageId)) > -1) continue;
+		for (let farm of res.data.data) {
+			if (villages_farmlist.indexOf(Number(farm.villageId)) > -1) continue;
 
 			rv.push(farm);
 		}
 
 		// get kingdom names
 		const k_id_params: Set<string> = new Set();
-		for(let farm of rv) {
+		for (let farm of rv) {
 			const kID: number = Number(farm.kingdomId);
-			if(kID == 0) continue;
+			if (kID == 0) continue;
 			k_id_params.add('Kingdom:' + kID);
 		}
 
 		const kingdom_response = await api.get_cache(Array.from(k_id_params));
 		const kingdom_data: { [index: number]: string } = {};
 
-		for(let k_data of kingdom_response) {
+		for (let k_data of kingdom_response) {
 			const k = k_data.data;
 			kingdom_data[Number(k.groupId)] = k.tag;
 		}
 
-		for(let farm of rv) {
+		for (let farm of rv) {
 			const kID: number = Number(farm.kingdomId);
-			if(kID == 0) {
+			if (kID == 0) {
 				farm['kingdom_tag'] = '-';
 				continue;
 			}

@@ -14,7 +14,7 @@ const add_notification = {
 
 const handle_response = {
 	handle_response(state, response) {
-		if(!response.error) return;
+		if (!response.error) return;
 		const { message } = response;
 
 		const noti = {

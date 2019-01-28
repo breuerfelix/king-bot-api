@@ -1,5 +1,6 @@
 import database from '../database';
 import uniqid from 'uniqid';
+import logger from '../logger';
 import { log, list_remove } from '../util';
 
 export interface Ifeature_params extends Ifeature, Ioptions {
@@ -56,7 +57,7 @@ export abstract class feature_single implements feature {
 
 		const options: Ioptions = database.get(`${this.params.ident}.options`).value();
 
-		if(!options || Object.keys(options).length < 1) this.set_default_options();
+		if (!options || Object.keys(options).length < 1) this.set_default_options();
 		else this.set_options({ ...options });
 	}
 
@@ -78,7 +79,7 @@ export abstract class feature_single implements feature {
 	}
 
 	start_for_server(): void {
-		if(this.get_options().run) this.start();
+		if (this.get_options().run) this.start();
 	}
 
 	stop(): void {
@@ -93,7 +94,9 @@ export abstract class feature_single implements feature {
 		try {
 			this.running = true;
 			await this.run();
-		} catch {
+		} catch (e) {
+			logger.error(e);
+
 			this.running = false;
 			this.set_options({ ...this.get_options(), run: false, error: true });
 		}
@@ -111,30 +114,30 @@ export abstract class feature_single implements feature {
 			message: ''
 		};
 
-		if(action == 'start') {
+		if (action == 'start') {
 			this.set_options({ ...this.get_options(), run: true });
-			if(!this.running) this.start();
+			if (!this.running) this.start();
 			else this.save();
 
 			res.message = 'online';
 			return res;
 		}
 
-		if(action == 'stop') {
+		if (action == 'stop') {
 			this.stop();
 
 			res.message = 'offline';
 			return res;
 		}
 
-		if(action == 'update') {
+		if (action == 'update') {
 			res = this.update({ ...payload.feature });
 			this.save();
 
 			return res;
 		}
 	
-		if(action == 'get') {
+		if (action == 'get') {
 			res = {
 				data: {
 					...this.params,
@@ -165,28 +168,28 @@ export abstract class feature_collection implements feature {
 	constructor() {
 		const options: Ioptions[] = database.get(`${this.get_ident()}.options`).value();
 
-		if(!options) return;
+		if (!options) return;
 
-		for(let opt of options) {
+		for (let opt of options) {
 			this.features.push(this.get_new_item(opt));
 		}
 	}
 
 	get_feature_params(): Ifeature_params[] {
 		const params: Ifeature_params[] = [];
-		for(let feat of this.features) params.push(feat.get_feature_params());
+		for (let feat of this.features) params.push(feat.get_feature_params());
 		return params;
 	}
 
 	save(): void {
 		const options: Ioptions[] = [];
-		for(let feat of this.features) options.push(feat.get_options());
+		for (let feat of this.features) options.push(feat.get_options());
 		database.set(`${this.get_ident()}.options`, options).write();
 	}
 
 	start_for_server(): void {
-		for(let feat of this.features)
-			if(feat.get_options().run)
+		for (let feat of this.features)
+			if (feat.get_options().run)
 				feat.start();
 	}
 
@@ -198,7 +201,7 @@ export abstract class feature_collection implements feature {
 			message: ''
 		};
 
-		if(action == 'new') {
+		if (action == 'new') {
 			const uuid: string = uniqid.time();
 
 			const options: Ioptions = this.get_default_options({
@@ -219,16 +222,16 @@ export abstract class feature_collection implements feature {
 		const { uuid } = payload.feature;
 		const feature: feature_item = this.features.find(x => x.get_options().uuid == uuid);
 
-		if(!feature) {
+		if (!feature) {
 			res.error = true;
 			res.message = `feature with uuid: ${ uuid } not found !`;
 
 			return res;
 		}
 
-		if(action == 'start') {
+		if (action == 'start') {
 			feature.set_options({ ...feature.get_options(), run: true });
-			if(!feature.running) feature.start();
+			if (!feature.running) feature.start();
 
 			this.save();
 
@@ -236,7 +239,7 @@ export abstract class feature_collection implements feature {
 			return res;
 		}
 
-		if(action == 'stop') {
+		if (action == 'stop') {
 			feature.stop();
 			this.save();
 
@@ -244,7 +247,7 @@ export abstract class feature_collection implements feature {
 			return res;
 		}
 
-		if(action == 'update') {
+		if (action == 'update') {
 			const { uuid, run } = feature.get_options();
 			feature.stop();
 			list_remove(feature, this.features);
@@ -260,13 +263,13 @@ export abstract class feature_collection implements feature {
 
 			this.save();
 
-			if(run) new_feature.start();
+			if (run) new_feature.start();
 
 			res.message = 'success';
 			return res;
 		}
 
-		if(action == 'delete') {
+		if (action == 'delete') {
 			feature.stop();
 			list_remove(feature, this.features);
 			this.save();
@@ -275,7 +278,7 @@ export abstract class feature_collection implements feature {
 			return res;
 		}
 
-		if(action == 'get') {
+		if (action == 'get') {
 			res = {
 				data: {
 					...feature.params,

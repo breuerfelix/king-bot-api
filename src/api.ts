@@ -18,8 +18,8 @@ class api {
 		this.ax.defaults.headers['User-Agent'] = 'Chrome/51.0.2704.63';
 	}
 
-	async login(email: string, password: string, gameworld: string) {
-		await manage_login(this.ax, email, password, gameworld);
+	async login(email: string, password: string, gameworld: string, sitter_type: string, sitter_name: string) {
+		await manage_login(this.ax, email, password, gameworld, sitter_type, sitter_name);
 
 		// assign login credentials
 		const { session_gameworld, token_gameworld, msid } = database.get('account').value();
@@ -52,32 +52,23 @@ class api {
 		return this.merge_data(response.data);
 	}
 
+	// TODO better program this api call
 	async get_report(sourceVillageId: number): Promise<any> {
 		const params = {
-			"collection": "search",
-			"start": 0, "count": 1,
-			"filters": [
-				"1", "2", "3",
-				{ "villageId": sourceVillageId }
+			collection: 'search',
+			start: 0,
+			count: 1,
+			filters: [
+				'1', '2', '3',
+				{ villageId: sourceVillageId }
 			],
-			"alsoGetTotalNumber": true
-		}
+			'alsoGetTotalNumber': true
+		};
 
 		return await this.post('getLastReports', 'reports', params);
 	}
 
-	async send_farmlists(lists: number[], village_id: number): Promise<any> {
-
-		const params = {
-			listIds: lists,
-			villageId: village_id
-		};
-
-		return await this.post('startFarmListRaid', 'troops', params);
-	}
-
-
-	async send_farmlists_partial(listId: number, entryIds: number[], village_id: number): Promise<any> {
+	async send_partial_farmlists(listId: number, entryIds: number[], village_id: number): Promise<any> {
 		const params = {
 			listId: listId,
 			entryIds: entryIds,
@@ -85,6 +76,15 @@ class api {
 		};
 
 		return await this.post('startPartialFarmListRaid', 'troops', params);
+	}
+
+	async send_farmlists(lists: number[], village_id: number): Promise<any> {
+		const params = {
+			listIds: lists,
+			villageId: village_id
+		};
+
+		return await this.post('startFarmListRaid', 'troops', params);
 	}
 
 	async toggle_farmlist_entry(villageId: number, listId: number): Promise<any> {
@@ -130,12 +130,12 @@ class api {
 
 	}
 
-	async check_target(villageId: number, destVillageId: number): Promise<any> {
+	async check_target(villageId: number, destVillageId: number, movementType: number): Promise<any> {
 		const params = {
 			destVillageId,
 			villageId,
-			"movementType": 5
-		}
+			movementType
+		};
 
 		return await this.post('checkTarget', 'troops', params);
 	}

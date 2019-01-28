@@ -19,7 +19,7 @@ export default class Adventure extends Component {
 	submit = async (e) => {
 		this.setState({ error_input: (this.state.min_health == '') });
 
-		if(this.state.error_input) return;
+		if (this.state.error_input) return;
 
 		this.props.submit({ ...this.state });
 	}

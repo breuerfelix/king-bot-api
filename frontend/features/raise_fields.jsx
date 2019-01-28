@@ -27,13 +27,15 @@ export default class RaiseFields extends Component {
 	submit = async (e) => {
 		this.setState({ error_village: (this.state.village_name == '') });
 
-		if(this.state.error_village) return;
+		if (this.state.error_village) return;
 
-		this.props.submit({ ...this.state });
+		const { ident, uuid, village_name, crop, wood, clay, iron } = this.state;
+		this.props.submit({ ident, uuid, village_name, crop, wood, clay, iron });
 	}
 
 	delete = async e => {
-		this.props.delete({ ...this.state });
+		const { ident, uuid, village_name, crop, wood, clay, iron } = this.state;
+		this.props.delete({ ident, uuid, village_name, crop, wood, clay, iron });
 	}
 
 	cancel = async e => {
@@ -82,6 +84,7 @@ export default class RaiseFields extends Component {
 							<div class="control">
 								<div class={ village_select_class }>
 									<select 
+										class="is-radiusless"
 										value={ village_name } 
 										onChange={ (e) => this.setState({ village_name: e.target.value }) }
 									>
@@ -103,14 +106,14 @@ export default class RaiseFields extends Component {
 
 				<div className="columns">
 					<div className="column">
-						<button className="button is-success" onClick={ this.submit } style='margin-right: 1rem'>
+						<button className="button is-success is-radiusless" onClick={ this.submit } style='margin-right: 1rem'>
 							submit
 						</button>
-						<button className="button" onClick={ this.cancel } style='margin-right: 1rem'>
+						<button className="button is-radiusless" onClick={ this.cancel } style='margin-right: 1rem'>
 							cancel
 						</button>
 
-						<button className="button is-danger" onClick={ this.delete }>
+						<button className="button is-danger is-radiusless" onClick={ this.delete }>
 							delete
 						</button>
 					</div>

@@ -3,12 +3,15 @@ import path from 'path';
 import kingbot from './index';
 import api from './api';
 import settings from './settings';
+import logger from './logger';
 import { inactive_finder } from './extras';
 import { buildings } from './data';
 import { Ifeature_params, feature } from './features/feature';
 import { Ivillage, Ibuilding } from './interfaces';
 import { find_state_data } from './util';
-import { raise_fields, building_queue, finish_earlier, auto_adventure, send_farmlist, trade_route, basic_farmlist, timed_attack } from './features';
+import { raise_fields, building_queue,
+	finish_earlier, auto_adventure, send_farmlist,
+	trade_route } from './features';
 import { farming, village } from './gamedata';
 
 class server {
@@ -20,9 +23,7 @@ class server {
 		send_farmlist,
 		building_queue,
 		raise_fields,
-		trade_route,
-    basic_farmlist,
-    timed_attack
+		trade_route
 	];
 
 	constructor() {
@@ -35,7 +36,7 @@ class server {
 		this.app.get('/api/allfeatures', (req: any, res: any) => {
 			let response: Ifeature_params[] = [];
 
-			for (let feat of this.features) response = [...response, ...feat.get_feature_params()];
+			for (let feat of this.features) response = [ ...response, ...feat.get_feature_params() ];
 
 			res.send(response);
 		});
@@ -114,6 +115,12 @@ class server {
 				return;
 			}
 
+			if (ident == 'logger') {
+				// send latest 100 logs to frontend
+				res.send(logger.log_list.slice(-100));
+				return;
+			}
+
 			res.send('error');
 		});
 
@@ -123,24 +130,6 @@ class server {
 			kingbot.scout(list_name, village_name, amount, mission);
 
 			res.send('success');
-		});
-
-		this.app.post('/api/findvillage', async (req: any, res: any) => {
-			const response = await api.get_cache(req.body);
-			res.send(response)
-		});
-
-
-		this.app.post('/api/findvillage2', async (req: any, res: any) => {
-			const response = await api.check_target(req.body.sourceVillage, req.body.destinationVillage);
-			res.send(response);
-		});
-
-		this.app.post('/api/ownvillagenametoid', async (req: any, res: any) => {
-			const village_data = await village.get_own();
-			const village_obj: Ivillage = village.find(req.body.village_name, village_data);
-			const sourceVillage_id: number = village_obj.villageId;
-			res.send(sourceVillage_id);
 		});
 
 		this.app.post('/api/inactivefinder', async (req: any, res: any) => {
@@ -186,13 +175,12 @@ class server {
 
 		// handles all 404 requests to main page
 		this.app.get('*', (req: any, res: any) => {
-			//res.redirect('/');
 			res.sendFile(path.resolve(__dirname, '../public', 'index.html'));
 		});
 	}
 
 	async start(port: number) {
-		this.app.listen(port, () => console.log(`server running on port ${port}!`));
+		this.app.listen(port, () => logger.info(`server running on => http://localhost:${port}`));
 
 		// start all features on startup
 		for (let feat of this.features) feat.start_for_server();

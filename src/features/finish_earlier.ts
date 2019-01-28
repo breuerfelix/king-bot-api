@@ -58,12 +58,12 @@ class finish_earlier extends feature_single {
 
 		const five_minutes: number = 5 * 60;
 
-		while(this.options.run) {
+		while (this.options.run) {
 			const villages_data: any = await village.get_own();
 
 			let params: string[] = [];
 
-			for(let data of find_state_data(village.own_villages_ident, villages_data)) {
+			for (let data of find_state_data(village.own_villages_ident, villages_data)) {
 				const vill: Ivillage = data.data;
 				params.push(this.building_queue_ident + vill.villageId);
 			}
@@ -73,18 +73,18 @@ class finish_earlier extends feature_single {
 
 			let sleep_time: number = null;
 
-			for(let data of find_state_data(village.own_villages_ident, villages_data)) {
+			for (let data of find_state_data(village.own_villages_ident, villages_data)) {
 				const vill: Ivillage = data.data;
 				const queue: Ibuilding_queue = find_state_data(this.building_queue_ident + vill.villageId, response);
 
 				const queues: number[] = [1, 2];
 
 				// for building and resource queue
-				for(let qu of queues) {
+				for (let qu of queues) {
 					const actual_queue: any[] = queue.queues[qu];
 
-					if(!actual_queue) continue;
-					if(!actual_queue[0]) continue;
+					if (!actual_queue) continue;
+					if (!actual_queue[0]) continue;
 
 					const first_item: any = actual_queue[0];
 					const finished: number = first_item.finished;
@@ -93,21 +93,21 @@ class finish_earlier extends feature_single {
 					const rest_time: number = finished - now;
 
 					// finish building instant
-					if(rest_time <= five_minutes) {
+					if (rest_time <= five_minutes) {
 						const res = await api.finish_now(vill.villageId, qu);
 						console.log(`finished building earlier for free in village ${vill.name}`);
 						continue;
 					}
 
-					if(!sleep_time) sleep_time = rest_time;
-					else if(rest_time < sleep_time) sleep_time = rest_time;
+					if (!sleep_time) sleep_time = rest_time;
+					else if (rest_time < sleep_time) sleep_time = rest_time;
 				}
 			}
 
-			if(sleep_time) sleep_time = sleep_time - five_minutes + 1;
+			if (sleep_time) sleep_time = sleep_time - five_minutes + 1;
 			
-			if(!sleep_time || sleep_time <= 0) sleep_time = 60;
-			if(sleep_time > 120) sleep_time = 120;
+			if (!sleep_time || sleep_time <= 0) sleep_time = 60;
+			if (sleep_time > 120) sleep_time = 120;
 
 			await sleep(sleep_time);
 		}
