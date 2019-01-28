@@ -2,13 +2,12 @@ import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
 import axios from 'axios';
 import classNames from 'classnames';
-import FarmlistTable from '../components/farmlist_table'
+import FarmlistTable from '../components/farmlist_table';
 
 export default class SendFarmlist extends Component {
 	state = {
 		name: 'send farmlist',
 		selected_farmlist: '',
-		losses_farmlist: '',
 		farmlists: [],
 		village_name: '',
 		interval_min: '',
@@ -17,7 +16,9 @@ export default class SendFarmlist extends Component {
 		all_villages: [],
 		error_input_min: false,
 		error_input_max: false,
-		error_farmlists: false
+		error_farmlist: false,
+		error_farmlists: false,
+		error_village: false
 	}
 
 	componentWillMount() {
@@ -30,36 +31,46 @@ export default class SendFarmlist extends Component {
 	}
 
 	add_farmlist = async e => {
-		const { village_name, selected_farmlist, farmlists } = this.state;
-		var farmlist = {};
-		farmlist.village_name = village_name;
-		farmlist.farmlist = selected_farmlist;
-		farmlists.push(farmlist)
-		this.setState({ farmlists })
+		const { selected_farmlist, farmlists } = this.state;
+
+		this.setState({
+			error_farmlist: !this.state.selected_farmlist
+		});
+
+		if (this.state.error_village || this.state.error_farmlist) return;
+
+		// farmlist already added
+		if (farmlists.indexOf(selected_farmlist) > -1) return;
+
+		farmlists.push(selected_farmlist);
+		this.setState({ farmlists });
 	}
 
-	remove_farmlist = async e => {
+	remove_farmlist = e => {
 		const { farmlists } = this.state;
-		console.log(farmlists)
-		farmlists.pop(e);
-		this.setState({ farmlists })
+
+		farmlists.splice(farmlists.indexOf(e), 1);
+
+		this.setState({ farmlists });
 	}
 
-	submit = async e => {
+	submit = e => {
 		this.setState({
 			error_input_min: (this.state.interval_min == ''),
 			error_input_max: (this.state.interval_max == ''),
-			error_farmlists: (this.state.farmlists == []),
+			error_farmlists: this.state.farmlists.length < 1
 		});
 
-		if (this.state.error_input_min || this.state.error_input_max || this.state.error_village || this.state.error_farmlist) return;
+		if (this.state.error_input_min || this.state.error_input_max || this.state.error_farmlists) return;
 
-		this.props.submit({ ...this.state });
+		const { ident, uuid, village_name, farmlists, interval_min, interval_max, yellow_farms, red_farms } = this.state;
+		this.props.submit({ ident, uuid, village_name, farmlists, interval_min, interval_max, yellow_farms, red_farms });
 	}
 
 
-	delete = async e => {
-		this.props.delete({ ...this.state });
+	delete = e => {
+		const { ident, uuid, village_name, farmlists, interval_min, interval_max, yellow_farms, red_farms } = this.state;
+		this.props.delete({ ident, uuid, village_name, farmlists, interval_min, interval_max, yellow_farms, red_farms });
 	}
 
 	cancel = async e => {
@@ -67,7 +78,10 @@ export default class SendFarmlist extends Component {
 	}
 
 	render() {
-		var { interval_min, interval_max, all_villages, all_farmlists, village_name, selected_farmlist, farmlists, losses_farmlist } = this.state;
+		const { interval_min, interval_max,
+			all_villages, all_farmlists, village_name,
+			selected_farmlist, farmlists, yellow_farms,
+			red_farms } = this.state;
 
 		const input_class_min = classNames({
 			input: true,
@@ -98,7 +112,7 @@ export default class SendFarmlist extends Component {
 			<div>
 				<div className="columns">
 					<div className="column">
-						<label class="label">select farmlist</label>
+						<label class="label">select farmlists</label>
 						<div class={farmlist_select_class}>
 							<select
 								class="is-radiusless"
@@ -113,22 +127,7 @@ export default class SendFarmlist extends Component {
 							add farmlist
 						</button>
 
-						<div>
-							<label class="label">select losses farmlist</label>
-							<div class={farmlist_select_class}>
-								<select
-									class="is-radiusless"
-									value={losses_farmlist}
-									onChange={(e) => this.setState({ losses_farmlist: e.target.value })}
-								>
-									{farmlist_opt}
-								</select>
-							</div>
-
-						</div>
-
-
-						<label style='margin-top: 10rem' class="label">interval in seconds (min / max)</label>
+						<label style='margin-top: 2rem' class="label">interval in seconds (min / max)</label>
 						<input
 							class={input_class_min}
 							style="width: 150px;margin-right: 10px;"
@@ -147,8 +146,6 @@ export default class SendFarmlist extends Component {
 						/>
 						<p class="help">provide a number</p>
 
-
-
 					</div>
 
 					<div className="column">
@@ -160,7 +157,7 @@ export default class SendFarmlist extends Component {
 									<select
 										class="is-radiusless"
 										value={village_name}
-										onChange={(e) => this.setState({ village_name: e.target.value })}
+										onChange={e => this.setState({ village_name: e.target.value })}
 									>
 										{villages}
 									</select>
@@ -168,15 +165,13 @@ export default class SendFarmlist extends Component {
 							</div>
 						</div>
 
-
 					</div>
-
 
 				</div>
 
 				<FarmlistTable content={farmlists} clicked={this.remove_farmlist} />
 
-				<div className="columns">
+				<div style="margin-top: 2rem" className="columns">
 					<div className="column">
 						<button className="button is-radiusless is-success" onClick={this.submit} style='margin-right: 1rem'>
 							submit
