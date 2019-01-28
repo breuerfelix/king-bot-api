@@ -18,9 +18,9 @@ class logger {
 
 	constructor() {
 		const logFormat = format.combine(
-			format.colorize(),
+			//format.colorize(),
 			format.align(),
-			format.printf((info: any) => `${info.level}: ${info.message}`)
+			format.printf((x: any) => `${x.level}: ${x.message}`)
 		);
 
 		this.log_inst = winston.createLogger({
