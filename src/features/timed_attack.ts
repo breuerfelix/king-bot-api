@@ -1,10 +1,11 @@
 import { log, find_state_data, sleep, list_remove, get_random_int } from '../util';
-import { Ifarmlist, Ivillage, Iunits } from '../interfaces';
+import { Ifarmlist, Ivillage, Iunits, Iplayer } from '../interfaces';
 import { Ifeature, Irequest, feature_collection, feature_item, Ioptions } from './feature';
-import { farming, village } from '../gamedata';
+import { farming, village, player } from '../gamedata';
 import api from '../api';
 import database from '../database';
 import uniqid from 'uniqid';
+import { troops, tribe } from '../data';
 
 interface Ioptions_timed_attack extends Ioptions {
   village_name: string,
@@ -146,7 +147,7 @@ class timed_attack_feature extends feature_item {
   async run(): Promise<void> {
     log(`attack timer uuid: ${this.options.uuid} started`);
 
-    var { village_name, target_villageId, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, date, time } = this.options;
+    var { village_name, target_villageId, target_distance, target_village_name, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, date, time } = this.options;
     const params = [
       village.own_villages_ident,
     ];
@@ -167,21 +168,30 @@ class timed_attack_feature extends feature_item {
       10: Number(t10),
       11: Number(t11)
     };
-    const dateTime = new Date(date + "T" + time + "Z");
-    const dateTimeSec = dateTime.getTime() + 3600000;
+
+    var speed = 100;
+
+    console.log(units);
+    const player_data: Iplayer = await player.get();
+    const own_tribe: tribe = player_data.tribeId;
+
+    for (var i = 1; i < 11; i++) {
+      if (troops[own_tribe][i].speed < speed && units[i] > 0) speed = troops[own_tribe][i].speed
+    }
+    console.log(speed)
+    console.log(target_distance)
+    const duration = 3600 * target_distance / speed;
+    const attack_time = new Date(date + "T" + time + "Z");
+    const attack_time_sec = attack_time.getTime();
 
     while (this.options.run) {
       this.set_options(this.options);
-      var currentTime = Date.now() + 3600000; //Convert to game time.
+      var currentTime = Date.now();
 
 
-      if (dateTimeSec - currentTime < 500) {
-        log('attacking')
-        log(sourceVillage_id)
-        log(target_villageId)
-        log(units)
-        var response2 = await api.send_units(sourceVillage_id, target_villageId, units, 3)
-        console.log(response)
+      if (attack_time_sec - currentTime + duration < 125) {
+        log(`attacking: ${village_name} -> ${target_village_name}`)
+        await api.send_units(sourceVillage_id, target_villageId, units, 3)
         this.running = false;
         this.options.run = false
       }
