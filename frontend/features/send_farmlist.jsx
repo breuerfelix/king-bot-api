@@ -9,6 +9,7 @@ export default class SendFarmlist extends Component {
 		name: 'send farmlist',
 		selected_farmlist: '',
 		farmlists: [],
+		losses_farmlist: '',
 		village_name: '',
 		interval_min: '',
 		interval_max: '',
@@ -63,14 +64,14 @@ export default class SendFarmlist extends Component {
 
 		if (this.state.error_input_min || this.state.error_input_max || this.state.error_farmlists) return;
 
-		const { ident, uuid, village_name, farmlists, interval_min, interval_max, yellow_farms, red_farms } = this.state;
-		this.props.submit({ ident, uuid, village_name, farmlists, interval_min, interval_max, yellow_farms, red_farms });
+		const { ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max } = this.state;
+		this.props.submit({ ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max });
 	}
 
 
 	delete = e => {
-		const { ident, uuid, village_name, farmlists, interval_min, interval_max, yellow_farms, red_farms } = this.state;
-		this.props.delete({ ident, uuid, village_name, farmlists, interval_min, interval_max, yellow_farms, red_farms });
+		const { ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max } = this.state;
+		this.props.delete({ ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max, });
 	}
 
 	cancel = async e => {
@@ -80,8 +81,7 @@ export default class SendFarmlist extends Component {
 	render() {
 		const { interval_min, interval_max,
 			all_villages, all_farmlists, village_name,
-			selected_farmlist, farmlists, yellow_farms,
-			red_farms } = this.state;
+			selected_farmlist, farmlists, losses_farmlist } = this.state;
 
 		const input_class_min = classNames({
 			input: true,
@@ -105,6 +105,10 @@ export default class SendFarmlist extends Component {
 			'is-danger': this.state.error_farmlist
 		});
 
+		const farmlist_losses_select_class = classNames({
+			select: true,
+		});
+
 		const villages = all_villages.map(village => <option value={village.data.name}>{village.data.name}</option>);
 		const farmlist_opt = all_farmlists.map(farmlist => <option value={farmlist.data.listName}>{farmlist.data.listName}</option>);
 
@@ -112,40 +116,53 @@ export default class SendFarmlist extends Component {
 			<div>
 				<div className="columns">
 					<div className="column">
-						<label class="label">select farmlists</label>
-						<div class={farmlist_select_class}>
-							<select
-								class="is-radiusless"
-								value={selected_farmlist}
-								onChange={(e) => this.setState({ selected_farmlist: e.target.value })}
-							>
-								{farmlist_opt}
-							</select>
-						</div>
+						<div>
+							<label class="label">select farmlists</label>
+							<div class={farmlist_select_class}>
+								<select
+									class="is-radiusless"
+									value={selected_farmlist}
+									onChange={(e) => this.setState({ selected_farmlist: e.target.value })}
+								>
+									{farmlist_opt}
+								</select>
+							</div>
 
-						<button className="button is-radiusless is-success" onClick={this.add_farmlist} style='margin-right: 1rem'>
-							add farmlist
+							<button className="button is-radiusless is-success" onClick={this.add_farmlist} style='margin-right: 1rem'>
+								add farmlist
 						</button>
 
-						<label style='margin-top: 2rem' class="label">interval in seconds (min / max)</label>
-						<input
-							class={input_class_min}
-							style="width: 150px;margin-right: 10px;"
-							type="text"
-							value={interval_min}
-							placeholder="min"
-							onChange={(e) => this.setState({ interval_min: e.target.value })}
-						/>
-						<input
-							class={input_class_max}
-							style="width: 150px;"
-							type="text"
-							value={interval_max}
-							placeholder="max"
-							onChange={(e) => this.setState({ interval_max: e.target.value })}
-						/>
-						<p class="help">provide a number</p>
-
+							<label style='margin-top: 2rem' class="label">interval in seconds (min / max)</label>
+							<input
+								class={input_class_min}
+								style="width: 150px;margin-right: 10px;"
+								type="text"
+								value={interval_min}
+								placeholder="min"
+								onChange={(e) => this.setState({ interval_min: e.target.value })}
+							/>
+							<input
+								class={input_class_max}
+								style="width: 150px;"
+								type="text"
+								value={interval_max}
+								placeholder="max"
+								onChange={(e) => this.setState({ interval_max: e.target.value })}
+							/>
+							<p class="help">provide a number</p>
+						</div>
+						<div>
+							<label class="label">send farms with losses to</label>
+							<div class={farmlist_losses_select_class}>
+								<select
+									class="is-radiusless"
+									value={losses_farmlist}
+									onChange={(e) => this.setState({ losses_farmlist: e.target.value })}
+								>
+									{farmlist_opt}
+								</select>
+							</div>
+						</div>
 					</div>
 
 					<div className="column">

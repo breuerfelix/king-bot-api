@@ -5,14 +5,16 @@ import api from './api';
 import settings from './settings';
 import logger from './logger';
 import { inactive_finder } from './extras';
-import { buildings } from './data';
+import { buildings, tribe, troops } from './data';
 import { Ifeature_params, feature } from './features/feature';
-import { Ivillage, Ibuilding } from './interfaces';
+import { Ivillage, Ibuilding, Iplayer } from './interfaces';
 import { find_state_data } from './util';
-import { raise_fields, building_queue,
+import {
+	raise_fields, building_queue,
 	finish_earlier, auto_adventure, send_farmlist,
-	trade_route } from './features';
-import { farming, village } from './gamedata';
+	trade_route, timed_attack
+} from './features';
+import { farming, village, player } from './gamedata';
 
 class server {
 	app: any = null;
@@ -23,7 +25,8 @@ class server {
 		send_farmlist,
 		building_queue,
 		raise_fields,
-		trade_route
+		trade_route,
+		timed_attack
 	];
 
 	constructor() {
@@ -36,7 +39,7 @@ class server {
 		this.app.get('/api/allfeatures', (req: any, res: any) => {
 			let response: Ifeature_params[] = [];
 
-			for (let feat of this.features) response = [ ...response, ...feat.get_feature_params() ];
+			for (let feat of this.features) response = [...response, ...feat.get_feature_params()];
 
 			res.send(response);
 		});
@@ -75,6 +78,13 @@ class server {
 				res.send(data);
 				return;
 			}
+			if (ident == 'player_tribe') {
+				const player_data: Iplayer = await player.get();
+				const data: tribe = player_data.tribeId;
+
+				res.send(data);
+				return;
+			}
 
 			if (ident == 'buildings') {
 				const { village_name } = req.query;
@@ -101,8 +111,23 @@ class server {
 				return;
 			}
 
+			if (ident == 'village') {
+				const { village_name } = req.query;
+				const village_data = await village.get_own();
+				const village_obj: Ivillage = village.find(village_name, village_data);
+
+				res.send(village_obj);
+
+				return;
+			}
+
 			if (ident == 'buildingdata') {
 				res.send(buildings);
+				return;
+			}
+
+			if (ident == 'troops') {
+				res.send(troops);
 				return;
 			}
 
@@ -122,6 +147,17 @@ class server {
 			}
 
 			res.send('error');
+		});
+
+
+		this.app.post('/api/findvillage', async (req: any, res: any) => {
+			const response = await api.get_cache(req.body);
+			res.send(response)
+		});
+
+		this.app.post('/api/checkTarget', async (req: any, res: any) => {
+			const response = await api.check_target(req.body.sourceVillage, req.body.destinationVillage, 4);
+			res.send(response);
 		});
 
 		this.app.post('/api/easyscout', (req: any, res: any) => {

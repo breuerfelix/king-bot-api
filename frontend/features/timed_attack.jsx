@@ -6,6 +6,7 @@ import classNames from 'classnames';
 export default class SendTimedAttack extends Component {
   state = {
     name: 'send timed attack',
+    own_tribe: 0,
     village_name: '',
     wait_time: '',
     all_villages: [],
@@ -17,6 +18,7 @@ export default class SendTimedAttack extends Component {
     target_player_name: '',
     target_tribeId: '',
     target_distance: '',
+    troops: '',
     date: '',
     time: '',
     t1: '',
@@ -41,9 +43,11 @@ export default class SendTimedAttack extends Component {
     });
 
     axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data }));
+    axios.get('/api/data?ident=player_tribe').then(res => this.setState({ own_tribe: Number(res.data) }));
+    axios.get('/api/data?ident=troops').then(res => this.setState({ troops: res.data }));
   }
 
-  attackTarget = async e => {
+  setTarget = async e => {
     this.setState({
       error_wait_time: (this.state.wait_time == ''),
       error_village: (this.state.village_name == '')
@@ -57,19 +61,24 @@ export default class SendTimedAttack extends Component {
     var x = Number(target_x);
     var y = Number(target_y);
     const villageID = 536887296 + x + (y * 32768)
-    var response = await axios.post('/api/ownvillagenametoid', { village_name })
-    const sourceVillageID = response.data;
+    const string = `/api/data?ident=village&village_name=${village_name}`;
+    console.log(string)
+    var response = await axios.get(`/api/data?ident=village&village_name=${village_name}`)
+    const sourceVillageID = response.data.villageId;
     var params = {
       sourceVillage: sourceVillageID,
       destinationVillage: villageID
     };
-    response = await axios.post('/api/findvillage2', params);
+    console.log(1)
+    response = await axios.post('/api/checkTarget', params);
     const check_target_data = response.data
 
     params = [
       `Village: ${villageID}`
     ];
+    console.log(2)
     response = await axios.post('/api/findvillage', params);
+    console.log(3)
     const village = response.data[0].data;
     const target_villageId = village.villageId;
     const target_village_name = village.name;
@@ -77,6 +86,7 @@ export default class SendTimedAttack extends Component {
     const target_playerId = village.playerId;
     const target_tribeId = village.tribeId;
     const target_player_name = check_target_data.destPlayerName;
+    if (target_player_name == null || target_village_name == null) alert("Something went wrong. Is your target banned?")
     this.setState({ target_villageId, target_village_name, target_x, target_y, target_playerId, target_player_name, target_tribeId, target_distance })
   }
 
@@ -100,7 +110,7 @@ export default class SendTimedAttack extends Component {
   }
 
   render() {
-    var { wait_time, all_villages, village_name, target_x, target_y, target_player_name, target_village_name, target_tribeId, target_distance,
+    var { wait_time, all_villages, village_name, target_x, target_y, target_player_name, target_village_name, target_tribeId, target_distance, own_tribe, troops,
       t1,
       t2,
       t3,
@@ -115,6 +125,23 @@ export default class SendTimedAttack extends Component {
       time,
       date
     } = this.state;
+
+    var new_rows = []
+    if (own_tribe != 0 && troops != '') {
+      new_rows = [
+        <th style={row_style}> {troops[own_tribe][1].name} </th>,
+        <th style={row_style}> {troops[own_tribe][2].name} </th>,
+        <th style={row_style}> {troops[own_tribe][3].name} </th>,
+        <th style={row_style}> {troops[own_tribe][4].name} </th>,
+        <th style={row_style}> {troops[own_tribe][5].name} </th>,
+        <th style={row_style}> {troops[own_tribe][6].name} </th>,
+        <th style={row_style}> {troops[own_tribe][7].name} </th>,
+        <th style={row_style}> {troops[own_tribe][8].name} </th>,
+        <th style={row_style}> {troops[own_tribe][9].name} </th>,
+        <th style={row_style}> {troops[own_tribe][10].name} </th>,
+      ]
+    }
+
 
     if (date == '') {
       var curDate = new Date()
@@ -153,6 +180,7 @@ export default class SendTimedAttack extends Component {
 
           <div className="column">
             <div>
+              <label class="label">Target Land Time: UTC</label>
               <input type="date" id="start" name="trip-start"
                 value={date} onChange={(e) => this.setState({ date: e.target.value })}
               ></input>
@@ -161,6 +189,7 @@ export default class SendTimedAttack extends Component {
               />
             </div>
             <div>
+              <label class="label">x</label>
               <input
                 style="width: 150px;"
                 type="text"
@@ -168,6 +197,7 @@ export default class SendTimedAttack extends Component {
                 placeholder="0"
                 onChange={(e) => this.setState({ target_x: e.target.value })}
               />
+              <label class="label">y</label>
               <input
                 style="width: 150px;"
                 type="text"
@@ -178,7 +208,7 @@ export default class SendTimedAttack extends Component {
             </div>
             <p class="help">provide a number</p>
 
-            <button className='button is-radiusless is-success' style='margin-right: 1rem' onClick={this.attackTarget}>
+            <button className='button is-radiusless is-success' style='margin-right: 1rem' onClick={this.setTarget}>
               set target
             </button>
 
@@ -213,18 +243,7 @@ export default class SendTimedAttack extends Component {
                 <th style={row_style}>distance</th>
                 <th style={row_style}>player</th>
                 <th style={row_style}>village</th>
-                <th style={row_style}>t1</th>
-                <th style={row_style}>t2</th>
-                <th style={row_style}>t3</th>
-                <th style={row_style}>t4</th>
-                <th style={row_style}>t5</th>
-                <th style={row_style}>t6</th>
-                <th style={row_style}>t7</th>
-                <th style={row_style}>t8</th>
-                <th style={row_style}>t9</th>
-                <th style={row_style}>t10</th>
-                <th style={row_style}>t11</th>
-                <th />
+                {new_rows}
               </tr>
             </thead>
             <tbody>
@@ -345,17 +364,6 @@ export default class SendTimedAttack extends Component {
                     placeholder="t10"
                     onChange={async e => {
                       this.setState({ t10: e.target.value });
-                    }}
-                  />
-                </td>
-                <td style={row_style}>
-                  <input
-                    style="width: 30px;"
-                    type="text"
-                    value={t11}
-                    placeholder="t11"
-                    onChange={async e => {
-                      this.setState({ t11: e.target.value });
                     }}
                   />
                 </td>
