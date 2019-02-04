@@ -184,7 +184,7 @@ export default class SendTimedAttack extends Component {
               <input type="date" id="start" name="trip-start"
                 value={date} onChange={(e) => this.setState({ date: e.target.value })}
               ></input>
-              <input type="time" id="meeting-time" step="2"
+              <input type="time" id="meeting-time" step="1"
                 name="meeting-time" value={time} onChange={(e) => this.setState({ time: e.target.value })}
               />
             </div>
