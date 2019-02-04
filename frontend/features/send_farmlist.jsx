@@ -32,7 +32,7 @@ export default class SendFarmlist extends Component {
 	}
 
 	add_farmlist = async e => {
-		const { selected_farmlist, farmlists } = this.state;
+		const { selected_farmlist, village_name, farmlists } = this.state;
 
 		this.setState({
 			error_farmlist: !this.state.selected_farmlist
@@ -40,10 +40,15 @@ export default class SendFarmlist extends Component {
 
 		if (this.state.error_village || this.state.error_farmlist) return;
 
+		var farmlist = {
+			farmlist: selected_farmlist,
+			village_name: village_name
+		};
 		// farmlist already added
-		if (farmlists.indexOf(selected_farmlist) > -1) return;
+		if (farmlists.indexOf(farmlist) > -1) return;
 
-		farmlists.push(selected_farmlist);
+		farmlists.push(farmlist);
+
 		this.setState({ farmlists });
 	}
 
@@ -64,8 +69,8 @@ export default class SendFarmlist extends Component {
 
 		if (this.state.error_input_min || this.state.error_input_max || this.state.error_farmlists) return;
 
-		const { ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max } = this.state;
-		this.props.submit({ ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max });
+		const { ident, uuid, farmlists, losses_farmlist, interval_min, interval_max } = this.state;
+		this.props.submit({ ident, uuid, farmlists, losses_farmlist, interval_min, interval_max });
 	}
 
 
@@ -130,7 +135,7 @@ export default class SendFarmlist extends Component {
 
 							<button className="button is-radiusless is-success" onClick={this.add_farmlist} style='margin-right: 1rem'>
 								add farmlist
-						</button>
+							</button>
 
 							<label style='margin-top: 2rem' class="label">interval in seconds (min / max)</label>
 							<input

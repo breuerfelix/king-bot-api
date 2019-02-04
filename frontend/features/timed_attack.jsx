@@ -54,31 +54,31 @@ export default class SendTimedAttack extends Component {
     });
 
     if (this.state.error_wait_time || this.state.error_village) {
-      return
+      return;
     }
 
     const { village_name, target_x, target_y, target } = this.state;
     var x = Number(target_x);
     var y = Number(target_y);
-    const villageID = 536887296 + x + (y * 32768)
+    const villageID = 536887296 + x + (y * 32768);
     const string = `/api/data?ident=village&village_name=${village_name}`;
-    console.log(string)
-    var response = await axios.get(`/api/data?ident=village&village_name=${village_name}`)
+    console.log(string);
+    var response = await axios.get(`/api/data?ident=village&village_name=${village_name}`);
     const sourceVillageID = response.data.villageId;
     var params = {
       sourceVillage: sourceVillageID,
       destinationVillage: villageID
     };
-    console.log(1)
+    console.log(1);
     response = await axios.post('/api/checkTarget', params);
-    const check_target_data = response.data
+    const check_target_data = response.data;
 
     params = [
       `Village: ${villageID}`
     ];
-    console.log(2)
+    console.log(2);
     response = await axios.post('/api/findvillage', params);
-    console.log(3)
+    console.log(3);
     const village = response.data[0].data;
     const target_villageId = village.villageId;
     const target_village_name = village.name;
@@ -86,8 +86,8 @@ export default class SendTimedAttack extends Component {
     const target_playerId = village.playerId;
     const target_tribeId = village.tribeId;
     const target_player_name = check_target_data.destPlayerName;
-    if (target_player_name == null || target_village_name == null) alert("Something went wrong. Is your target banned?")
-    this.setState({ target_villageId, target_village_name, target_x, target_y, target_playerId, target_player_name, target_tribeId, target_distance })
+    if (target_player_name == null || target_village_name == null) alert('Something went wrong. Is your target banned?');
+    this.setState({ target_villageId, target_village_name, target_x, target_y, target_playerId, target_player_name, target_tribeId, target_distance });
   }
 
   submit = async e => {
@@ -126,7 +126,7 @@ export default class SendTimedAttack extends Component {
       date
     } = this.state;
 
-    var new_rows = []
+    var new_rows = [];
     if (own_tribe != 0 && troops != '') {
       new_rows = [
         <th style={row_style}> {troops[own_tribe][1].name} </th>,
@@ -139,20 +139,20 @@ export default class SendTimedAttack extends Component {
         <th style={row_style}> {troops[own_tribe][8].name} </th>,
         <th style={row_style}> {troops[own_tribe][9].name} </th>,
         <th style={row_style}> {troops[own_tribe][10].name} </th>,
-      ]
+      ];
     }
 
 
     if (date == '') {
-      var curDate = new Date()
+      var curDate = new Date();
       curDate = curDate.toJSON();
-      date = curDate.split("T")[0]
+      date = curDate.split('T')[0];
       this.setState({ date });
     }
     if (this.state.time == '') {
-      var curUTCTime = new Date()
+      var curUTCTime = new Date();
       curUTCTime = curUTCTime.toJSON();
-      time = curUTCTime.split("T")[1].substring(0, 5);
+      time = curUTCTime.split('T')[1].substring(0, 5);
       this.setState({ time });
     }
 
@@ -210,7 +210,7 @@ export default class SendTimedAttack extends Component {
 
             <button className='button is-radiusless is-success' style='margin-right: 1rem' onClick={this.setTarget}>
               set target
-            </button>
+						</button>
 
           </div>
 
