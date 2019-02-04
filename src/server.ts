@@ -152,7 +152,7 @@ class server {
 
 		this.app.post('/api/findvillage', async (req: any, res: any) => {
 			const response = await api.get_cache(req.body);
-			res.send(response)
+			res.send(response);
 		});
 
 		this.app.post('/api/checkTarget', async (req: any, res: any) => {

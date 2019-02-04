@@ -3,23 +3,18 @@ import api from '../api';
 
 export async function clean_farmlist(farmlist_id: number, losses_farmlist_id: number): Promise<boolean> {
 	const finished = true; //Returning true at the end to know when this is finished.
-	const params = [`Collection:FarmListEntry:${farmlist_id}`]
+	const params = [`Collection:FarmListEntry:${farmlist_id}`];
 	var listResponse = await api.get_cache(params);
 	if (listResponse.length > 0) {
 		listResponse[0].data.forEach(async (data: any) => {
 			const farm = data.data;
 			if (farm.lastReport) {
 				if (farm.lastReport.notificationType != '1') {
-					console.log("removing")
+					console.log('removing');
 					await api.copy_farmlist_entry(farm.villageId, losses_farmlist_id, farm.entryId);
 					await sleep(.15);
 					await api.copy_farmlist_entry(farm.villageId, farmlist_id, farm.entryId);
 				}
-			} else {
-				console.log(farm)
-				await api.copy_farmlist_entry(farm.villageId, losses_farmlist_id, farm.entryId);
-				await sleep(.15);
-				await api.copy_farmlist_entry(farm.villageId, farmlist_id, farm.entryId);
 			}
 		});
 	}

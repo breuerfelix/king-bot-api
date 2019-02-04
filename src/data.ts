@@ -303,4 +303,4 @@ export const troops: any = {
 			carry_capacity: 3000,
 		}
 	}
-}
+};

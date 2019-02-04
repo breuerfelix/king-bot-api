@@ -58,7 +58,7 @@ async function manage_login(
 				}
 			}
 
-			await login_to_gameworld(axios, gameworld, sitter_type, sitter_name, msid, session_lobby);	
+			await login_to_gameworld(axios, gameworld, sitter_type, sitter_name, msid, session_lobby);
 			return;
 		} else {
 			logger.warn('database connection to lobby failed', 'login');
@@ -87,7 +87,7 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 
 	msid = msid.substring(msid.indexOf(',') + 3, msid.lastIndexOf('"'));
 	logger.info('msid: ' + msid, 'login');
-	
+
 	// logs in with credentials from file
 	url = `https://mellon-t5.traviangames.com/authentication/login/ajax/form-validate?msid=${msid}&msname=msid`;
 
@@ -99,7 +99,7 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 		data: qs.stringify(credentials),
 		url,
 	};
-	
+
 	// gets token
 	res = await axios(options);
 
@@ -116,7 +116,9 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 	};
 
 	let cookies: AxiosResponse = await axios(options);
-	options.url = cookies.headers.location;	
+
+	console.log(cookies);
+	options.url = cookies.headers.location;
 	cookies = await axios(options);
 
 	// set lobby cookies
@@ -130,16 +132,16 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 	// last lobby session link, there are no information to get from for now
 	//let lastLobbyURL = 'https://lobby.kingdoms.com/' + sessionLink;
 	//await axios.get(lastLobbyURL);
-	
+
 	logger.info('logged into lobby with account ' + email, 'login');
-	
+
 	// set values to database
 	database.set('account.msid', msid).write();
 	database.set('account.token_lobby', token_lobby).write();
 	database.set('account.session_lobby', session_lobby).write();
 	database.set('account.cookies_lobby', cookies_lobby).write();
 	database.set('account.email', email).write();
-	
+
 	return { msid, session_lobby, token_lobby, cookies_lobby };
 }
 
@@ -192,7 +194,7 @@ async function login_to_gameworld(
 	};
 
 	res = await axios(options);
-	
+
 	// set gameworld cookies
 	let cookies_gameworld = parse_cookies(res.headers['set-cookie']);
 	axios.defaults.headers['Cookie'] += cookies_gameworld;
@@ -205,7 +207,7 @@ async function login_to_gameworld(
 	// last session link, there are no information to get from for now
 	//let gameworldURL = `https://${gameworld}.kingdoms.com/` + sessionLink;
 	//await axios.get(gameworldURL);
-	
+
 	logger.info('logged into gameworld ' + gameworld, 'login');
 
 	// set values to database
@@ -219,7 +221,7 @@ async function login_to_gameworld(
 	return { session_gameworld, token_gameworld, cookies_gameworld };
 }
 
-function parse_token(raw_html: string): object{
+function parse_token(raw_html: string): object {
 	let $ = ci.load(raw_html);
 
 	let html: string = $.html();
@@ -233,7 +235,7 @@ function parse_token(raw_html: string): object{
 	return { url: tokenURL, token };
 }
 
-function parse_cookies(cookie_array: any[]): string{
+function parse_cookies(cookie_array: any[]): string {
 	let cookie_string: string = '';
 	cookie_array.forEach(x => {
 		let uri = x.substring(0, x.indexOf(';') + 2);
@@ -254,7 +256,7 @@ async function get_gameworld_id(axios: AxiosInstance, session: string, gameworld
 		action: 'get',
 		controller: 'cache',
 		params: {
-			names: [ 'Collection:Avatar:' ]
+			names: ['Collection:Avatar:']
 		},
 		session
 	};
@@ -336,7 +338,7 @@ async function test_gameworld_connection(axios: AxiosInstance, gameworld: string
 		action: 'get',
 		controller: 'cache',
 		params: {
-			names: [ 'Player:' ]
+			names: ['Player:']
 		},
 		session
 	};

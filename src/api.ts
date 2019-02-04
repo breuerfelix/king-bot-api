@@ -101,8 +101,8 @@ class api {
 			villageId,
 			newListId,
 			entryId
-		}
-		console.log(params)
+		};
+		console.log(params);
 		return await this.post('copyEntry', 'farmList', params);
 	}
 
@@ -147,8 +147,8 @@ class api {
 			movementType,
 			redeployHero: false,
 			units,
-      spyMission,
-      catapultTargets
+			spyMission,
+			//catapultTargets  //Todo: add this back
 		};
 
 		return await this.post('send', 'troops', params);
