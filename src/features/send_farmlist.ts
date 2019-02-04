@@ -88,7 +88,6 @@ class farm_feature extends feature_item {
 		while (this.options.run) {
 
 			const { interval_min, interval_max, village_name, farmlists, losses_farmlist } = this.options;
-			console.log(losses_farmlist)
 
 			const vill: Ivillage = village.find(village_name, response);
 			const village_id: number = vill.villageId;

@@ -171,16 +171,14 @@ class timed_attack_feature extends feature_item {
 
     var speed = 100;
 
-    console.log(units);
     const player_data: Iplayer = await player.get();
     const own_tribe: tribe = player_data.tribeId;
 
     for (var i = 1; i < 11; i++) {
       if (troops[own_tribe][i].speed < speed && units[i] > 0) speed = troops[own_tribe][i].speed
     }
-    console.log(speed)
-    console.log(target_distance)
-    const duration = 3600 * target_distance / speed;
+
+    const duration = 3600000 * target_distance / speed;
     const attack_time = new Date(date + "T" + time + "Z");
     const attack_time_sec = attack_time.getTime();
 
@@ -188,12 +186,17 @@ class timed_attack_feature extends feature_item {
       this.set_options(this.options);
       var currentTime = Date.now();
 
-
-      if (attack_time_sec - currentTime + duration < 125) {
-        log(`attacking: ${village_name} -> ${target_village_name}`)
-        await api.send_units(sourceVillage_id, target_villageId, units, 3)
-        this.running = false;
-        this.options.run = false
+      if (attack_time_sec - duration < currentTime - 1000) {
+        if(attack_time_sec - duration < currentTime){
+          log(`attacking: ${village_name} -> ${target_village_name}`)
+          await api.send_units(sourceVillage_id, target_villageId, units, 3)
+          this.running = false;
+          this.options.run = false
+        }
+        else{
+          await sleep(.25)
+        }
+        
       }
       else {
         await sleep(1);

@@ -140,14 +140,15 @@ class api {
 		return await this.post('checkTarget', 'troops', params);
 	}
 
-	async send_units(villageId: number, destVillageId: number, units: Iunits, movementType: number, spyMission: string = 'resources'): Promise<any> {
+	async send_units(villageId: number, destVillageId: number, units: Iunits, movementType: number, spyMission: string = 'resources', catapultTargets: number[] = [19]): Promise<any> {
 		const params = {
 			destVillageId,
 			villageId,
 			movementType,
 			redeployHero: false,
 			units,
-			spyMission
+      spyMission,
+      catapultTargets
 		};
 
 		return await this.post('send', 'troops', params);
