@@ -1,4 +1,4 @@
-var kingbot = require('./src').default;
+var kingbot = require('./dist').default;
 
 var gameworld = '';
 var email = '';
