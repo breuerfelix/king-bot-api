@@ -7,7 +7,7 @@ export default class Input extends Component {
 				<label class="label">{ label }</label>
 				<div class="field has-addons">
 					<p class="control">
-						<input 
+						<input
 							class="input"
 							type="text"
 							placeholder={ placeholder }

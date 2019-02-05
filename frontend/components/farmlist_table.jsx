@@ -50,7 +50,7 @@ class Farmlist extends Component {
 				<td style={row_style}>
 					<a
 						class="has-text-black"
-						onClick={e => clicked(content)}
+						onClick={ e => clicked(content) }
 					>
 						<span class="icon is-medium">
 							<i class={icon}></i>
