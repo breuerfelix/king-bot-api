@@ -117,7 +117,6 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 
 	let cookies: AxiosResponse = await axios(options);
 
-	console.log(cookies);
 	options.url = cookies.headers.location;
 	cookies = await axios(options);
 
