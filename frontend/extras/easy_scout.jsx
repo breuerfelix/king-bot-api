@@ -38,7 +38,7 @@ export default class EasyScout extends Component {
 	}
 
 	submit = async e => {
-		this.setState({ 
+		this.setState({
 			error_farmlist: (this.state.selected_farmlist == ''),
 			error_village: (this.state.village_name == ''),
 			error_amount: (this.state.amount == '')
@@ -89,7 +89,7 @@ export default class EasyScout extends Component {
 							<label class="label">select farmlists</label>
 							<div className="control">
 								<div class={ farmlist_select_class }>
-									<select 
+									<select
 										class='is-radiusless'
 										value={ selected_farmlist }
 										onChange={ this.handle_multi }
@@ -104,9 +104,9 @@ export default class EasyScout extends Component {
 							<label class="label">spy for</label>
 							<div class="control">
 								<div class="select">
-									<select 
+									<select
 										class='is-radiusless'
-										value={ mission } 
+										value={ mission }
 										onChange={ e => this.setState({ mission: e.target.value }) }
 									>
 										<option value='resources'>resources</option>
@@ -124,9 +124,9 @@ export default class EasyScout extends Component {
 							<label class="label">select village</label>
 							<div class="control">
 								<div class={ village_select_class }>
-									<select 
+									<select
 										class='is-radiusless'
-										value={ village_name } 
+										value={ village_name }
 										onChange={ (e) => this.setState({ village_name: e.target.value }) }
 									>
 										{ villages }

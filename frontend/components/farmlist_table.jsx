@@ -30,7 +30,7 @@ export default class FarmlistTable extends Component {
 }
 
 class Farmlist extends Component {
-	render({ content, clicked }, { toggled }) {
+	render({ content, clicked }) {
 		const row_style = {
 			verticalAlign: 'middle',
 			textAlign: 'center'
