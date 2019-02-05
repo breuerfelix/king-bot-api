@@ -69,17 +69,19 @@ export default class SendTimedAttack extends Component {
 				sourceVillage: sourceVillageID,
 				destinationVillage: villageID
 			};
-			console.log(1);
+
 			response = await axios.post('/api/checkTarget', params);
 			const check_target_data = response.data;
 
 			params = [
 				`Village: ${villageID}`
 			];
-			console.log(2);
+
 			response = await axios.post('/api/findvillage', params);
-			console.log(3);
+
 			const village = response.data[0].data;
+			if (!village) alert('unable to find village!');
+
 			const target_villageId = village.villageId;
 			const target_village_name = village.name;
 			const target_distance = check_target_data.distance;
@@ -206,9 +208,8 @@ export default class SendTimedAttack extends Component {
 									onChange={(e) => this.setState({ target_y: e.target.value })}
 								/>
 							</div>
-							<p class="help">provide a number</p>
 
-							<button className='button is-radiusless is-success' style='margin-right: 1rem' onClick={this.setTarget}>
+							<button className='button is-radiusless is-success' style='margin-top: 1rem' onClick={this.setTarget}>
 								set target
 							</button>
 
@@ -372,7 +373,7 @@ export default class SendTimedAttack extends Component {
 						</table>
 					</div>
 
-					<div className="columns">
+					<div className="columns" style='margin-top: 1rem;'>
 						<div className="column">
 							<button className="button is-radiusless is-success" onClick={this.submit} style='margin-right: 1rem'>
 								submit
