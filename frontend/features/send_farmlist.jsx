@@ -32,7 +32,7 @@ export default class SendFarmlist extends Component {
 	}
 
 	add_farmlist = async e => {
-		const { selected_farmlist, village_name, farmlists } = this.state;
+		const { selected_farmlist, farmlists } = this.state;
 
 		this.setState({
 			error_farmlist: !this.state.selected_farmlist
@@ -40,14 +40,10 @@ export default class SendFarmlist extends Component {
 
 		if (this.state.error_village || this.state.error_farmlist) return;
 
-		var farmlist = {
-			farmlist: selected_farmlist,
-			village_name: village_name
-		};
 		// farmlist already added
-		if (farmlists.indexOf(farmlist) > -1) return;
+		if (farmlists.indexOf(selected_farmlist) > -1) return;
 
-		farmlists.push(farmlist);
+		farmlists.push(selected_farmlist);
 
 		this.setState({ farmlists });
 	}
@@ -69,10 +65,9 @@ export default class SendFarmlist extends Component {
 
 		if (this.state.error_input_min || this.state.error_input_max || this.state.error_farmlists) return;
 
-		const { ident, uuid, farmlists, losses_farmlist, interval_min, interval_max } = this.state;
-		this.props.submit({ ident, uuid, farmlists, losses_farmlist, interval_min, interval_max });
+		const { ident, uuid, farmlists, village_name, losses_farmlist, interval_min, interval_max } = this.state;
+		this.props.submit({ ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max });
 	}
-
 
 	delete = e => {
 		const { ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max } = this.state;
@@ -108,10 +103,6 @@ export default class SendFarmlist extends Component {
 		const farmlist_select_class = classNames({
 			select: true,
 			'is-danger': this.state.error_farmlist
-		});
-
-		const farmlist_losses_select_class = classNames({
-			select: true,
 		});
 
 		const villages = all_villages.map(village => <option value={village.data.name}>{village.data.name}</option>);
@@ -156,18 +147,7 @@ export default class SendFarmlist extends Component {
 							/>
 							<p class="help">provide a number</p>
 						</div>
-						<div>
-							<label class="label">send farms with losses to</label>
-							<div class={farmlist_losses_select_class}>
-								<select
-									class="is-radiusless"
-									value={losses_farmlist}
-									onChange={(e) => this.setState({ losses_farmlist: e.target.value })}
-								>
-									{farmlist_opt}
-								</select>
-							</div>
-						</div>
+
 					</div>
 
 					<div className="column">
@@ -187,6 +167,20 @@ export default class SendFarmlist extends Component {
 							</div>
 						</div>
 
+						<div class='field' style='margin-top: 2rem'>
+							<label class="label">send farms with losses to</label>
+							<div className="control">
+								<div class='select'>
+									<select
+										class="is-radiusless"
+										value={losses_farmlist}
+										onChange={(e) => this.setState({ losses_farmlist: e.target.value })}
+									>
+										{farmlist_opt}
+									</select>
+								</div>
+							</div>
+						</div>
 					</div>
 
 				</div>
