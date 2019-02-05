@@ -108,6 +108,9 @@ export default class NavBar extends Component {
 									<a className="navbar-item" onClick={e => this.get_new('trade_route')}>
 										trade route
 									</a>
+									<a className="navbar-item" onClick={e => this.get_new('timed_attack')}>
+										timed attack
+									</a>
 								</div>
 							</div>
 
@@ -123,7 +126,7 @@ export default class NavBar extends Component {
 									<a className="navbar-item" onClick={e => this.route('/inactive_finder')}>
 										inactive finder
 									</a>
-									<a className="navbar-item" onClick={ e => this.route('/logger') }>
+									<a className="navbar-item" onClick={e => this.route('/logger')}>
 										logger
 									</a>
 								</div>
