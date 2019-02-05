@@ -44,7 +44,7 @@ export default class InactiveFinder extends Component {
 	clicked = async item => {
 		const { selected_farmlist } = this.state;
 
-		this.setState({ 
+		this.setState({
 			error_farmlist: (selected_farmlist == '')
 		});
 
@@ -75,7 +75,7 @@ export default class InactiveFinder extends Component {
 	search = async e => {
 		if (this.state.loading) return;
 
-		this.setState({ 
+		this.setState({
 			error_village: (this.state.village_name == '')
 		});
 
@@ -83,7 +83,7 @@ export default class InactiveFinder extends Component {
 
 		this.setState({ loading: true, message: '', inactives: [] });
 
-		const { 
+		const {
 			village_name,
 			min_player_pop,
 			max_player_pop,
@@ -161,9 +161,9 @@ export default class InactiveFinder extends Component {
 							<label class="label">distance relative to</label>
 							<div class="control">
 								<div class={ village_select_class }>
-									<select 
+									<select
 										class="is-radiusless"
-										value={ village_name } 
+										value={ village_name }
 										onChange={ (e) => this.setState({ village_name: e.target.value }) }
 									>
 										{ villages }
@@ -203,7 +203,7 @@ export default class InactiveFinder extends Component {
 							<label class="label">add to farmlist</label>
 							<div className="control">
 								<div class={ farmlist_select_class }>
-									<select 
+									<select
 										class="is-radiusless"
 										value={ selected_farmlist }
 										onChange={ e => this.setState({ selected_farmlist: e.target.value }) }
@@ -227,10 +227,10 @@ export default class InactiveFinder extends Component {
 						<label class="label">inactive for</label>
 						<div class="field has-addons">
 							<p class="control">
-								<input 
+								<input
 									class="input is-radiusless"
 									type="text"
-									placeholder="default: 5" 
+									placeholder="default: 5"
 									value={ inactive_for }
 									onChange={ e => this.setState({ inactive_for: e.target.value }) }
 								/>

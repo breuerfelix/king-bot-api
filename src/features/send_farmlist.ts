@@ -5,10 +5,12 @@ import { farming, village } from '../gamedata';
 import api from '../api';
 import database from '../database';
 import uniqid from 'uniqid';
+import { clean_farmlist } from '../utilities/clean_farmlist';
 
 interface Ioptions_farm extends Ioptions {
 	village_name: string
 	farmlists: string[]
+	losses_farmlist: string
 	interval_min: number
 	interval_max: number
 }
@@ -29,6 +31,7 @@ class send_farmlist extends feature_collection {
 			farmlists: [],
 			interval_min: 0,
 			interval_max: 0,
+			losses_farmlist: ''
 		};
 	}
 }
@@ -37,7 +40,7 @@ class farm_feature extends feature_item {
 	options: Ioptions_farm;
 
 	set_options(options: Ioptions_farm): void {
-		const { uuid, run, error, village_name, farmlists, interval_min, interval_max } = options;
+		const { uuid, run, error, farmlists, village_name, losses_farmlist, interval_min, interval_max } = options;
 		this.options = {
 			...this.options,
 			uuid,
@@ -46,7 +49,8 @@ class farm_feature extends feature_item {
 			village_name,
 			farmlists,
 			interval_min,
-			interval_max
+			interval_max,
+			losses_farmlist
 		};
 	}
 
@@ -73,7 +77,6 @@ class farm_feature extends feature_item {
 	async run(): Promise<void> {
 		log(`farming uuid: ${this.options.uuid} started`);
 
-		const { farmlists, interval_min, interval_max } = this.options;
 		const params = [
 			village.own_villages_ident,
 			farming.farmlist_ident
@@ -84,7 +87,7 @@ class farm_feature extends feature_item {
 
 		while (this.options.run) {
 
-			const { interval_min, village_name, farmlists } = this.options;
+			const { interval_min, interval_max, village_name, farmlists, losses_farmlist } = this.options;
 
 			const vill: Ivillage = village.find(village_name, response);
 			const village_id: number = vill.villageId;
@@ -101,6 +104,13 @@ class farm_feature extends feature_item {
 				if ((now - lastSent) < interval_min) {
 					log(`farmlist: ${farm} sent too recently. skipping until next time`);
 					continue;
+				}
+
+				if (losses_farmlist != '') {
+					const losses_list_obj = farming.find(losses_farmlist, response);
+					const losses_id = losses_list_obj.listId;
+
+					await clean_farmlist(list_obj.listId, losses_id);
 				}
 
 				farmlist_ids.push(list_obj.listId);

@@ -5,7 +5,7 @@ export default class DoubleInput extends Component {
 		return (
 			<div style='margin-top: 1rem; margin-bottom: 1rem'>
 				<label class="label">{ label }</label>
-				<input 
+				<input
 					class="input is-radiusless"
 					type="text"
 					style="width: 120px;margin-right: 10px;"
@@ -13,7 +13,7 @@ export default class DoubleInput extends Component {
 					value={ value1 }
 					onChange={ onChange1 }
 				/>
-				<input 
+				<input
 					class="input is-radiusless"
 					type="text"
 					style="width: 120px;"

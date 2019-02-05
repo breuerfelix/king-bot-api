@@ -23,7 +23,7 @@ class building_queue {
 	// reads in loop data
 	upgrade_res(resources: Iresource_type, village_name: string): void {
 		const data: { [index: number]: number[] } = {};
-		
+
 		for (let t in resources) {
 			data[this.building_type[t]] = resources[t];
 		}
@@ -88,19 +88,19 @@ class building_queue {
 			}
 
 			if (sleep_time) sleep_time = sleep_time - five_minutes + 1;
-			
+
 			if (!sleep_time || sleep_time <= 0) sleep_time = 60;
 			if (sleep_time > 300) sleep_time = 300;
 
 			await sleep(sleep_time);
 		}
 	}
-	
+
 	// runs actual resource loop data
 	async run(): Promise<void> {
 		// sleep timer so the loop data gets filled up with all villages
 		await sleep(5);
-		
+
 		while (true) {
 			let params: string[] = [];
 
@@ -136,7 +136,7 @@ class building_queue {
 
 					continue;
 				}
-				
+
 				// village got free res slot
 				const village_data: Ibuilding_collection[] = find_state_data(this.building_collection_ident + village_obj.villageId, response);
 
@@ -155,7 +155,7 @@ class building_queue {
 
 					// add 30 percent storage to crop, since its not that needed
 					if (res == '4') percent += 30;
-				
+
 					temp_res_prod.push(percent);
 					temp_dict[percent] = Number(res);
 				}
@@ -231,7 +231,7 @@ class building_queue {
 
 						if (upgrade_building) break;
 					}
-					
+
 					if (upgrade_building) break;
 				}
 
@@ -309,7 +309,7 @@ class building_queue {
 
 	lowest_building_by_type(type: number, building_collection: Ibuilding_collection[]): Ibuilding {
 		let rv: Ibuilding = null;
-		
+
 		for (let building of building_collection) {
 			const bd: Ibuilding = building.data;
 

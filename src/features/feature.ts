@@ -136,7 +136,7 @@ export abstract class feature_single implements feature {
 
 			return res;
 		}
-	
+
 		if (action == 'get') {
 			res = {
 				data: {
@@ -214,7 +214,7 @@ export abstract class feature_collection implements feature {
 			this.features.push(feat);
 
 			this.save();
-			
+
 			res.data = feat.get_feature_params();
 			return res;
 		}
@@ -273,7 +273,7 @@ export abstract class feature_collection implements feature {
 			feature.stop();
 			list_remove(feature, this.features);
 			this.save();
-			
+
 			res.message = 'success';
 			return res;
 		}
@@ -314,7 +314,7 @@ export abstract class feature_item {
 
 		this.set_options(options);
 	}
-	
+
 	get_long_description(): string {
 		return null;
 	}
