@@ -305,11 +305,12 @@ async function get_avatar_id(
 	let sitters: any = clash_obj(res.data, 'cache', 'response');
 
 	for (let sitter of sitters) {
-		if (sitter.data.length < 1) continue;
-		let s_data = sitter.data[0].data;
+		for (let data of sitter.data) {
+			let s_data = data.data;
 
-		if (s_data.worldName.toLowerCase() == gameworld_string && s_data.avatarName.toLowerCase() == sitter_name) {
-			return s_data.avatarIdentifier;
+			if (s_data.worldName.toLowerCase() == gameworld_string && s_data.avatarName.toLowerCase() == sitter_name) {
+				return s_data.avatarIdentifier;
+			}
 		}
 	}
 

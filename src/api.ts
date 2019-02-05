@@ -102,7 +102,7 @@ class api {
 			newListId,
 			entryId
 		};
-		console.log(params);
+
 		return await this.post('copyEntry', 'farmList', params);
 	}
 
@@ -140,15 +140,23 @@ class api {
 		return await this.post('checkTarget', 'troops', params);
 	}
 
-	async send_units(villageId: number, destVillageId: number, units: Iunits, movementType: number, spyMission: string = 'resources', catapultTargets: number[] = [19]): Promise<any> {
+	async send_units(
+		villageId: number,
+		destVillageId: number,
+		units: Iunits,
+		movementType: number,
+		spyMission: string = 'resources'
+		//catapultTargets = [] // TODO implement targets
+	): Promise<any> {
+
 		const params = {
 			destVillageId,
 			villageId,
 			movementType,
 			redeployHero: false,
 			units,
-			spyMission,
-			//catapultTargets  //Todo: add this back
+			spyMission
+			//catapultTargets = []  // TODO implement targets
 		};
 
 		return await this.post('send', 'troops', params);

@@ -17,9 +17,7 @@ export default class FarmlistTable extends Component {
 					<thead>
 						<tr>
 							<th style={row_style}>farmlist</th>
-							<th style={row_style}>village</th>
 							<th style={row_style}>remove</th>
-							<th />
 						</tr>
 					</thead>
 					<tbody>
@@ -32,32 +30,7 @@ export default class FarmlistTable extends Component {
 }
 
 class Farmlist extends Component {
-	state = {
-		toggled: false,
-		distance: null,
-		player_name: null,
-		village_name: null,
-		population: null,
-		x: null,
-		y: null,
-		tribeId: null,
-		kingdom_tag: null,
-		unit_number: 2,
-		unit_type: 0,
-		priority: 10
-	}
-
-	tribe_dict = {
-		'1': 'roman',
-		'2': 'teuton',
-		'3': 'gaul'
-	}
-
-	render({ content, clicked, unitChanged }, { toggled }) {
-		let { farmlist, village_name } = content;
-
-		this.state = content;
-
+	render({ content, clicked }, { toggled }) {
 		const row_style = {
 			verticalAlign: 'middle',
 			textAlign: 'center'
@@ -72,15 +45,13 @@ class Farmlist extends Component {
 		return (
 			<tr>
 				<td style={row_style}>
-					{farmlist}
+					{content}
 				</td>
 				<td style={row_style}>
-					{village_name}
-				</td>
-				<td style={row_style}>
-					<a class="has-text-black" onClick={async e => {
-						if (await clicked(content)) this.setState({ toggled: !toggled });
-					}}>
+					<a
+						class="has-text-black"
+						onClick={ e => clicked(content) }
+					>
 						<span class="icon is-medium">
 							<i class={icon}></i>
 						</span>

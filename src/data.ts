@@ -57,7 +57,8 @@ export const buildings: { [index: number]: string } = {
 };
 
 export const troops: any = {
-	1: {//Roman Troops
+	// roman units
+	1: {
 		1: {
 			name: 'Legionnaire',
 			attack: 40,
@@ -139,7 +140,8 @@ export const troops: any = {
 			carry_capacity: 3000,
 		},
 	},
-	2: { //Teuton Troops
+	// teuton units
+	2: {
 		1: {
 			name: 'Clubswinger',
 			attack: 40,
@@ -221,7 +223,8 @@ export const troops: any = {
 			carry_capacity: 3000,
 		}
 	},
-	3: {// Gallic Troops
+	// gaul units
+	3: {
 		1: {
 			name: 'Phalanx',
 			attack: 15,
