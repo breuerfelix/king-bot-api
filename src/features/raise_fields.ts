@@ -73,7 +73,7 @@ class raise extends feature_item {
 	}
 
 	set_params(): void {
-		this.params = { 
+		this.params = {
 			ident: 'raise_fields',
 			name: 'raise fields'
 		};
@@ -145,7 +145,7 @@ class raise extends feature_item {
 
 			// add 30 percent storage to crop, since its not that needed
 			if (res == '4') percent += 30;
-		
+
 			temp_res_prod.push(percent);
 			temp_dict[percent] = Number(res);
 		}
@@ -248,7 +248,7 @@ class raise extends feature_item {
 
 	lowest_building_by_type(type: number, building_collection: Ibuilding_collection[]): Ibuilding {
 		let rv: Ibuilding = null;
-		
+
 		for (let building of building_collection) {
 			const bd: Ibuilding = building.data;
 

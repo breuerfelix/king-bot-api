@@ -41,8 +41,8 @@ export default class Adventure extends Component {
 							<label class="label">adventure type</label>
 							<div class="control">
 								<div class="select">
-									<select 
-										value={ type } 
+									<select
+										value={ type }
 										onChange={ (e) => this.setState({ type: e.target.value }) }
 									>
 										<option value='0'>short</option>
@@ -63,11 +63,11 @@ export default class Adventure extends Component {
 								</a>
 							</p>
 							<div class="control">
-								<input 
+								<input
 									class={ input_class }
-									type="text" 
-									value={ min_health } 
-									placeholder="health" 
+									type="text"
+									value={ min_health }
+									placeholder="health"
 									onChange={ (e) => this.setState({ min_health: e.target.value }) }
 								/>
 							</div>

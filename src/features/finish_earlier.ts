@@ -105,7 +105,7 @@ class finish_earlier extends feature_single {
 			}
 
 			if (sleep_time) sleep_time = sleep_time - five_minutes + 1;
-			
+
 			if (!sleep_time || sleep_time <= 0) sleep_time = 60;
 			if (sleep_time > 120) sleep_time = 120;
 

@@ -116,8 +116,7 @@ class farm_feature extends feature_item {
 				farmlist_ids.push(list_obj.listId);
 			}
 
-			// TODO uncomment
-			//await api.send_farmlists(farmlist_ids, village_id);
+			await api.send_farmlists(farmlist_ids, village_id);
 			log(`farmlists: ${farmlists} sent from village ${village_name}`);
 
 			await sleep(get_random_int(interval_min, interval_max));

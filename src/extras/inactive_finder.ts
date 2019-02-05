@@ -45,7 +45,7 @@ class inactive_finder {
 
 		const village_data = await village.get_own();
 		const found_village: Ivillage = village.find(village_name, village_data);
-		
+
 		if (!found_village) {
 			return {
 				error: true,

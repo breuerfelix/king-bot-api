@@ -58,7 +58,7 @@ class queue extends feature_item {
 	}
 
 	set_params(): void {
-		this.params = { 
+		this.params = {
 			ident: 'queue',
 			name: 'building queue'
 		};
