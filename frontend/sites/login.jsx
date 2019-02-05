@@ -142,12 +142,12 @@ class Login extends Component {
 	}
 }
 
-const Input = ({ 
-	label, 
-	placeholder, 
-	onChange, 
-	classes = 'input is-radiusless', 
-	type = 'text' 
+const Input = ({
+	label,
+	placeholder,
+	onChange,
+	classes = 'input is-radiusless',
+	type = 'text'
 }) => (
 
 	<div class="field">
