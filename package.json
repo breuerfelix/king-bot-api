@@ -7,7 +7,7 @@
   "scripts": {
     "test": "tsc && webpack && npm run lint",
     "start": "node main.js",
-    "dev": "ts-node dev_main.js",
+    "dev": "ts-node main.js",
     "build": "tsc && webpack",
     "server": "webpack-dev-server --mode development",
     "gui": "npm start",
@@ -47,6 +47,7 @@
     "preact-router": "^2.6.1",
     "public-ip": "^3.0.0",
     "qs": "^6.5.2",
+    "react-websocket": "^2.0.1",
     "uniqid": "^5.0.3",
     "unistore": "^3.1.0",
     "winston": "^3.1.0",

@@ -96,6 +96,16 @@ class api {
 		return await this.post('toggleEntry', 'farmList', params);
 	}
 
+	async copy_farmlist_entry(villageId: number, newListId: number, entryId: number): Promise<any> {
+		const params = {
+			villageId,
+			newListId,
+			entryId
+		};
+		console.log(params);
+		return await this.post('copyEntry', 'farmList', params);
+	}
+
 	async upgrade_building(buildingType: number, locationId: number, villageId: number): Promise<any> {
 		const params = {
 			villageId,
@@ -130,14 +140,15 @@ class api {
 		return await this.post('checkTarget', 'troops', params);
 	}
 
-	async send_units(villageId: number, destVillageId: number, units: Iunits, movementType: number, spyMission: string = 'resources'): Promise<any> {
+	async send_units(villageId: number, destVillageId: number, units: Iunits, movementType: number, spyMission: string = 'resources', catapultTargets: number[] = [19]): Promise<any> {
 		const params = {
 			destVillageId,
 			villageId,
 			movementType,
 			redeployHero: false,
 			units,
-			spyMission
+			spyMission,
+			//catapultTargets  //Todo: add this back
 		};
 
 		return await this.post('send', 'troops', params);

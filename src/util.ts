@@ -14,13 +14,13 @@ export function list_remove(item: any, list: any[]): any[] {
 	return list;
 }
 
-export const sleep = (ms: number) => new Promise(res => setTimeout(res, ms * 1000));
+export const sleep = (sec: number) => new Promise(res => setTimeout(res, sec * 1000));
 
 export function get_date(): number {
 	return Math.floor(Number(Date.now()) / 1000);
-} 
+}
 
-export function find_state_data(ident: string, data: any[],  contains: boolean = false): any {
+export function find_state_data(ident: string, data: any[], contains: boolean = false): any {
 	const found_obj = data.find((x: any) => {
 		return contains ? x.name.includes(ident) : x.name == ident;
 	});
@@ -84,5 +84,5 @@ export function clash_obj(merge_obj: any, ident: string, ident2: string = ''): a
 
 export function is_object(val: any) {
 	if (val === null) { return false; }
-	return ( (typeof val === 'function') || (typeof val === 'object') );
+	return ((typeof val === 'function') || (typeof val === 'object'));
 }

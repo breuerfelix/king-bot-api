@@ -2,10 +2,9 @@ import api from './api';
 import settings from './settings';
 import { log, sleep } from './util';
 import { Ivillage, Ifarmlist, Iunits, Iplayer } from './interfaces';
-import building_queue, { Iresource_type } from './building';
 import { tribe } from './data';
 import server from './server';
-import { send_farmlist, auto_adventure, finish_earlier, adventure_type, building_queue as queue } from './features';
+
 import { farming, village, player } from './gamedata';
 
 class kingbot {
