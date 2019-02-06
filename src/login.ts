@@ -106,6 +106,12 @@ async function login_to_lobby(axios: AxiosInstance, email: string, password: str
 	let rv: any = parse_token(res.data);
 	let tokenURL: string = rv.url;
 	token_lobby = rv.token;
+
+	if (!token_lobby) {
+		logger.error('error parsing lobby cookies. maybe you entered wrong credentials ?');
+		process.exit();
+	}
+
 	logger.info('token: ' + token_lobby, 'login');
 
 	options = {
