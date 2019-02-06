@@ -6,6 +6,9 @@ dev_main.js
 custom_main.js
 build/
 public/
+electron-dist
+king-bot-api-*
+KingBotApi.dmg
 
 # Logs
 logs
