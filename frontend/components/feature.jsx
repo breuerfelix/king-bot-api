@@ -70,7 +70,7 @@ export default class Feature extends Component {
 			this.props.add_notification(message, 'error');
 			return;
 		}
-		
+
 		this.setState({
 			...data
 		});
@@ -90,10 +90,10 @@ export default class Feature extends Component {
 		const res = await axios.post('/api/feature', payload);
 
 		const { data, error, message } = res.data;
-		
+
 		if (error) {
 			this.props.add_notification(message, 'error');
-			this.setState({ 
+			this.setState({
 				status: 'error',
 				run: false
 			});

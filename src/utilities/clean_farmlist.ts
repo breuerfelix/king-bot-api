@@ -1,27 +1,29 @@
 import { sleep } from '../util';
 import api from '../api';
 
-export async function clean_farmlist(farmlist_id: number, losses_farmlist_id: number): Promise<boolean> {
-	const finished = true; //Returning true at the end to know when this is finished.
+export async function clean_farmlist(farmlist_id: number, losses_farmlist_id: number): Promise<void> {
 	const params = [`Collection:FarmListEntry:${farmlist_id}`];
-	var listResponse = await api.get_cache(params);
-	if (listResponse.length > 0) {
-		listResponse[0].data.forEach(async (data: any) => {
-			const farm = data.data;
-			if (farm.lastReport) {
-				if (farm.lastReport.notificationType != '1') {
-					console.log('removing');
-					await api.copy_farmlist_entry(farm.villageId, losses_farmlist_id, farm.entryId);
-					await sleep(.15);
-					await api.copy_farmlist_entry(farm.villageId, farmlist_id, farm.entryId);
-				}
-			}
-		});
+	const listResponse = await api.get_cache(params);
+
+	if (listResponse.length < 1) return;
+
+	for (let data of listResponse[0].data) {
+		const farm = data.data;
+
+		// no last report given
+		if (!farm.lastReport) continue;
+
+		// report is green
+		if (farm.lastReport.notificationType == '1') continue;
+
+		console.log(`moving farm: ${farm.villageName} from list: ${farmlist_id} to list: ${losses_farmlist_id}`);
+
+		// copy to other list
+		await api.copy_farmlist_entry(farm.villageId, losses_farmlist_id, farm.entryId);
+		await sleep(.5);
+
+		// remove from old list
+		await api.toggle_farmlist_entry(farm.villageId, farmlist_id);
+		await sleep(.5);
 	}
-	else {
-		//TODO: Send 1 attack to test? 
-		//No you have to test before putting farm on list. Otherwise we would have to look to see if the farmlist has empty reports and send all that are not empty and send the empty one if there is not currently an attack underway.
-		//Better to just assume the farm is good.
-	}
-	return finished;
 }

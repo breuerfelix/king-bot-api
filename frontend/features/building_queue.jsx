@@ -30,7 +30,7 @@ export default class BuildingQueue extends Component {
 	}
 
 	submit = async e => {
-		this.setState({ 
+		this.setState({
 			error_village: (this.state.village_name == '')
 		});
 
@@ -132,7 +132,7 @@ export default class BuildingQueue extends Component {
 
 		let buildings_options = [];
 		if (buildings_dict) {
-			buildings_options = buildings.map(building => 
+			buildings_options = buildings.map(building =>
 				<tr>
 					<td style={ header_style }>{ building.locationId }</td>
 					<td>{ buildings_dict[building.buildingType] }</td>
@@ -150,7 +150,7 @@ export default class BuildingQueue extends Component {
 
 		let resource_options = [];
 		if (buildings_dict) {
-			resource_options = resources.map(building => 
+			resource_options = resources.map(building =>
 				<tr>
 					<td style={ header_style }>{ building.locationId }</td>
 					<td>{ buildings_dict[building.buildingType] }</td>
@@ -168,7 +168,7 @@ export default class BuildingQueue extends Component {
 
 		let queue_options = [];
 		if (buildings_dict) {
-			queue_options = queue.map((building, index) => 
+			queue_options = queue.map((building, index) =>
 				<tr>
 					<td style={ header_style }>{ index + 1 }</td>
 					<td style={ header_style }>{ building.location }</td>
@@ -198,7 +198,7 @@ export default class BuildingQueue extends Component {
 			);
 		}
 
-		const villages = all_villages.map(village => 
+		const villages = all_villages.map(village =>
 			<option value={ village.data.name }>{ village.data.name }</option>
 		);
 
@@ -211,9 +211,9 @@ export default class BuildingQueue extends Component {
 							<label class="label">select village</label>
 							<div class="control">
 								<div class={ village_select_class }>
-									<select 
+									<select
 										class='is-radiusless'
-										value={ village_name } 
+										value={ village_name }
 										onChange={ this.village_changes }
 									>
 										{ villages }

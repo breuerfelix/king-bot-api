@@ -168,6 +168,15 @@ class server {
 			res.send('success');
 		});
 
+		this.app.post('/api/login', async (req: any, res: any) => {
+			const { gameworld, email, password, ingameName } = req.body;
+
+			settings.write_credentials(gameworld, email, password, ingameName);
+			process.exit();
+
+			res.send('this wont be send anyways...');
+		});
+
 		this.app.post('/api/inactivefinder', async (req: any, res: any) => {
 			const { action, data } = req.body;
 

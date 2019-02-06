@@ -129,6 +129,9 @@ export default class NavBar extends Component {
 									<a className="navbar-item" onClick={e => this.route('/logger')}>
 										logger
 									</a>
+									<a className="navbar-item" onClick={e => this.route('/login')}>
+										change login
+									</a>
 								</div>
 							</div>
 

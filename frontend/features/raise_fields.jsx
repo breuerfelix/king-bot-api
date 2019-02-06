@@ -83,9 +83,9 @@ export default class RaiseFields extends Component {
 							<label class="label">select village</label>
 							<div class="control">
 								<div class={ village_select_class }>
-									<select 
+									<select
 										class="is-radiusless"
-										value={ village_name } 
+										value={ village_name }
 										onChange={ (e) => this.setState({ village_name: e.target.value }) }
 									>
 										{ villages }
