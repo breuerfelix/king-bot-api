@@ -1,0 +1,24 @@
+{
+  "name": "king-bot-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+		"start": "live-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scriptworld-git/king-bot-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scriptworld-git/king-bot-api/issues"
+  },
+  "homepage": "https://github.com/scriptworld-git/king-bot-api#readme",
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}
