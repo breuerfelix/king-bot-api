@@ -28,6 +28,12 @@ never miss a new update ! **[sign up for the newsletter here (:](https://mailchi
 
 # getting-started
 
+1. go to releases tab: [click here](https://github.com/scriptworld-git/king-bot-api/releases)
+2. download the correct version for your distribution
+3. execute `king-bot-api` or `king-bot-api.exe`
+
+**or**
+
 [use docker](#docker)
 
 **or**

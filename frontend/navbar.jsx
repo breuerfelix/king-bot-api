@@ -137,9 +137,29 @@ export default class NavBar extends Component {
 
 						</div>
 						<div class="navbar-end">
-							<a class="navbar-item" target="_blank" href="https://github.com/scriptworld-git/king-bot-api/blob/master/README.md">
-								documentation
-							</a>
+							<div class="navbar-item has-dropdown is-hoverable">
+								<a class="navbar-link is-arrowless">
+									links
+								</a>
+
+								<div class="navbar-dropdown is-radiusless">
+									<a className="navbar-item" target="__blank" href="http://kingbot.felixbreuer.me">
+										landing page
+									</a>
+									<a className="navbar-item" target="__blank" href="http://github.com/scriptworld-git/king-bot-api">
+										github
+									</a>
+									<a className="navbar-item" target="__blank" href="http://github.com/scriptworld-git/king-bot-api/issues">
+										report a bug
+									</a>
+									<a className="navbar-item" target="__blank" href="http://github.com/scriptworld-git/king-bot-api/releases">
+										releases
+									</a>
+									<a className="navbar-item" target="__blank" href="http://scriptworld.net">
+										felixbreuer
+									</a>
+								</div>
+							</div>
 
 							<a class="navbar-item" target="_blank" href="https://ko-fi.com/Y8Y6KZHJ">
 								donate
