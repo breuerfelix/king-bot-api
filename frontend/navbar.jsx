@@ -143,19 +143,19 @@ export default class NavBar extends Component {
 								</a>
 
 								<div class="navbar-dropdown is-radiusless">
-									<a className="navbar-item" target="__blank" href="https://kingbot.felixbreuer.me">
+									<a className="navbar-item" target="__blank" href="http://kingbot.felixbreuer.me">
 										landing page
 									</a>
-									<a className="navbar-item" target="__blank" href="https://github.com/scriptworld-git/king-bot-api">
+									<a className="navbar-item" target="__blank" href="http://github.com/scriptworld-git/king-bot-api">
 										github
 									</a>
-									<a className="navbar-item" target="__blank" href="https://github.com/scriptworld-git/king-bot-api/issues">
+									<a className="navbar-item" target="__blank" href="http://github.com/scriptworld-git/king-bot-api/issues">
 										report a bug
 									</a>
-									<a className="navbar-item" target="__blank" href="https://github.com/scriptworld-git/king-bot-api/releases">
+									<a className="navbar-item" target="__blank" href="http://github.com/scriptworld-git/king-bot-api/releases">
 										releases
 									</a>
-									<a className="navbar-item" target="__blank" href="https://scriptworld.net">
+									<a className="navbar-item" target="__blank" href="http://scriptworld.net">
 										felixbreuer
 									</a>
 								</div>
