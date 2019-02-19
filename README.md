@@ -14,7 +14,7 @@ never miss a new update ! **[sign up for the newsletter here (:](https://mailchi
 [![ko-fi](https://img.shields.io/badge/buy%20me%20a-coffee-yellowgreen.svg)](https://ko-fi.com/Y8Y6KZHJ)
 [![Build Status](https://travis-ci.org/scriptworld-git/king-bot-api.svg?branch=master)](https://travis-ci.org/scriptworld-git/king-bot-api)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1143396b01b944b28252861dc3762d7a)](https://www.codacy.com/app/scriptworld-git/king-bot-api?utm_source=github.com&utm_medium=referral&utm_content=scriptworld-git/king-bot-api&utm_campaign=Badge_Grade)
-[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/scriptworld-git/king-bot/blob/master/LICENSE)
+[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/breuerfelix/king-bot/blob/master/LICENSE)
 
 # table of contents <!-- omit in toc -->
 
@@ -25,10 +25,11 @@ never miss a new update ! **[sign up for the newsletter here (:](https://mailchi
 - [docker](#docker)
 - [development](#development)
 - [thank you for](#thank-you-for)
+- [contact](#contact)
 
 # getting-started
 
-1. go to releases tab: [click here](https://github.com/scriptworld-git/king-bot-api/releases)
+1. go to releases tab: [click here](https://github.com/breuerfelix/king-bot-api/releases)
 2. download the correct version for your distribution
 3. execute `king-bot-api` or `king-bot-api.exe`
 
@@ -119,6 +120,11 @@ beeing active since the first day of this project **[@didadadida93](https://gith
 keeping the issue page alive **[@OneManDevz](https://github.com/OneManDevz)**  
 programming auto adventure **[@Tom-Boyd](https://github.com/Tom-Boyd)**  
 programming trade routes / timed attack **[@tmfoltz](https://github.com/tmfoltz)**  
+
+# contact
+
+__discord:__ _felixbreuer#9641_  
+__email:__ _i@felixbreuer.me_
 
 ---
 
