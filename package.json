@@ -16,6 +16,7 @@
     "build:electron": "npm run build && webpack --config webpack.electron.config.js",
     "build:package": "bash build-electron.sh",
     "build:all": "npm run build:electron && npm run build:package",
+    "build:docker:rpi": "docker build -t scriptworld/king-bot-api:rpi -f rpi.Dockerfile .",
     "start:electron": "electron ."
   },
   "repository": {
