@@ -6,7 +6,7 @@
   "scripts": {
     "test": "tsc && webpack && npm run lint",
     "start": "node main.js",
-    "dev": "ts-node dev_main.js",
+    "dev": "tsc && webpack && ts-node dev_main.js",
     "build": "tsc && webpack",
     "server": "webpack-dev-server --mode development",
     "gui": "npm start",

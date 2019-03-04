@@ -3,7 +3,7 @@ import { route } from 'preact-router';
 import axios from 'axios';
 import classNames from 'classnames';
 
-export default class SendTimedAttack extends Component {
+export default class TrainTroops extends Component {
 	state = {
 		name: 'send timed attack',
 		own_tribe: 0,
@@ -32,7 +32,6 @@ export default class SendTimedAttack extends Component {
 		t9: '',
 		t10: '',
 		t11: '',
-		send_hero: false,
 		error_wait_time: false,
 		error_village: false,
 		error_target: false
@@ -125,7 +124,6 @@ export default class SendTimedAttack extends Component {
 			t9,
 			t10,
 			t11,
-			send_hero,
 			time,
 			date
 		} = this.state;
@@ -210,13 +208,12 @@ export default class SendTimedAttack extends Component {
 								onChange={(e) => this.setState({ target_y: e.target.value })}
 							/>
 
-							<label class="label">send hero</label>
-							<input type="checkbox" value={send_hero} onChange={(e) => this.setState({ send_hero: e.target.checked })} />
 						</div>
 
 						<button className='button is-radiusless is-success' style='margin-top: 1rem' onClick={this.setTarget}>
 							set target
 							</button>
+						<input type="text" value={send_hero} onChange={(e) => this.setState({ send_hero: e.target.checked })} />
 
 					</div>
 
