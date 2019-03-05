@@ -48,6 +48,8 @@
 		],
 		"no-console": 0,
 		"no-empty-pattern": 0,
-		"react/jsx-curly-spacing": [2, "always"]
+		"react/jsx-curly-spacing": [2, {"when": "always", "spacing": {
+  		"objectLiterals": "never"
+		}}]
 	}
 }
