@@ -9,16 +9,16 @@ export default class FarmlistTable extends Component {
 			textAlign: 'center'
 		};
 
-		const list = content.map(item => <Farmlist content={item} clicked={clicked} />);
+		const list = content.map(item => <Farmlist content={ item } clicked={ clicked } />);
 
 		return (
 			<div>
 				<table className="table is-hoverable is-fullwidth">
 					<thead>
 						<tr>
-							<th style={row_style}>farmlist</th>
-							<th style={row_style}>village</th>
-							<th style={row_style}>remove</th>
+							<th style={ row_style }>farmlist</th>
+							<th style={ row_style }>village</th>
+							<th style={ row_style }>remove</th>
 							<th />
 						</tr>
 					</thead>
@@ -71,18 +71,18 @@ class Farmlist extends Component {
 
 		return (
 			<tr>
-				<td style={row_style}>
+				<td style={ row_style }>
 					{farmlist}
 				</td>
-				<td style={row_style}>
+				<td style={ row_style }>
 					{village_name}
 				</td>
-				<td style={row_style}>
-					<a class="has-text-black" onClick={async e => {
+				<td style={ row_style }>
+					<a class="has-text-black" onClick={ async e => {
 						if (await clicked(content)) this.setState({ toggled: !toggled });
-					}}>
+					} }>
 						<span class="icon is-medium">
-							<i class={icon}></i>
+							<i class={ icon }></i>
 						</span>
 					</a>
 				</td>

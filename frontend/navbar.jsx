@@ -78,15 +78,15 @@ export default class NavBar extends Component {
 						<a class="navbar-item" target="_blank" href="https://github.com/scriptworld-git/king-bot-api">
 							king-bot-api
 						</a>
-						<a role="button" onClick={this.show_burger} class={burger_class} aria-label="menu" aria-expanded="false">
+						<a role="button" onClick={ this.show_burger } class={ burger_class } aria-label="menu" aria-expanded="false">
 							<span aria-hidden="true"></span>
 							<span aria-hidden="true"></span>
 							<span aria-hidden="true"></span>
 						</a>
 					</div>
-					<div class={menue_class}>
+					<div class={ menue_class }>
 						<div class="navbar-start">
-							<a class="navbar-item" onClick={e => this.route('/')}>
+							<a class="navbar-item" onClick={ e => this.route('/') }>
 								home
 							</a>
 
@@ -96,19 +96,19 @@ export default class NavBar extends Component {
 								</a>
 
 								<div class="navbar-dropdown is-radiusless">
-									<a className="navbar-item" onClick={e => this.get_new('farming')}>
+									<a className="navbar-item" onClick={ e => this.get_new('farming') }>
 										send farmlist
 									</a>
-									<a className="navbar-item" onClick={e => this.get_new('queue')}>
+									<a className="navbar-item" onClick={ e => this.get_new('queue') }>
 										building queue
 									</a>
-									<a className="navbar-item" onClick={e => this.get_new('raise_fields')}>
+									<a className="navbar-item" onClick={ e => this.get_new('raise_fields') }>
 										raise fields
 									</a>
-									<a className="navbar-item" onClick={e => this.get_new('trade_route')}>
+									<a className="navbar-item" onClick={ e => this.get_new('trade_route') }>
 										trade route
 									</a>
-									<a className="navbar-item" onClick={e => this.get_new('timed_attack')}>
+									<a className="navbar-item" onClick={ e => this.get_new('timed_attack') }>
 										timed attack
 									</a>
 								</div>
@@ -120,16 +120,16 @@ export default class NavBar extends Component {
 								</a>
 
 								<div class="navbar-dropdown is-radiusless">
-									<a className="navbar-item" onClick={e => this.route('/easy_scout')}>
+									<a className="navbar-item" onClick={ e => this.route('/easy_scout') }>
 										easy scout
 									</a>
-									<a className="navbar-item" onClick={e => this.route('/inactive_finder')}>
+									<a className="navbar-item" onClick={ e => this.route('/inactive_finder') }>
 										inactive finder
 									</a>
-									<a className="navbar-item" onClick={e => this.route('/logger')}>
+									<a className="navbar-item" onClick={ e => this.route('/logger') }>
 										logger
 									</a>
-									<a className="navbar-item" onClick={e => this.route('/login')}>
+									<a className="navbar-item" onClick={ e => this.route('/login') }>
 										change login
 									</a>
 								</div>

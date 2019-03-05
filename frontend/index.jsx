@@ -44,7 +44,7 @@ class App extends Component {
 }
 
 render(
-	<Provider store={store}>
+	<Provider store={ store }>
 		<App />
 	</Provider>
 	, document.body);

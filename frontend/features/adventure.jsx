@@ -43,8 +43,8 @@ export default class Adventure extends Component {
 							<div class="control">
 								<div class="select">
 									<select
-										value={type}
-										onChange={(e) => this.setState({ type: e.target.value })}
+										value={ type }
+										onChange={ (e) => this.setState({ type: e.target.value }) }
 									>
 										<option value='0'>short</option>
 										<option value='1'>long</option>
@@ -65,11 +65,11 @@ export default class Adventure extends Component {
 							</p>
 							<div class="control">
 								<input
-									class={input_class}
+									class={ input_class }
 									type="text"
-									value={min_health}
+									value={ min_health }
 									placeholder="health"
-									onChange={(e) => this.setState({ min_health: e.target.value })}
+									onChange={ (e) => this.setState({ min_health: e.target.value }) }
 								/>
 							</div>
 							<p class="control">
@@ -85,10 +85,10 @@ export default class Adventure extends Component {
 
 				<div className="columns">
 					<div className="column">
-						<button className="button is-success" onClick={this.submit} style='margin-right: 1rem'>
+						<button className="button is-success" onClick={ this.submit } style='margin-right: 1rem'>
 							submit
 						</button>
-						<button className="button" onClick={(e) => route('/', true)}>
+						<button className="button" onClick={ (e) => route('/', true) }>
 							cancel
 						</button>
 					</div>

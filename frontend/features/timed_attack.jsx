@@ -133,16 +133,16 @@ export default class SendTimedAttack extends Component {
 		var new_rows = [];
 		if (own_tribe != 0 && troops != '') {
 			new_rows = [
-				<th style={row_style}> {troops[own_tribe][1].name} </th>,
-				<th style={row_style}> {troops[own_tribe][2].name} </th>,
-				<th style={row_style}> {troops[own_tribe][3].name} </th>,
-				<th style={row_style}> {troops[own_tribe][4].name} </th>,
-				<th style={row_style}> {troops[own_tribe][5].name} </th>,
-				<th style={row_style}> {troops[own_tribe][6].name} </th>,
-				<th style={row_style}> {troops[own_tribe][7].name} </th>,
-				<th style={row_style}> {troops[own_tribe][8].name} </th>,
-				<th style={row_style}> {troops[own_tribe][9].name} </th>,
-				<th style={row_style}> {troops[own_tribe][10].name} </th>,
+				<th style={ row_style }> {troops[own_tribe][1].name} </th>,
+				<th style={ row_style }> {troops[own_tribe][2].name} </th>,
+				<th style={ row_style }> {troops[own_tribe][3].name} </th>,
+				<th style={ row_style }> {troops[own_tribe][4].name} </th>,
+				<th style={ row_style }> {troops[own_tribe][5].name} </th>,
+				<th style={ row_style }> {troops[own_tribe][6].name} </th>,
+				<th style={ row_style }> {troops[own_tribe][7].name} </th>,
+				<th style={ row_style }> {troops[own_tribe][8].name} </th>,
+				<th style={ row_style }> {troops[own_tribe][9].name} </th>,
+				<th style={ row_style }> {troops[own_tribe][10].name} </th>,
 			];
 		}
 
@@ -176,7 +176,7 @@ export default class SendTimedAttack extends Component {
 			textAlign: 'center',
 		};
 
-		const villages = all_villages.map(village => <option value={village.data.name}>{village.data.name}</option>);
+		const villages = all_villages.map(village => <option value={ village.data.name }>{village.data.name}</option>);
 
 		return (
 			<div>
@@ -186,10 +186,10 @@ export default class SendTimedAttack extends Component {
 						<div>
 							<label class="label">Target Land Time: UTC</label>
 							<input type="date" id="start" name="trip-start"
-								value={date} onChange={(e) => this.setState({ date: e.target.value })}
+								value={ date } onChange={ (e) => this.setState({ date: e.target.value }) }
 							></input>
 							<input type="time" id="meeting-time" step="1"
-								name="meeting-time" value={time} onChange={(e) => this.setState({ time: e.target.value })}
+								name="meeting-time" value={ time } onChange={ (e) => this.setState({ time: e.target.value }) }
 							/>
 						</div>
 						<div>
@@ -197,24 +197,24 @@ export default class SendTimedAttack extends Component {
 							<input
 								style="width: 150px;"
 								type="text"
-								value={target_x}
+								value={ target_x }
 								placeholder="0"
-								onChange={(e) => this.setState({ target_x: e.target.value })}
+								onChange={ (e) => this.setState({ target_x: e.target.value }) }
 							/>
 							<label class="label">y</label>
 							<input
 								style="width: 150px;"
 								type="text"
-								value={target_y}
+								value={ target_y }
 								placeholder="0"
-								onChange={(e) => this.setState({ target_y: e.target.value })}
+								onChange={ (e) => this.setState({ target_y: e.target.value }) }
 							/>
 
 							<label class="label">send hero</label>
-							<input type="checkbox" value={send_hero} onChange={(e) => this.setState({ send_hero: e.target.checked })} />
+							<input type="checkbox" value={ send_hero } onChange={ (e) => this.setState({ send_hero: e.target.checked }) } />
 						</div>
 
-						<button className='button is-radiusless is-success' style='margin-top: 1rem' onClick={this.setTarget}>
+						<button className='button is-radiusless is-success' style='margin-top: 1rem' onClick={ this.setTarget }>
 							set target
 						</button>
 
@@ -225,11 +225,11 @@ export default class SendTimedAttack extends Component {
 						<div class="field">
 							<label class="label">select village</label>
 							<div class="control">
-								<div class={village_select_class}>
+								<div class={ village_select_class }>
 									<select
 										class="is-radiusless"
-										value={village_name}
-										onChange={(e) => this.setState({ village_name: e.target.value })}
+										value={ village_name }
+										onChange={ (e) => this.setState({ village_name: e.target.value }) }
 									>
 										{villages}
 									</select>
@@ -246,131 +246,131 @@ export default class SendTimedAttack extends Component {
 					<table className="table is-hoverable is-fullwidth">
 						<thead>
 							<tr>
-								<th style={row_style}>distance</th>
-								<th style={row_style}>player</th>
-								<th style={row_style}>village</th>
+								<th style={ row_style }>distance</th>
+								<th style={ row_style }>player</th>
+								<th style={ row_style }>village</th>
 								{new_rows}
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td style={row_style}>
+								<td style={ row_style }>
 									{target_distance}
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									{target_player_name}
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									{target_village_name}
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									<input
 										style="width: 30px;"
 										type="text"
-										value={t1}
+										value={ t1 }
 										placeholder="t1"
-										onChange={async e => {
+										onChange={ async e => {
 											this.setState({ t1: e.target.value });
-										}}
+										} }
 									/>
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									<input
 										style="width: 30px;"
 										type="text"
-										value={t2}
+										value={ t2 }
 										placeholder="t2"
-										onChange={async e => {
+										onChange={ async e => {
 											this.setState({ t2: e.target.value });
-										}}
+										} }
 									/>
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									<input
 										style="width: 30px;"
 										type="text"
-										value={t3}
+										value={ t3 }
 										placeholder="t3"
-										onChange={async e => {
+										onChange={ async e => {
 											this.setState({ t3: e.target.value });
-										}}
+										} }
 									/>
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									<input
 										style="width: 30px;"
 										type="text"
-										value={t4}
+										value={ t4 }
 										placeholder="t4"
-										onChange={async e => {
+										onChange={ async e => {
 											this.setState({ t4: e.target.value });
-										}}
+										} }
 									/>
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									<input
 										style="width: 30px;"
 										type="text"
-										value={t5}
+										value={ t5 }
 										placeholder="t5"
-										onChange={async e => {
+										onChange={ async e => {
 											this.setState({ t5: e.target.value });
-										}}
+										} }
 									/>
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									<input
 										style="width: 30px;"
 										type="text"
-										value={t6}
+										value={ t6 }
 										placeholder="t6"
-										onChange={async e => {
+										onChange={ async e => {
 											this.setState({ t6: e.target.value });
-										}}
+										} }
 									/>
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									<input
 										style="width: 30px;"
 										type="text"
-										value={t7}
+										value={ t7 }
 										placeholder="t7"
-										onChange={async e => {
+										onChange={ async e => {
 											this.setState({ t7: e.target.value });
-										}}
+										} }
 									/>
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									<input
 										style="width: 30px;"
 										type="text"
-										value={t8}
+										value={ t8 }
 										placeholder="t8"
-										onChange={async e => {
+										onChange={ async e => {
 											this.setState({ t8: e.target.value });
-										}}
+										} }
 									/>
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									<input
 										style="width: 30px;"
 										type="text"
-										value={t9}
+										value={ t9 }
 										placeholder="t9"
-										onChange={async e => {
+										onChange={ async e => {
 											this.setState({ t9: e.target.value });
-										}}
+										} }
 									/>
 								</td>
-								<td style={row_style}>
+								<td style={ row_style }>
 									<input
 										style="width: 30px;"
 										type="text"
-										value={t10}
+										value={ t10 }
 										placeholder="t10"
-										onChange={async e => {
+										onChange={ async e => {
 											this.setState({ t10: e.target.value });
-										}}
+										} }
 									/>
 								</td>
 							</tr>
@@ -380,14 +380,14 @@ export default class SendTimedAttack extends Component {
 
 				<div className="columns" style='margin-top: 1rem;'>
 					<div className="column">
-						<button className="button is-radiusless is-success" onClick={this.submit} style='margin-right: 1rem'>
+						<button className="button is-radiusless is-success" onClick={ this.submit } style='margin-right: 1rem'>
 							submit
 						</button>
-						<button className="button is-radiusless" onClick={this.cancel} style='margin-right: 1rem'>
+						<button className="button is-radiusless" onClick={ this.cancel } style='margin-right: 1rem'>
 							cancel
 						</button>
 
-						<button className="button is-danger is-radiusless" onClick={this.delete}>
+						<button className="button is-danger is-radiusless" onClick={ this.delete }>
 							delete
 						</button>
 					</div>
