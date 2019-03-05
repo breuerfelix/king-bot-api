@@ -216,7 +216,7 @@ export default class SendTimedAttack extends Component {
 
 						<button className='button is-radiusless is-success' style='margin-top: 1rem' onClick={this.setTarget}>
 							set target
-							</button>
+						</button>
 
 					</div>
 
@@ -382,14 +382,14 @@ export default class SendTimedAttack extends Component {
 					<div className="column">
 						<button className="button is-radiusless is-success" onClick={this.submit} style='margin-right: 1rem'>
 							submit
-							</button>
+						</button>
 						<button className="button is-radiusless" onClick={this.cancel} style='margin-right: 1rem'>
 							cancel
-							</button>
+						</button>
 
 						<button className="button is-danger is-radiusless" onClick={this.delete}>
 							delete
-							</button>
+						</button>
 					</div>
 					<div className="column">
 					</div>
