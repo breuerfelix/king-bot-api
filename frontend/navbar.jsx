@@ -75,7 +75,7 @@ export default class NavBar extends Component {
 			<nav class="navbar is-light is-fixed-top">
 				<div class="container">
 					<div class="navbar-brand">
-						<a class="navbar-item" target="_blank" href="https://github.com/scriptworld-git/king-bot-api">
+						<a class="navbar-item" target="_blank" href="https://github.com/breuerfelix/king-bot-api">
 							king-bot-api
 						</a>
 						<a role="button" onClick={this.show_burger} class={burger_class} aria-label="menu" aria-expanded="false">
@@ -146,13 +146,13 @@ export default class NavBar extends Component {
 									<a className="navbar-item" target="__blank" href="http://kingbot.felixbreuer.me">
 										landing page
 									</a>
-									<a className="navbar-item" target="__blank" href="http://github.com/scriptworld-git/king-bot-api">
+									<a className="navbar-item" target="__blank" href="http://github.com/breuerfelix/king-bot-api">
 										github
 									</a>
-									<a className="navbar-item" target="__blank" href="http://github.com/scriptworld-git/king-bot-api/issues">
+									<a className="navbar-item" target="__blank" href="http://github.com/breuerfelix/king-bot-api/issues">
 										report a bug
 									</a>
-									<a className="navbar-item" target="__blank" href="http://github.com/scriptworld-git/king-bot-api/releases">
+									<a className="navbar-item" target="__blank" href="http://github.com/breuerfelix/king-bot-api/releases">
 										releases
 									</a>
 									<a className="navbar-item" target="__blank" href="http://scriptworld.net">
