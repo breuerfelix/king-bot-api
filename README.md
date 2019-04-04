@@ -3,17 +3,17 @@
 this is a really high performance based bot for [travian kingdoms](https://www.kingdoms.com/) written in typescript.  
 it's designed to run in a console for better server support.
 
-feel free to join the [official discord channel](https://discord.gg/5n2btF7) or **[contact me! (:](mailto:f.breuer@scriptworld.net)**
+feel free to join the [official discord channel](https://discord.gg/5n2btF7) or **[contact me! (:](mailto:i@felixbreuer.me)**
 
 i made a video tutorial on how to setup the bot with it's features ! **[click me !](https://youtu.be/h6XJ56CT6XQ)**
 
-you want to run the bot **24/7**, but don't want to use your computer? **[contact me aswell! (:](mailto:f.breuer@scriptworld.net)**
+you want to run the bot **24/7**, but don't want to use your computer? **[contact me aswell! (:](mailto:i@felixbreuer.me)**
 
 never miss a new update ! **[sign up for the newsletter here (:](https://mailchi.mp/c32c561b162e/scriptworld)**
 
 [![ko-fi](https://img.shields.io/badge/buy%20me%20a-coffee-yellowgreen.svg)](https://ko-fi.com/Y8Y6KZHJ)
-[![Build Status](https://travis-ci.org/scriptworld-git/king-bot-api.svg?branch=master)](https://travis-ci.org/scriptworld-git/king-bot-api)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1143396b01b944b28252861dc3762d7a)](https://www.codacy.com/app/scriptworld-git/king-bot-api?utm_source=github.com&utm_medium=referral&utm_content=scriptworld-git/king-bot-api&utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/breuerfelix/king-bot-api.svg?branch=master)](https://travis-ci.org/breuerfelix/king-bot-api)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1143396b01b944b28252861dc3762d7a)](https://www.codacy.com/app/breuerfelix/king-bot-api?utm_source=github.com&utm_medium=referral&utm_content=breuerfelix/king-bot-api&utm_campaign=Badge_Grade)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/breuerfelix/king-bot/blob/master/LICENSE)
 
 # table of contents <!-- omit in toc -->
