@@ -185,7 +185,7 @@ export default class TradeRoute extends Component {
 			'is-radiusless': true,
 		});
 
-		const villages = all_villages.map(village => <option value={village.data.name}>{village.data.name}</option>);
+		const villages = all_villages.map(village => <option value={ village.data.name }>{village.data.name}</option>);
 		return (
 			<div>
 				<div className="columns">
@@ -195,11 +195,11 @@ export default class TradeRoute extends Component {
 						<div class="field">
 							<label class="label">select source village</label>
 							<div class="control">
-								<div class={source_village_select_class}>
+								<div class={ source_village_select_class }>
 									<select
 										class="is-radiusless"
-										value={source_village_name}
-										onChange={(e) => this.setState({ source_village_name: e.target.value })}
+										value={ source_village_name }
+										onChange={ (e) => this.setState({ source_village_name: e.target.value }) }
 									>
 										{villages}
 									</select>
@@ -210,11 +210,11 @@ export default class TradeRoute extends Component {
 						<div class="field">
 							<label class="label">select destination village</label>
 							<div class="control">
-								<div class={destination_village_select_class}>
+								<div class={ destination_village_select_class }>
 									<select
 										class="is-radiusless"
-										value={destination_village_name}
-										onChange={(e) => this.setState({ destination_village_name: e.target.value })}
+										value={ destination_village_name }
+										onChange={ (e) => this.setState({ destination_village_name: e.target.value }) }
 									>
 										{villages}
 									</select>
@@ -224,132 +224,132 @@ export default class TradeRoute extends Component {
 
 						<label style='margin-top: 2rem' class="label">interval in seconds (min / max)</label>
 						<input
-							class={input_class_min}
+							class={ input_class_min }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={interval_min}
+							value={ interval_min }
 							placeholder="min"
-							onChange={(e) => this.setState({ interval_min: e.target.value })}
+							onChange={ (e) => this.setState({ interval_min: e.target.value }) }
 						/>
 						<input
-							class={input_class_max}
+							class={ input_class_max }
 							style="width: 150px;"
 							type="text"
-							value={interval_max}
+							value={ interval_max }
 							placeholder="max"
-							onChange={(e) => this.setState({ interval_max: e.target.value })}
+							onChange={ (e) => this.setState({ interval_max: e.target.value }) }
 						/>
 						<p class="help">provide a number</p>
 
 						<label style='margin-top: 2rem' class="label">send (wood|clay|iron|crop)</label>
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={send_wood}
+							value={ send_wood }
 							placeholder="0"
-							onChange={(e) => this.setState({ send_wood: e.target.value })}
+							onChange={ (e) => this.setState({ send_wood: e.target.value }) }
 						/>
 
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={send_clay}
+							value={ send_clay }
 							placeholder="0"
-							onChange={(e) => this.setState({ send_clay: e.target.value })}
+							onChange={ (e) => this.setState({ send_clay: e.target.value }) }
 						/>
 
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={send_iron}
+							value={ send_iron }
 							placeholder="0"
-							onChange={(e) => this.setState({ send_iron: e.target.value })}
+							onChange={ (e) => this.setState({ send_iron: e.target.value }) }
 						/>
 
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={send_crop}
+							value={ send_crop }
 							placeholder="0"
-							onChange={(e) => this.setState({ send_crop: e.target.value })}
+							onChange={ (e) => this.setState({ send_crop: e.target.value }) }
 						/>
 
 						<label style='margin-top: 2rem' class="label">when source is greater than (wood|clay|iron|crop)</label>
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={source_wood}
+							value={ source_wood }
 							placeholder="0"
-							onChange={(e) => this.setState({ source_wood: e.target.value })}
+							onChange={ (e) => this.setState({ source_wood: e.target.value }) }
 						/>
 
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={source_clay}
+							value={ source_clay }
 							placeholder="0"
-							onChange={(e) => this.setState({ source_clay: e.target.value })}
+							onChange={ (e) => this.setState({ source_clay: e.target.value }) }
 						/>
 
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={source_iron}
+							value={ source_iron }
 							placeholder="0"
-							onChange={(e) => this.setState({ source_iron: e.target.value })}
+							onChange={ (e) => this.setState({ source_iron: e.target.value }) }
 						/>
 
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={source_crop}
+							value={ source_crop }
 							placeholder="0"
-							onChange={(e) => this.setState({ source_crop: e.target.value })}
+							onChange={ (e) => this.setState({ source_crop: e.target.value }) }
 						/>
 
 						<label style='margin-top: 2rem' class="label">and destination is less than (wood|clay|iron|crop)</label>
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={destination_wood}
+							value={ destination_wood }
 							placeholder="10000000"
-							onChange={(e) => this.setState({ destination_wood: e.target.value })}
+							onChange={ (e) => this.setState({ destination_wood: e.target.value }) }
 						/>
 
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={destination_clay}
+							value={ destination_clay }
 							placeholder="10000000"
-							onChange={(e) => this.setState({ destination_clay: e.target.value })}
+							onChange={ (e) => this.setState({ destination_clay: e.target.value }) }
 						/>
 
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={destination_iron}
+							value={ destination_iron }
 							placeholder="10000000"
-							onChange={(e) => this.setState({ destination_iron: e.target.value })}
+							onChange={ (e) => this.setState({ destination_iron: e.target.value }) }
 						/>
 
 						<input
-							class={resource_class}
+							class={ resource_class }
 							style="width: 150px;margin-right: 10px;"
 							type="text"
-							value={destination_crop}
+							value={ destination_crop }
 							placeholder="10000000"
-							onChange={(e) => this.setState({ destination_crop: e.target.value })}
+							onChange={ (e) => this.setState({ destination_crop: e.target.value }) }
 						/>
 
 					</div>
@@ -358,14 +358,14 @@ export default class TradeRoute extends Component {
 
 				<div className="columns">
 					<div className="column">
-						<button className="button is-radiusless is-success" onClick={this.submit} style='margin-right: 1rem'>
+						<button className="button is-radiusless is-success" onClick={ this.submit } style='margin-right: 1rem'>
 							submit
 						</button>
-						<button className="button is-radiusless" onClick={this.cancel} style='margin-right: 1rem'>
+						<button className="button is-radiusless" onClick={ this.cancel } style='margin-right: 1rem'>
 							cancel
 						</button>
 
-						<button className="button is-danger is-radiusless" onClick={this.delete}>
+						<button className="button is-danger is-radiusless" onClick={ this.delete }>
 							delete
 						</button>
 					</div>

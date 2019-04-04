@@ -2,6 +2,7 @@ import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
 import classNames from 'classnames';
 
+
 export default class Adventure extends Component {
 	state = {
 		name: 'auto adventure',

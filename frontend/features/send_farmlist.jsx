@@ -32,7 +32,7 @@ export default class SendFarmlist extends Component {
 	}
 
 	add_farmlist = async e => {
-		const { selected_farmlist, farmlists } = this.state;
+		const { selected_farmlist, village_name, farmlists } = this.state;
 
 		this.setState({
 			error_farmlist: !this.state.selected_farmlist
@@ -40,10 +40,14 @@ export default class SendFarmlist extends Component {
 
 		if (this.state.error_village || this.state.error_farmlist) return;
 
+		var farmlist = {
+			farmlist: selected_farmlist,
+			village_name: village_name
+		};
 		// farmlist already added
-		if (farmlists.indexOf(selected_farmlist) > -1) return;
+		if (farmlists.indexOf(farmlist) > -1) return;
 
-		farmlists.push(selected_farmlist);
+		farmlists.push(farmlist);
 
 		this.setState({ farmlists });
 	}
@@ -65,9 +69,10 @@ export default class SendFarmlist extends Component {
 
 		if (this.state.error_input_min || this.state.error_input_max || this.state.error_farmlists) return;
 
-		const { ident, uuid, farmlists, village_name, losses_farmlist, interval_min, interval_max } = this.state;
-		this.props.submit({ ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max });
+		const { ident, uuid, farmlists, losses_farmlist, interval_min, interval_max } = this.state;
+		this.props.submit({ ident, uuid, farmlists, losses_farmlist, interval_min, interval_max });
 	}
+
 
 	delete = e => {
 		const { ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max } = this.state;
@@ -105,8 +110,12 @@ export default class SendFarmlist extends Component {
 			'is-danger': this.state.error_farmlist
 		});
 
-		const villages = all_villages.map(village => <option value={village.data.name}>{village.data.name}</option>);
-		const farmlist_opt = all_farmlists.map(farmlist => <option value={farmlist.data.listName}>{farmlist.data.listName}</option>);
+		const farmlist_losses_select_class = classNames({
+			select: true,
+		});
+
+		const villages = all_villages.map(village => <option value={ village.data.name }>{village.data.name}</option>);
+		const farmlist_opt = all_farmlists.map(farmlist => <option value={ farmlist.data.listName }>{farmlist.data.listName}</option>);
 
 		return (
 			<div>
@@ -114,40 +123,51 @@ export default class SendFarmlist extends Component {
 					<div className="column">
 						<div>
 							<label class="label">select farmlists</label>
-							<div class={farmlist_select_class}>
+							<div class={ farmlist_select_class }>
 								<select
 									class="is-radiusless"
-									value={selected_farmlist}
-									onChange={(e) => this.setState({ selected_farmlist: e.target.value })}
+									value={ selected_farmlist }
+									onChange={ (e) => this.setState({ selected_farmlist: e.target.value }) }
 								>
 									{farmlist_opt}
 								</select>
 							</div>
 
-							<button className="button is-radiusless is-success" onClick={this.add_farmlist} style='margin-right: 1rem'>
+							<button className="button is-radiusless is-success" onClick={ this.add_farmlist } style='margin-right: 1rem'>
 								add farmlist
 							</button>
 
 							<label style='margin-top: 2rem' class="label">interval in seconds (min / max)</label>
 							<input
-								class={input_class_min}
+								class={ input_class_min }
 								style="width: 150px;margin-right: 10px;"
 								type="text"
-								value={interval_min}
+								value={ interval_min }
 								placeholder="min"
-								onChange={(e) => this.setState({ interval_min: e.target.value })}
+								onChange={ (e) => this.setState({ interval_min: e.target.value }) }
 							/>
 							<input
-								class={input_class_max}
+								class={ input_class_max }
 								style="width: 150px;"
 								type="text"
-								value={interval_max}
+								value={ interval_max }
 								placeholder="max"
-								onChange={(e) => this.setState({ interval_max: e.target.value })}
+								onChange={ (e) => this.setState({ interval_max: e.target.value }) }
 							/>
 							<p class="help">provide a number</p>
 						</div>
-
+						<div>
+							<label class="label">send farms with losses to</label>
+							<div class={ farmlist_losses_select_class }>
+								<select
+									class="is-radiusless"
+									value={ losses_farmlist }
+									onChange={ (e) => this.setState({ losses_farmlist: e.target.value }) }
+								>
+									{farmlist_opt}
+								</select>
+							</div>
+						</div>
 					</div>
 
 					<div className="column">
@@ -155,11 +175,11 @@ export default class SendFarmlist extends Component {
 						<div class="field">
 							<label class="label">select village</label>
 							<div class="control">
-								<div class={village_select_class}>
+								<div class={ village_select_class }>
 									<select
 										class="is-radiusless"
-										value={village_name}
-										onChange={e => this.setState({ village_name: e.target.value })}
+										value={ village_name }
+										onChange={ e => this.setState({ village_name: e.target.value }) }
 									>
 										{villages}
 									</select>
@@ -167,36 +187,22 @@ export default class SendFarmlist extends Component {
 							</div>
 						</div>
 
-						<div class='field' style='margin-top: 2rem'>
-							<label class="label">send farms with losses to</label>
-							<div className="control">
-								<div class='select'>
-									<select
-										class="is-radiusless"
-										value={losses_farmlist}
-										onChange={(e) => this.setState({ losses_farmlist: e.target.value })}
-									>
-										{farmlist_opt}
-									</select>
-								</div>
-							</div>
-						</div>
 					</div>
 
 				</div>
 
-				<FarmlistTable content={farmlists} clicked={this.remove_farmlist} />
+				<FarmlistTable content={ farmlists } clicked={ this.remove_farmlist } />
 
 				<div style="margin-top: 2rem" className="columns">
 					<div className="column">
-						<button className="button is-radiusless is-success" onClick={this.submit} style='margin-right: 1rem'>
+						<button className="button is-radiusless is-success" onClick={ this.submit } style='margin-right: 1rem'>
 							submit
 						</button>
-						<button className="button is-radiusless" onClick={this.cancel} style='margin-right: 1rem'>
+						<button className="button is-radiusless" onClick={ this.cancel } style='margin-right: 1rem'>
 							cancel
 						</button>
 
-						<button className="button is-danger is-radiusless" onClick={this.delete}>
+						<button className="button is-danger is-radiusless" onClick={ this.delete }>
 							delete
 						</button>
 					</div>
