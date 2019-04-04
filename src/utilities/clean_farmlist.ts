@@ -2,7 +2,7 @@ import { sleep } from '../util';
 import api from '../api';
 
 export async function clean_farmlist(farmlist_id: number, losses_farmlist_id: number): Promise<void> {
-	const params = [`Collection:FarmListEntry:${farmlist_id}`];
+	const params = [ `Collection:FarmListEntry:${farmlist_id}` ];
 	const listResponse = await api.get_cache(params);
 
 	if (listResponse.length < 1) return;
