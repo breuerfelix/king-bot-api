@@ -156,18 +156,6 @@ export default class SendFarmlist extends Component {
 							/>
 							<p class="help">provide a number</p>
 						</div>
-						<div>
-							<label class="label">send farms with losses to</label>
-							<div class={ farmlist_losses_select_class }>
-								<select
-									class="is-radiusless"
-									value={ losses_farmlist }
-									onChange={ (e) => this.setState({ losses_farmlist: e.target.value }) }
-								>
-									{farmlist_opt}
-								</select>
-							</div>
-						</div>
 					</div>
 
 					<div className="column">
@@ -184,6 +172,19 @@ export default class SendFarmlist extends Component {
 										{villages}
 									</select>
 								</div>
+							</div>
+						</div>
+
+						<div style='margin-top: 2rem;'>
+							<label class="label">send farms with losses to</label>
+							<div class={ farmlist_losses_select_class }>
+								<select
+									class="is-radiusless"
+									value={ losses_farmlist }
+									onChange={ (e) => this.setState({ losses_farmlist: e.target.value }) }
+								>
+									{farmlist_opt}
+								</select>
 							</div>
 						</div>
 

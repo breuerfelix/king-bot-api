@@ -26,7 +26,8 @@ class server {
 		building_queue,
 		raise_fields,
 		trade_route,
-		timed_attack];
+		timed_attack
+	];
 
 	constructor() {
 		this.app = express();
