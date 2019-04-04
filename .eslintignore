@@ -6,3 +6,7 @@ public
 README.md
 LICENSE
 Dockerfile
+dist
+img
+king-bot-api*
+electron-dist
