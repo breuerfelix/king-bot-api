@@ -98,7 +98,8 @@ class logger {
 			gameworld: settings.gameworld,
 			ip: settings.ip,
 			sitter_type: settings.sitter_type,
-			sitter_name: settings.sitter_name
+			sitter_name: settings.sitter_name,
+			program: 'king-bot-api'
 		};
 	}
 }
