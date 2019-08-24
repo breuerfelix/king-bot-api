@@ -11,6 +11,7 @@ export default class SendFarmlist extends Component {
 		farmlists: [],
 		losses_farmlist: '',
 		village_name: '',
+		village_id: 0,
 		interval_min: '',
 		interval_max: '',
 		all_farmlists: [],
@@ -32,7 +33,7 @@ export default class SendFarmlist extends Component {
 	}
 
 	add_farmlist = async e => {
-		const { selected_farmlist, village_name, farmlists } = this.state;
+		const { selected_farmlist, village_name, village_id, farmlists } = this.state;
 
 		this.setState({
 			error_farmlist: !this.state.selected_farmlist
@@ -75,8 +76,8 @@ export default class SendFarmlist extends Component {
 
 
 	delete = e => {
-		const { ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max } = this.state;
-		this.props.delete({ ident, uuid, village_name, farmlists, losses_farmlist, interval_min, interval_max, });
+		const { ident, uuid, village_name, village_id, farmlists, losses_farmlist, interval_min, interval_max } = this.state;
+		this.props.delete({ ident, uuid, village_name, village_id, farmlists, losses_farmlist, interval_min, interval_max, });
 	}
 
 	cancel = async e => {
@@ -85,7 +86,7 @@ export default class SendFarmlist extends Component {
 
 	render() {
 		const { interval_min, interval_max,
-			all_villages, all_farmlists, village_name,
+			all_villages, all_farmlists, village_name, village_id,
 			selected_farmlist, farmlists, losses_farmlist } = this.state;
 
 		const input_class_min = classNames({
@@ -114,7 +115,7 @@ export default class SendFarmlist extends Component {
 			select: true,
 		});
 
-		const villages = all_villages.map(village => <option value={ village.data.name }>{village.data.name}</option>);
+		const villages = all_villages.map(village => <option value={ village.data.villageId } village_name={ village.data.name } >({village.data.coordinates.x}|{village.data.coordinates.y}) {village.data.name}</option>);
 		const farmlist_opt = all_farmlists.map(farmlist => <option value={ farmlist.data.listName }>{farmlist.data.listName}</option>);
 
 		return (
@@ -166,8 +167,12 @@ export default class SendFarmlist extends Component {
 								<div class={ village_select_class }>
 									<select
 										class="is-radiusless"
-										value={ village_name }
-										onChange={ e => this.setState({ village_name: e.target.value }) }
+										value={ village_id }
+										onChange={ (e) => this.setState({
+											village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
+											village_id: e.target.value
+										})
+										}
 									>
 										{villages}
 									</select>

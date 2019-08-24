@@ -53,7 +53,7 @@ class kingbot {
 		await api.login(email, password, gameworld, sitter_type, sitter_name);
 	}
 
-	async scout(farmlist_name: string, village_name: string, amount: number = 1, mission: string = 'resources') {
+	async scout(farmlist_name: string, village_id: number, amount: number = 1, mission: string = 'resources') {
 		const params = [
 			village.own_villages_ident,
 			farming.farmlist_ident
@@ -61,11 +61,6 @@ class kingbot {
 
 		// fetch data
 		const response = await api.get_cache(params);
-
-		const vill: Ivillage = village.find(village_name, response);
-		if (!vill) return;
-
-		const village_id: number = vill.villageId;
 
 		const list_obj = farming.find(farmlist_name, response);
 		if (!list_obj) return;

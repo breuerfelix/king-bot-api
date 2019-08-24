@@ -87,11 +87,9 @@ class server {
 			}
 
 			if (ident == 'buildings') {
-				const { village_name } = req.query;
-				const village_data = await village.get_own();
-				const village_obj: Ivillage = village.find(village_name, village_data);
+				const { village_id } = req.query;
 
-				const queue_ident: string = village.building_collection_ident + village_obj.villageId;
+				const queue_ident: string = village.building_collection_ident + village_id;
 
 				const response: any[] = await api.get_cache([queue_ident]);
 
@@ -112,9 +110,9 @@ class server {
 			}
 
 			if (ident == 'village') {
-				const { village_name } = req.query;
+				const { village_id } = req.query;
 				const village_data = await village.get_own();
-				const village_obj: Ivillage = village.find(village_name, village_data);
+				const village_obj: Ivillage = village.find(village_id, village_data);
 
 				res.send(village_obj);
 
@@ -161,9 +159,9 @@ class server {
 		});
 
 		this.app.post('/api/easyscout', (req: any, res: any) => {
-			const { village_name, list_name, amount, mission } = req.body;
+			const { village_id, list_name, amount, mission } = req.body;
 
-			kingbot.scout(list_name, village_name, amount, mission);
+			kingbot.scout(list_name, village_id, amount, mission);
 
 			res.send('success');
 		});
@@ -187,6 +185,7 @@ class server {
 					min_village_pop,
 					max_village_pop,
 					village_name,
+					village_id,
 					inactive_for,
 					min_distance,
 					max_distance
@@ -195,7 +194,7 @@ class server {
 				const response = await inactive_finder.get_new_farms(
 					min_player_pop, max_player_pop,
 					min_village_pop, max_village_pop,
-					village_name, inactive_for,
+					village_name, village_id, inactive_for,
 					min_distance, max_distance
 				);
 

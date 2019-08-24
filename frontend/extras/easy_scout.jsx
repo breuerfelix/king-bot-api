@@ -14,6 +14,7 @@ export default class EasyScout extends Component {
 		farmlists: [],
 		selected_farmlist: '',
 		village_name: '',
+		village_id: 0,
 		amount: '1',
 		mission: 'resources',
 		all_farmlists: [],
@@ -26,7 +27,7 @@ export default class EasyScout extends Component {
 	description = 'send 1 scout to every farm in the given farmlist';
 
 	componentDidMount() {
-		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data, village_name: res.data[0].data.name }));
+		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data, village_id: res.data[0].data.villageId, village_name: res.data[0].data.name }));
 		axios.get('/api/data?ident=farmlists').then(res => this.setState({ all_farmlists: res.data }));
 	}
 
@@ -40,7 +41,7 @@ export default class EasyScout extends Component {
 	submit = async e => {
 		this.setState({
 			error_farmlist: (this.state.selected_farmlist == ''),
-			error_village: (this.state.village_name == ''),
+			error_village: (this.state.village_id == 0),
 			error_amount: (this.state.amount == '')
 		});
 
@@ -48,7 +49,7 @@ export default class EasyScout extends Component {
 
 		const payload = {
 			list_name: this.state.selected_farmlist,
-			village_name: this.state.village_name,
+			village_id: this.state.village_id,
 			amount: this.state.amount,
 			mission: this.state.mission
 		};
@@ -62,7 +63,7 @@ export default class EasyScout extends Component {
 	}
 
 	render() {
-		const { name, all_villages, all_farmlists, village_name, selected_farmlist, amount, mission } = this.state;
+		const { name, all_villages, all_farmlists, village_name, village_id, selected_farmlist, amount, mission } = this.state;
 
 		const village_select_class = classNames({
 			select: true,
@@ -74,7 +75,7 @@ export default class EasyScout extends Component {
 			'is-danger': this.state.error_farmlist
 		});
 
-		const villages = all_villages.map(village => <option value={ village.data.name }>{ village.data.name }</option>);
+		const villages = all_villages.map(village => <option value={ village.data.villageId } village_name={ village.data.name } >({village.data.coordinates.x}|{village.data.coordinates.y}) {village.data.name}</option>);
 		const farmlist_opt = all_farmlists.map(farmlist => <option value={ farmlist.data.listName }>{ farmlist.data.listName }</option>);
 
 		return (
@@ -126,8 +127,12 @@ export default class EasyScout extends Component {
 								<div class={ village_select_class }>
 									<select
 										class='is-radiusless'
-										value={ village_name }
-										onChange={ (e) => this.setState({ village_name: e.target.value }) }
+										value={ village_id }
+										onChange={ (e) => this.setState({
+											village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
+											village_id: e.target.value
+										})
+										}
 									>
 										{ villages }
 									</select>

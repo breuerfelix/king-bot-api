@@ -9,6 +9,7 @@ export default class RaiseFields extends Component {
 		name: 'raise fields',
 		all_villages: [],
 		village_name: '',
+		village_id: 0,
 		error_village: false,
 		crop: 0,
 		wood: 0,
@@ -25,17 +26,17 @@ export default class RaiseFields extends Component {
 	}
 
 	submit = async (e) => {
-		this.setState({ error_village: (this.state.village_name == '') });
+		this.setState({ error_village: (this.state.village_id == 0) });
 
 		if (this.state.error_village) return;
 
-		const { ident, uuid, village_name, crop, wood, clay, iron } = this.state;
-		this.props.submit({ ident, uuid, village_name, crop, wood, clay, iron });
+		const { ident, uuid, village_name, village_id, crop, wood, clay, iron } = this.state;
+		this.props.submit({ ident, uuid, village_name, village_id, crop, wood, clay, iron });
 	}
 
 	delete = async e => {
-		const { ident, uuid, village_name, crop, wood, clay, iron } = this.state;
-		this.props.delete({ ident, uuid, village_name, crop, wood, clay, iron });
+		const { ident, uuid, village_name, village_id, crop, wood, clay, iron } = this.state;
+		this.props.delete({ ident, uuid, village_name, village_id, crop, wood, clay, iron });
 	}
 
 	cancel = async e => {
@@ -43,7 +44,7 @@ export default class RaiseFields extends Component {
 	}
 
 	render() {
-		const { all_villages, village_name, error_village, crop, iron, wood, clay } = this.state;
+		const { all_villages, village_name, village_id, error_village, crop, iron, wood, clay } = this.state;
 
 		const village_select_class = classNames({
 			select: true,
@@ -51,7 +52,7 @@ export default class RaiseFields extends Component {
 			'is-danger': error_village
 		});
 
-		const villages = all_villages.map(village => <option value={ village.data.name }>{ village.data.name }</option>);
+		const villages = all_villages.map(village => <option value={ village.data.villageId } village_name={ village.data.name } >({village.data.coordinates.x}|{village.data.coordinates.y}) {village.data.name}</option>);
 
 		return (
 			<div>
@@ -85,8 +86,12 @@ export default class RaiseFields extends Component {
 								<div class={ village_select_class }>
 									<select
 										class="is-radiusless"
-										value={ village_name }
-										onChange={ (e) => this.setState({ village_name: e.target.value }) }
+										value={ village_id }
+										onChange={ (e) => this.setState({
+											village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
+											village_id: e.target.value
+										})
+										}
 									>
 										{ villages }
 									</select>

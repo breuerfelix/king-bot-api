@@ -8,6 +8,7 @@ export default class SendTimedAttack extends Component {
 		name: 'send timed attack',
 		own_tribe: 0,
 		village_name: '',
+		village_id: '',
 		wait_time: '',
 		all_villages: [],
 		target_x: '',
@@ -51,27 +52,24 @@ export default class SendTimedAttack extends Component {
 	setTarget = async e => {
 		this.setState({
 			error_wait_time: (this.state.wait_time == ''),
-			error_village: (this.state.village_name == '')
+			error_village: (this.state.village_id == 0)
 		});
 
 		if (this.state.error_wait_time || this.state.error_village) {
 			return;
 		}
 
-		const { village_name, target_x, target_y, target } = this.state;
+		const { village_name, village_id, target_x, target_y, target } = this.state;
 		var x = Number(target_x);
 		var y = Number(target_y);
 		const villageID = 536887296 + x + (y * 32768);
-		const string = `/api/data?ident=village&village_name=${village_name}`;
-		console.log(string);
-		var response = await axios.get(`/api/data?ident=village&village_name=${village_name}`);
-		const sourceVillageID = response.data.villageId;
+		const sourceVillageID = village_id;
 		var params = {
 			sourceVillage: sourceVillageID,
 			destinationVillage: villageID
 		};
 
-		response = await axios.post('/api/checkTarget', params);
+		var response = await axios.post('/api/checkTarget', params);
 		const check_target_data = response.data;
 
 		params = [
@@ -80,14 +78,14 @@ export default class SendTimedAttack extends Component {
 
 		response = await axios.post('/api/findvillage', params);
 
-		const village = response.data[0].data;
-		if (!village) alert('unable to find village!');
+		const destinationVillage = response.data[0].data;
+		if (!destinationVillage) alert('unable to find destination village!');
 
-		const target_villageId = village.villageId;
-		const target_village_name = village.name;
+		const target_villageId = destinationVillage.villageId;
+		const target_village_name = destinationVillage.name;
 		const target_distance = check_target_data.distance;
-		const target_playerId = village.playerId;
-		const target_tribeId = village.tribeId;
+		const target_playerId = destinationVillage.playerId;
+		const target_tribeId = destinationVillage.tribeId;
 		const target_player_name = check_target_data.destPlayerName;
 		if (target_player_name == null || target_village_name == null) alert('Something went wrong. Is your target banned?');
 		this.setState({ target_villageId, target_village_name, target_x, target_y, target_playerId, target_player_name, target_tribeId, target_distance });
@@ -96,10 +94,10 @@ export default class SendTimedAttack extends Component {
 	submit = async e => {
 		this.setState({
 			error_wait_time: (this.state.wait_time == ''),
-			error_village: (this.state.village_name == '')
+			error_village: (this.state.village_id == 0)
 		});
 
-		if (this.state.error_wait_time || this.state.error_village) return;
+		if (/*this.state.error_wait_time || */this.state.error_village) return;
 
 		this.props.submit({ ...this.state });
 	}
@@ -113,7 +111,7 @@ export default class SendTimedAttack extends Component {
 	}
 
 	render() {
-		var { wait_time, all_villages, village_name, target_x, target_y, target_player_name, target_village_name, target_tribeId, target_distance, own_tribe, troops,
+		var { wait_time, all_villages, village_name, village_id, target_x, target_y, target_player_name, target_village_name, target_tribeId, target_distance, own_tribe, troops,
 			t1,
 			t2,
 			t3,
@@ -176,7 +174,7 @@ export default class SendTimedAttack extends Component {
 			textAlign: 'center',
 		};
 
-		const villages = all_villages.map(village => <option value={ village.data.name }>{village.data.name}</option>);
+		const villages = all_villages.map(village => <option value={ village.data.villageId } village_name={ village.data.name } >({village.data.coordinates.x}|{village.data.coordinates.y}) {village.data.name}</option>);
 
 		return (
 			<div>
@@ -228,8 +226,12 @@ export default class SendTimedAttack extends Component {
 								<div class={ village_select_class }>
 									<select
 										class="is-radiusless"
-										value={ village_name }
-										onChange={ (e) => this.setState({ village_name: e.target.value }) }
+										value={ village_id }
+										onChange={ (e) => this.setState({
+											village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
+											village_id: e.target.value
+										})
+										}
 									>
 										{villages}
 									</select>

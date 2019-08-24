@@ -9,6 +9,8 @@ export default class TradeRoute extends Component {
 		selected_farmlist: '',
 		source_village_name: '',
 		destination_village_name: '',
+		source_village_id: 0,
+		destination_village_id: 0,
 		interval_min: '',
 		interval_max: '',
 		send_wood: '',
@@ -26,8 +28,8 @@ export default class TradeRoute extends Component {
 		all_villages: [],
 		error_input_min: false,
 		error_input_max: false,
-		error_source_village_name: false,
-		error_destination_village: false
+		error_source_village_id: false,
+		error_destination_village_id: false
 	}
 
 	componentWillMount() {
@@ -43,20 +45,22 @@ export default class TradeRoute extends Component {
 		this.setState({
 			error_input_min: (this.state.interval_min == ''),
 			error_input_max: (this.state.interval_max == ''),
-			error_source_village_name: (this.state.source_village_name == ''),
-			error_destination_village_name: (this.state.destination_village_name == '')
+			error_source_village_id: (this.state.source_village_id == 0),
+			error_destination_village_id: (this.state.destination_village_id == 0)
 		});
 
 		if (this.state.error_input_min ||
 			this.state.error_input_max ||
-			this.state.error_source_village_name ||
-			this.state.error_destination_village_name) return;
+			this.state.error_source_village_id ||
+			this.state.error_destination_village_id) return;
 
 		const {
 			ident,
 			uuid,
 			source_village_name,
 			destination_village_name,
+			source_village_id,
+			destination_village_id,
 			interval_min,
 			interval_max,
 			send_wood,
@@ -78,6 +82,8 @@ export default class TradeRoute extends Component {
 			uuid,
 			source_village_name,
 			destination_village_name,
+			source_village_id,
+			destination_village_id,
 			interval_min,
 			interval_max,
 			send_wood,
@@ -101,6 +107,8 @@ export default class TradeRoute extends Component {
 			uuid,
 			source_village_name,
 			destination_village_name,
+			source_village_id,
+			destination_village_id,
 			interval_min,
 			interval_max,
 			send_wood,
@@ -122,6 +130,8 @@ export default class TradeRoute extends Component {
 			uuid,
 			source_village_name,
 			destination_village_name,
+			source_village_id,
+			destination_village_id,
 			interval_min,
 			interval_max,
 			send_wood,
@@ -145,6 +155,8 @@ export default class TradeRoute extends Component {
 
 	render() {
 		const { interval_min, interval_max, all_villages, source_village_name, destination_village_name,
+			source_village_id,
+			destination_village_id,
 			send_wood,
 			send_clay,
 			send_iron,
@@ -172,12 +184,12 @@ export default class TradeRoute extends Component {
 
 		const source_village_select_class = classNames({
 			select: true,
-			'is-danger': this.state.error_source_village_name
+			'is-danger': this.state.error_source_village_id
 		});
 
 		const destination_village_select_class = classNames({
 			select: true,
-			'is-danger': this.state.error_destination_village_name
+			'is-danger': this.state.error_destination_village_id
 		});
 
 		const resource_class = classNames({
@@ -185,7 +197,7 @@ export default class TradeRoute extends Component {
 			'is-radiusless': true,
 		});
 
-		const villages = all_villages.map(village => <option value={ village.data.name }>{village.data.name}</option>);
+		const villages = all_villages.map(village => <option value={ village.data.villageId } village_name={ village.data.name } >({village.data.coordinates.x}|{village.data.coordinates.y}) {village.data.name}</option>);
 		return (
 			<div>
 				<div className="columns">
@@ -198,8 +210,12 @@ export default class TradeRoute extends Component {
 								<div class={ source_village_select_class }>
 									<select
 										class="is-radiusless"
-										value={ source_village_name }
-										onChange={ (e) => this.setState({ source_village_name: e.target.value }) }
+										value={ source_village_id }
+										onChange={ (e) => this.setState({
+											source_village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
+											source_village_id: e.target.value
+										})
+										}
 									>
 										{villages}
 									</select>
@@ -213,8 +229,12 @@ export default class TradeRoute extends Component {
 								<div class={ destination_village_select_class }>
 									<select
 										class="is-radiusless"
-										value={ destination_village_name }
-										onChange={ (e) => this.setState({ destination_village_name: e.target.value }) }
+										value={ destination_village_id }
+										onChange={ (e) => this.setState({
+											destination_village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
+											destination_village_id: e.target.value
+										})
+										}
 									>
 										{villages}
 									</select>

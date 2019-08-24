@@ -10,13 +10,13 @@ class village {
 	building_ident: string = 'Building:';
 	building_queue_ident: string = 'BuildingQueue:';
 
-	find(name: string, data: any): Ivillage {
+	find(id: number, data: any): Ivillage {
 		const villages = find_state_data(this.own_villages_ident, data);
 
-		const village = villages.find((x: any) => x.data.name.toLowerCase() == name.toLowerCase());
+		const village = villages.find((x: any) => x.data.villageId == id);
 
 		if (!village) {
-			log(`couldn't find village ${name} !`);
+			log(`couldn't find village with ID: ${id} !`);
 			return null;
 		}
 

@@ -14,6 +14,7 @@ export default class InactiveFinder extends Component {
 		name: 'inactive finder',
 		selected_farmlist: '',
 		village_name: '',
+		village_id: 0,
 		all_farmlists: [],
 		all_villages: [],
 		error_village: false,
@@ -35,7 +36,7 @@ export default class InactiveFinder extends Component {
 
 	componentDidMount() {
 		axios.get('/api/data?ident=villages').then(res => {
-			this.setState({ all_villages: res.data, village_name: res.data[0].data.name });
+			this.setState({ all_villages: res.data, village_id: res.data[0].villageId, village_name: res.data[0].data.name });
 		});
 
 		axios.get('/api/data?ident=farmlists').then(res => this.setState({ all_farmlists: res.data }));
@@ -76,7 +77,7 @@ export default class InactiveFinder extends Component {
 		if (this.state.loading) return;
 
 		this.setState({
-			error_village: (this.state.village_name == '')
+			error_village: (this.state.village_id == 0)
 		});
 
 		if (this.state.error_village) return;
@@ -85,6 +86,7 @@ export default class InactiveFinder extends Component {
 
 		const {
 			village_name,
+			village_id,
 			min_player_pop,
 			max_player_pop,
 			min_village_pop,
@@ -97,6 +99,7 @@ export default class InactiveFinder extends Component {
 
 		const payload_data = {
 			village_name,
+			village_id,
 			min_distance,
 			max_distance,
 			min_player_pop,
@@ -127,7 +130,7 @@ export default class InactiveFinder extends Component {
 	}
 
 	render({}, { name, inactives, message, min_player_pop, max_player_pop, min_village_pop, max_village_pop, min_distance, max_distance, inactive_for, loading }) {
-		const { all_villages, all_farmlists, village_name, selected_farmlist } = this.state;
+		const { all_villages, all_farmlists, village_name, village_id, selected_farmlist } = this.state;
 
 		const village_select_class = classNames({
 			select: true,
@@ -146,7 +149,7 @@ export default class InactiveFinder extends Component {
 			'is-loading': loading
 		});
 
-		const villages = all_villages.map(village => <option value={ village.data.name }>{ village.data.name }</option>);
+		const villages = all_villages.map(village => <option value={ village.data.villageId } village_name={ village.data.name } >({village.data.coordinates.x}|{village.data.coordinates.y}) {village.data.name}</option>);
 		const farmlist_opt = all_farmlists.map(farmlist => <option value={ farmlist.data.listName }>{ farmlist.data.listName }</option>);
 
 		return (
@@ -163,8 +166,12 @@ export default class InactiveFinder extends Component {
 								<div class={ village_select_class }>
 									<select
 										class="is-radiusless"
-										value={ village_name }
-										onChange={ (e) => this.setState({ village_name: e.target.value }) }
+										value={ village_id }
+										onChange={ (e) => this.setState({
+											village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
+											village_id: e.target.value
+										})
+										}
 									>
 										{ villages }
 									</select>

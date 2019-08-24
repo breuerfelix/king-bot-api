@@ -8,6 +8,7 @@ export default class BuildingQueue extends Component {
 	state = {
 		name: 'building queue',
 		village_name: '',
+		village_id: 0,
 		all_villages: [],
 		queue: [],
 		error_village: false,
@@ -23,7 +24,7 @@ export default class BuildingQueue extends Component {
 	}
 
 	componentDidMount() {
-		if (this.state.village_name) this.village_changes({ target: { value: this.state.village_name } });
+		if (this.state.village_id) this.village_changes({ target: { value: this.state.village_id } });
 
 		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data }));
 		axios.get('/api/data?ident=buildingdata').then(res => this.setState({ buildings_dict: res.data }));
@@ -31,18 +32,18 @@ export default class BuildingQueue extends Component {
 
 	submit = async e => {
 		this.setState({
-			error_village: (this.state.village_name == '')
+			error_village: (this.state.village_id == 0)
 		});
 
 		if (this.state.error_village) return;
 
-		const { ident, uuid, village_name, queue } = this.state;
-		this.props.submit({ ident, uuid, village_name, queue });
+		const { ident, uuid, village_name, village_id, queue } = this.state;
+		this.props.submit({ ident, uuid, village_name, village_id, queue });
 	}
 
 	delete = async e => {
-		const { ident, uuid, village_name, queue } = this.state;
-		this.props.delete({ ident, uuid, village_name, queue });
+		const { ident, uuid, village_name, village_id, queue } = this.state;
+		this.props.delete({ ident, uuid, village_name, village_id, queue });
 	}
 
 	cancel = async e => {
@@ -52,9 +53,11 @@ export default class BuildingQueue extends Component {
 	village_changes = async e => {
 		if (!e.target.value) return;
 
-		this.setState({ village_name: e.target.value });
-
-		let response = await axios.get(`/api/data?ident=buildings&village_name=${e.target.value}`);
+		this.setState({
+			village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
+			village_id: e.target.value
+		});
+		let response = await axios.get(`/api/data?ident=buildings&village_id=${this.state.village_id}`);
 		let res = [];
 		let bd = [];
 
@@ -120,7 +123,7 @@ export default class BuildingQueue extends Component {
 		this.setState({ queue: [ ...queues ] });
 	}
 
-	render({}, { name, all_villages, village_name, queue, buildings, resources, buildings_dict }) {
+	render({}, { name, all_villages, village_name, village_id, queue, buildings, resources, buildings_dict }) {
 		const village_select_class = classNames({
 			select: true,
 			'is-danger': this.state.error_village
@@ -199,7 +202,7 @@ export default class BuildingQueue extends Component {
 		}
 
 		const villages = all_villages.map(village =>
-			<option value={ village.data.name }>{ village.data.name }</option>
+			<option value={ village.data.villageId } village_name={ village.data.name } >({village.data.coordinates.x}|{village.data.coordinates.y}) {village.data.name}</option>
 		);
 
 
@@ -213,7 +216,7 @@ export default class BuildingQueue extends Component {
 								<div class={ village_select_class }>
 									<select
 										class='is-radiusless'
-										value={ village_name }
+										value={ village_id }
 										onChange={ this.village_changes }
 									>
 										{ villages }

@@ -36,6 +36,7 @@ class inactive_finder {
 		min_village_pop: string,
 		max_village_pop: string,
 		village_name: string,
+		village_id: number,
 		inactive_for: string,
 		min_distance: string,
 		max_distance: string
@@ -44,12 +45,12 @@ class inactive_finder {
 		let gameworld: string = settings.gameworld;
 
 		const village_data = await village.get_own();
-		const found_village: Ivillage = village.find(village_name, village_data);
+		const found_village: Ivillage = village.find(village_id, village_data);
 
 		if (!found_village) {
 			return {
 				error: true,
-				message: `village: ${ village_name } not found.`,
+				message: `village ID: ${ village_id } not found.`,
 				data: null
 			};
 		}
