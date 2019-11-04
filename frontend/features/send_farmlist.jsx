@@ -41,9 +41,10 @@ export default class SendFarmlist extends Component {
 
 		if (this.state.error_village || this.state.error_farmlist) return;
 
-		var farmlist = {
+		const farmlist = {
 			farmlist: selected_farmlist,
-			village_name: village_name
+			village_name,
+			village_id,
 		};
 		// farmlist already added
 		if (farmlists.indexOf(farmlist) > -1) return;
@@ -170,9 +171,8 @@ export default class SendFarmlist extends Component {
 										value={ village_id }
 										onChange={ (e) => this.setState({
 											village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
-											village_id: e.target.value
-										})
-										}
+											village_id: e.target.value,
+										}) }
 									>
 										{villages}
 									</select>
