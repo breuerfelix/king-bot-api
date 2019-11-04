@@ -1,13 +1,13 @@
 # ignore credentials
 assets/cred.txt
+assets/database.json
 dist/
 dev_main.js
 .DS_Store
 custom_main.js
 build/
-package-lock.json
 
-assets/database.json
+package-lock.json
 
 # Logs
 logs
