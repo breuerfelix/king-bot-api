@@ -35,7 +35,6 @@ class inactive_finder {
 		max_player_pop: string,
 		min_village_pop: string,
 		max_village_pop: string,
-		village_name: string,
 		village_id: number,
 		inactive_for: string,
 		min_distance: string,

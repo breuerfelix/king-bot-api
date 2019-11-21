@@ -85,7 +85,6 @@ export default class InactiveFinder extends Component {
 		this.setState({ loading: true, message: '', inactives: [] });
 
 		const {
-			village_name,
 			village_id,
 			min_player_pop,
 			max_player_pop,
@@ -98,7 +97,6 @@ export default class InactiveFinder extends Component {
 		} = this.state;
 
 		const payload_data = {
-			village_name,
 			village_id,
 			min_distance,
 			max_distance,

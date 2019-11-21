@@ -184,7 +184,6 @@ class server {
 					max_player_pop,
 					min_village_pop,
 					max_village_pop,
-					village_name,
 					village_id,
 					inactive_for,
 					min_distance,
@@ -194,7 +193,7 @@ class server {
 				const response = await inactive_finder.get_new_farms(
 					min_player_pop, max_player_pop,
 					min_village_pop, max_village_pop,
-					village_name, village_id, inactive_for,
+					village_id, inactive_for,
 					min_distance, max_distance
 				);
 
