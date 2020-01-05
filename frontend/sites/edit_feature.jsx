@@ -1,15 +1,10 @@
 import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
 import axios from 'axios';
-import Adventure from '../features/adventure';
-import SendFarmlist from '../features/send_farmlist';
-import BuildingQueue from '../features/building_queue';
-import RaiseFields from '../features/raise_fields';
-import TradeRoute from '../features/trade_route';
-import TimedAttack from '../features/timed_attack';
 import uniqid from 'uniqid';
-
 import { connect } from 'unistore/preact';
+
+import features from '../features';
 
 const actions = store => ({
 	add_notification(state, message, level) {
@@ -79,7 +74,6 @@ export default class EditFeature extends Component {
 		};
 
 		this.send_request(payload);
-
 	}
 
 	send_request = async payload => {
@@ -95,42 +89,27 @@ export default class EditFeature extends Component {
 		route('/');
 	}
 
-	render({ }, { ident, name, long_description }) {
-		let feat = null;
+	render({ add_notification }, { ident, name, long_description }) {
+		const featureProps = {
+			feature: this.state,
+			submit: this.submit,
+			delete: this.delete,
+		};
 
-		switch (ident) {
-			case 'hero':
-				feat = <Adventure feature={ this.state } submit={ this.submit } />;
-				break;
-			case 'farming':
-				feat = <SendFarmlist feature={ this.state } submit={ this.submit } delete={ this.delete } />;
-				break;
-			case 'queue':
-				feat = <BuildingQueue feature={ this.state } submit={ this.submit } delete={ this.delete } />;
-				break;
-			case 'raise_fields':
-				feat = <RaiseFields feature={ this.state } submit={ this.submit } delete={ this.delete } />;
-				break;
-			case 'trade_route':
-				feat = <TradeRoute feature={ this.state } submit={ this.submit } delete={ this.delete } />;
-				break;
-			case 'timed_attack':
-				feat = <TimedAttack feature={ this.state } submit={ this.submit } delete={ this.delete } />;
-				break;
-		}
+		const feature = h(features[ident].component, featureProps);
 
 		return (
 			<div>
-				<h1 className="subtitle is-4" style='margin-bottom: 2rem' align="center">{name}
-					{this.state.long_description &&
-						<a class="has-text-black" onClick={ e => this.props.add_notification(this.state.long_description, 'info') }>
-							<span class="icon is-large">
-								<i class="fas fa-info"></i>
+				<h1 className='subtitle is-4' style='margin-bottom: 2rem' align='center'>{name}
+					{long_description &&
+						<a class='has-text-black' onClick={ e => add_notification(long_description, 'info') }>
+							<span class='icon is-large'>
+								<i class='fas fa-info'></i>
 							</span>
 						</a>
 					}
 				</h1>
-				{feat}
+				{feature}
 			</div>
 		);
 	}

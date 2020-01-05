@@ -1,5 +1,3 @@
-// import styles
-
 import { h, render, Component } from 'preact';
 
 import Router from 'preact-router';
@@ -23,10 +21,10 @@ class App extends Component {
 		return (
 			<div>
 				<NavBar />
-				<div className="columns is-centered">
-					<div className="column is-two-thirds">
+				<div className='columns is-centered'>
+					<div className='column is-two-thirds'>
 						<Notifications />
-						<div style='margin-top: 1rem'>
+						<div style={{ marginTop: '1rem' }}>
 							<Router>
 								<FeatureList default path='/' />
 								<Login path='/login' />
