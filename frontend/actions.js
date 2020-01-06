@@ -28,3 +28,4 @@ const handle_response = {
 };
 
 export { add_notification, handle_response };
+export default store => ({ ...add_notification, ...handle_response });

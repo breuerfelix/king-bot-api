@@ -7,18 +7,7 @@ import { connect } from 'unistore/preact';
 
 import features from './features';
 import lang, { storeKeys } from './language';
-
-const actions = store => ({
-	add_notification(state, message, level) {
-		const noti = {
-			id: uniqid.time(),
-			message,
-			level,
-		};
-
-		return { notifications: [...state.notifications, noti] };
-	}
-});
+import actions from './actions';
 
 @connect('notifications,' + storeKeys, actions)
 export default class NavBar extends Component {

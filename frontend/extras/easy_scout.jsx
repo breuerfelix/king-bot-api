@@ -3,12 +3,13 @@ import { route } from 'preact-router';
 import axios from 'axios';
 import classNames from 'classnames';
 import { connect } from 'unistore/preact';
-import { add_notification } from '../actions';
+
+import actions from '../actions';
 import InfoTitle from '../components/info_title';
 import Input from '../components/input';
 import { storeKeys } from '../language';
 
-@connect(storeKeys, add_notification)
+@connect(storeKeys, actions)
 export default class EasyScout extends Component {
 	state = {
 		farmlists: [],

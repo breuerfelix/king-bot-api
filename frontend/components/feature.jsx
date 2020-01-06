@@ -3,18 +3,7 @@ import { route } from 'preact-router';
 import classNames from 'classnames';
 import axios from 'axios';
 import { connect } from 'unistore/preact';
-
-const actions = store => ({
-	add_notification(state, message, level) {
-		const noti = {
-			id: uniqid.time(),
-			message,
-			level
-		};
-
-		return { notifications: [ ...state.notifications, noti ] };
-	}
-});
+import actions from '../actions';
 
 @connect('notifications', actions)
 export default class Feature extends Component {
