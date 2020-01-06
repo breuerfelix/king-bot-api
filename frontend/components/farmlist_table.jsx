@@ -1,66 +1,48 @@
-import { h, render, Component } from 'preact';
-import { route } from 'preact-router';
-import classNames from 'classnames';
+import { h } from 'preact';
+import { connect } from 'unistore/preact';
 
-export default class FarmlistTable extends Component {
-	render({ content, clicked }) {
-		const row_style = {
-			verticalAlign: 'middle',
-			textAlign: 'center'
-		};
+import { storeKeys } from '../language';
 
-		const list = content.map(item => <Farmlist content={ item } clicked={ clicked } />);
+const rowStyle = {
+	verticalAlign: 'middle',
+	textAlign: 'center',
+};
 
-		return (
-			<div>
-				<table className="table is-hoverable is-fullwidth">
-					<thead>
-						<tr>
-							<th style={ row_style }>farmlist</th>
-							<th style={ row_style }>village</th>
-							<th style={ row_style }>remove</th>
-						</tr>
-					</thead>
-					<tbody>
-						{list}
-					</tbody>
-				</table>
-			</div>
-		);
-	}
-}
+export default connect(storeKeys)(({ content, clicked }) => {
+	const list = content.map(item =>
+		<Farmlist content={ item } clicked={ clicked } />
+	);
 
-class Farmlist extends Component {
-	render({ content, clicked }) {
-		let { farmlist, village_name } = content;
+	return (
+		<div>
+			<table className='table is-hoverable is-fullwidth'>
+				<thead>
+					<tr>
+						<th style={ rowStyle }>{this.props.lang_table_farmlist}</th>
+						<th style={ rowStyle }>{this.props.lang_table_village}</th>
+						<th style={ rowStyle }>{this.props.lang_table_remove}</th>
+					</tr>
+				</thead>
+				<tbody>{list}</tbody>
+			</table>
+		</div>
+	);
+});
 
-		const row_style = {
-			verticalAlign: 'middle',
-			textAlign: 'center'
-		};
-
-		const icon = classNames({
-			'fas': true,
-			'fa-lg': true,
-			'fa-minus': true
-		});
-
-		return (
-			<tr>
-				<td style={ row_style }>
-					{farmlist}
-				</td>
-				<td style={ row_style }>
-					{village_name}
-				</td>
-				<td style={ row_style }>
-					<a class="has-text-black" onClick={ e => clicked(content) }>
-						<span class="icon is-medium">
-							<i class={ icon }></i>
-						</span>
-					</a>
-				</td>
-			</tr>
-		);
-	}
-}
+const Farmlist = ({ content: { farmlist, village_name }, clicked }) => (
+	<tr>
+		<td style={ rowStyle }>
+			{farmlist}
+		</td>
+		<td style={ rowStyle }>
+			{village_name}
+		</td>
+		<td style={ rowStyle }>
+			<a class='has-text-black' onClick={ () => clicked(content) }>
+				<span class='icon is-medium'>
+					<i className='fas fa-lg fa-minus'></i>
+				</span>
+			</a>
+		</td>
+	</tr>
+);

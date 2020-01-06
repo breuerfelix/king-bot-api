@@ -8,7 +8,7 @@ export default ({
 	<div style={{ margin: '1rem 0' }}>
 		<label class='label'>{label}</label>
 		<input
-			class='input is-radiusless'
+			className='input is-radiusless'
 			type='text'
 			style={{ width, marginRight: '10px' }}
 			placeholder={ placeholder1 }
@@ -16,7 +16,7 @@ export default ({
 			onChange={ onChange1 }
 		/>
 		<input
-			class='input is-radiusless'
+			className='input is-radiusless'
 			type='text'
 			style={{ width }}
 			placeholder={ placeholder2 }

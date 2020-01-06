@@ -32,6 +32,10 @@ const languages = {
 		lang_label_ressources: 'ressources',
 		lang_label_defence: 'defence',
 
+		lang_table_farmlist: 'farmlist',
+		lang_table_village: 'village',
+		lang_table_remove: 'remove',
+
 		lang_button_submit: 'submit',
 		lang_button_cancel: 'cancel',
 	},
