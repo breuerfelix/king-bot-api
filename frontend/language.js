@@ -39,6 +39,13 @@ const languages = {
 		lang_table_village: 'village',
 		lang_table_remove: 'remove',
 
+		lang_table_distance: 'distance',
+		lang_table_population: 'population',
+		lang_table_coordinates: 'coordinates',
+		lang_table_player: 'player',
+		lang_table_kingdom: 'kingdom',
+		lang_table_tribe: 'tribe',
+
 		lang_button_submit: 'submit',
 		lang_button_cancel: 'cancel',
 	},
