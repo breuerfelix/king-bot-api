@@ -48,6 +48,14 @@ const languages = {
 
 		lang_button_submit: 'submit',
 		lang_button_cancel: 'cancel',
+
+		lang_adventure_adventure_type: 'adventure type',
+		lang_adventure_short: 'short',
+		lang_adventure_long: 'long',
+		lang_adventure_min_health: 'minimum health',
+		lang_adventure_min: 'min',
+		lang_adventure_health: 'health',
+		lang_adventure_prov_number: 'provide a number',
 	},
 	de: {
 		lang_feature_farming: 'farmlisten schicken',
