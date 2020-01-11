@@ -90,6 +90,8 @@ export default class EditFeature extends Component {
 	}
 
 	render({ add_notification }, { ident, name, long_description }) {
+		if (!ident) return;
+
 		const featureProps = {
 			feature: this.state,
 			submit: this.submit,

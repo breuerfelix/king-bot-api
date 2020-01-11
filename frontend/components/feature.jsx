@@ -4,16 +4,22 @@ import classNames from 'classnames';
 import axios from 'axios';
 import { connect } from 'unistore/preact';
 import actions from '../actions';
+import lang, { storeKeys } from '../language';
 
-@connect('notifications', actions)
+const statusDict = {
+	'error': 'fa-exclamation',
+	'loading': 'fa-spinner fa-pulse',
+	'offline': 'fa-pause',
+	'online': 'fa-check',
+};
+
+const rowStyle = {
+	verticalAlign: 'middle',
+	textAlign: 'center',
+};
+
+@connect(`notifications,${storeKeys}`, actions)
 export default class Feature extends Component {
-	status_dict = {
-		'error': 'fa-exclamation',
-		'loading': 'fa-spinner fa-pulse',
-		'offline': 'fa-pause',
-		'online': 'fa-check'
-	}
-
 	state = {
 		ident: 'null',
 		name: 'feature_name',
@@ -35,20 +41,20 @@ export default class Feature extends Component {
 
 		this.setState({
 			status,
-			...props.feature
+			...props.feature,
 		});
 	}
 
 	// refresh feature status
-	update = async () => {
+	async update() {
 		const { uuid, ident } = this.state;
 
 		const payload = {
 			action: 'get',
 			feature: {
 				ident,
-				uuid
-			}
+				uuid,
+			},
 		};
 
 		const res = await axios.post('/api/feature', payload);
@@ -60,20 +66,18 @@ export default class Feature extends Component {
 			return;
 		}
 
-		this.setState({
-			...data
-		});
+		this.setState({ ...data });
 	}
 
-	toggle = async (e) => {
+	async toggle() {
 		const payload = {
 			action: this.state.run ? 'stop' : 'start',
-			feature: this.state
+			feature: this.state,
 		};
 
 		this.setState({
 			run: !this.state.run,
-			status: 'loading'
+			status: 'loading',
 		});
 
 		const res = await axios.post('/api/feature', payload);
@@ -84,7 +88,7 @@ export default class Feature extends Component {
 			this.props.add_notification(message, 'error');
 			this.setState({
 				status: 'error',
-				run: false
+				run: false,
 			});
 
 			return;
@@ -92,11 +96,11 @@ export default class Feature extends Component {
 
 		this.setState({
 			status: message,
-			run: (message == 'online')
+			run: (message == 'online'),
 		});
 	}
 
-	edit = (e) => {
+	edit() {
 		const { ident, uuid } = this.state;
 		route(`/edit_feature/${ ident }/${ uuid }`);
 	}
@@ -106,42 +110,39 @@ export default class Feature extends Component {
 			fas: true,
 			'fa-lg': true,
 			'fa-toggle-on': this.state.run,
-			'fa-toggle-off': !this.state.run
+			'fa-toggle-off': !this.state.run,
 		});
 
-		const row_style = {
-			verticalAlign: 'middle',
-			textAlign: 'center'
-		};
-
+		// TODO translate description
 		return (
-			<tr class="">
-				<td style={ row_style }>
-					{ this.state.name }
+			<tr>
+				<td style={ rowStyle }>
+					{this.props[`lang_feature_${this.state.ident}`]}
 				</td>
-				<td style={ row_style }>
-					{ this.state.description }
+				<td style={ rowStyle }>
+					{this.state.description}
 				</td>
-				<td style={ row_style }>
-					<span class="icon is-large">
-						<i class={ 'fas fa-lg ' + this.status_dict[this.state.status] }></i>
+				<td style={ rowStyle }>
+					<span class='icon is-large'>
+						<i class={ 'fas fa-lg ' + statusDict[this.state.status] }></i>
 					</span>
 				</td>
-				<td style={ row_style }>
-					<a class="has-text-black" onClick={ this.toggle }>
-						<span class="icon is-medium">
+				<td style={ rowStyle }>
+					<a class='has-text-black' onClick={ this.toggle.bind(this) }>
+						<span class='icon is-medium'>
 							<i class={ toggle_icon }></i>
 						</span>
 					</a>
 				</td>
-				<td style={ row_style }>
-					<a class="has-text-black" onClick={ this.edit }>
-						<span class="icon is-medium">
-							<i class="fas fa-lg fa-edit"></i>
+				<td style={ rowStyle }>
+					<a class='has-text-black' onClick={ this.edit.bind(this) }>
+						<span class='icon is-medium'>
+							<i class='fas fa-lg fa-edit'></i>
 						</span>
 					</a>
 				</td>
 			</tr>
+
 		);
 	}
 }

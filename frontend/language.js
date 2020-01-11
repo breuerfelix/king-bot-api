@@ -3,11 +3,6 @@ const languages = {
 		lang_navbar_king_bot_api: 'king-bot-api',
 		lang_navbar_home: 'home',
 		lang_navbar_add_feature: 'add feature',
-		lang_navbar_farming: 'send farmlists',
-		lang_navbar_queue: 'building queue',
-		lang_navbar_raise_fields: 'raise fields',
-		lang_navbar_trade_route: 'trade route',
-		lang_navbar_timed_attack: 'timed attack',
 		lang_navbar_extras: 'extras',
 		lang_navbar_easy_scout: 'easy scout',
 		lang_navbar_inactive_finder: 'inactive finder',
@@ -21,6 +16,14 @@ const languages = {
 		lang_navbar_releases: 'releases',
 		lang_navbar_felixbreuer: 'felixbreuer',
 		lang_navbar_donate: 'donate',
+
+		lang_feature_finish_earlier: 'instant finish',
+		lang_feature_hero: 'auto adventure',
+		lang_feature_farming: 'send farmlists',
+		lang_feature_queue: 'building queue',
+		lang_feature_raise_fields: 'raise fields',
+		lang_feature_trade_route: 'trade route',
+		lang_feature_timed_attack: 'timed attack',
 
 		lang_easy_scout_title: 'easy scout',
 		lang_easy_scout_description: 'send 1 scout to every farm in the given farmlist',
@@ -40,7 +43,8 @@ const languages = {
 		lang_button_cancel: 'cancel',
 	},
 	de: {
-		lang_navbar_farming: 'farmlisten schicken',
+		lang_feature_farming: 'farmlisten schicken',
+		lang_feature_finish_earlier: 'schnell beenden',
 	},
 };
 

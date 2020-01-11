@@ -61,7 +61,7 @@ export default class NavBar extends Component {
 				h(
 					'a',
 					{ className: 'navbar-item', onClick: () => this.get_new(feature) },
-					this.props['lang_navbar_' + feature],
+					this.props['lang_feature_' + feature],
 				)
 			);
 

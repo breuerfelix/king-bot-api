@@ -8,7 +8,8 @@ const rowStyle = {
 	textAlign: 'center',
 };
 
-export default connect(storeKeys)(({ content, clicked }) => {
+export default connect(storeKeys)(props => {
+	const { content, clicked } = props;
 	const list = content.map(item =>
 		<Farmlist content={ item } clicked={ clicked } />
 	);
@@ -18,9 +19,9 @@ export default connect(storeKeys)(({ content, clicked }) => {
 			<table className='table is-hoverable is-fullwidth'>
 				<thead>
 					<tr>
-						<th style={ rowStyle }>{this.props.lang_table_farmlist}</th>
-						<th style={ rowStyle }>{this.props.lang_table_village}</th>
-						<th style={ rowStyle }>{this.props.lang_table_remove}</th>
+						<th style={ rowStyle }>{props.lang_table_farmlist}</th>
+						<th style={ rowStyle }>{props.lang_table_village}</th>
+						<th style={ rowStyle }>{props.lang_table_remove}</th>
 					</tr>
 				</thead>
 				<tbody>{list}</tbody>
