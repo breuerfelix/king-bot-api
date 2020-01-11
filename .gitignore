@@ -9,6 +9,7 @@ public/
 electron-dist
 king-bot-api-*
 KingBotApi.dmg
+assets
 
 # Logs
 logs
