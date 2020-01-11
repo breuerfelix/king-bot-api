@@ -7,6 +7,6 @@ const adapter: AdapterSync = new FileSync(settings.assets_folder + settings.data
 
 const database = lowdb(adapter);
 
-database.defaults({ account: {}, hero: { options: {} }, farming: { options: [] } }).write();
+database.defaults({ account: {}, hero: { options: {} }, farming: { options: [] }, language: 'en' }).write();
 
 export default database;

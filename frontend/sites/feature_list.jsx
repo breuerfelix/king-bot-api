@@ -1,48 +1,47 @@
 import { h, render, Component } from 'preact';
+import axios from 'axios';
+import { connect } from 'unistore/preact';
 
 import Feature from '../components/feature';
+import { storeKeys } from '../language';
 
-import axios from 'axios';
+const rowStyle = {
+	verticalAlign: 'middle',
+	textAlign: 'center'
+};
 
+@connect(storeKeys)
 export default class FeatureList extends Component {
 	state = {
-		features: []
-	}
-
-	constructor(props) {
-		super(props);
+		features: [],
 	}
 
 	async componentDidMount() {
 		const res = await axios.get('/api/allfeatures');
-		this.setState({
-			features: res.data
-		});
+		this.setState({ features: res.data });
 	}
 
-	render() {
-		const row_style = {
-			verticalAlign: 'middle',
-			textAlign: 'center'
-		};
-
-		const features = this.state.features.map(feature => <Feature feature={ feature } />);
+	render(props, state) {
+		const features = state.features
+			.map(feature => <Feature feature={ feature } />);
 
 		return (
 			<div>
-				<h1 className="subtitle is-4" align="center">your features</h1>
-				<table className="table is-hoverable is-fullwidth">
+				<h1 className='subtitle is-4' align='center'>
+					{props.lang_home_features}
+				</h1>
+				<table className='table is-hoverable is-fullwidth'>
 					<thead>
 						<tr>
-							<th style={ row_style }>feature name</th>
-							<th style={ row_style }>description</th>
-							<th style={ row_style }>status</th>
-							<th style={ row_style }>off / on</th>
-							<th style={ row_style }>options</th>
+							<th style={ rowStyle }>{props.lang_home_name}</th>
+							<th style={ rowStyle }>{props.lang_home_description}</th>
+							<th style={ rowStyle }>{props.lang_home_status}</th>
+							<th style={ rowStyle }>{props.lang_home_off_on}</th>
+							<th style={ rowStyle }>{props.lang_home_options}</th>
 						</tr>
 					</thead>
 					<tbody>
-						{ features }
+						{features}
 					</tbody>
 				</table>
 			</div>

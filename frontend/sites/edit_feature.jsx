@@ -4,25 +4,15 @@ import axios from 'axios';
 import uniqid from 'uniqid';
 import { connect } from 'unistore/preact';
 
+import actions from '../actions';
 import features from '../features';
+import { storeKeys } from '../language';
 
-const actions = store => ({
-	add_notification(state, message, level) {
-		const noti = {
-			id: uniqid.time(),
-			message,
-			level
-		};
-
-		return { notifications: [...state.notifications, noti] };
-	}
-});
-
-@connect('notifications', actions)
+@connect(`notifications,${storeKeys}`, actions)
 export default class EditFeature extends Component {
 	state = {
 		ident: '',
-		show_tips: false
+		show_tips: false,
 	}
 
 	componentWillMount() {
@@ -38,7 +28,7 @@ export default class EditFeature extends Component {
 			action: 'get',
 			feature: {
 				ident,
-				uuid
+				uuid,
 			}
 		};
 
@@ -50,33 +40,31 @@ export default class EditFeature extends Component {
 				return;
 			}
 
-			this.setState({
-				...data
-			});
+			this.setState({ ...data });
 		});
 	}
 
-	submit = async feature => {
+	async submit(feature) {
 		const { uuid, ident } = this.state;
 		const payload = {
 			action: 'update',
-			feature: { uuid, ident, ...feature }
+			feature: { uuid, ident, ...feature },
 		};
 
 		this.send_request(payload);
 	}
 
-	delete = async feature => {
+	async delete(feature) {
 		const { uuid, ident } = this.state;
 		const payload = {
 			action: 'delete',
-			feature: { ident, uuid, ...feature }
+			feature: { ident, uuid, ...feature },
 		};
 
 		this.send_request(payload);
 	}
 
-	send_request = async payload => {
+	async send_request(payload) {
 		const response = await axios.post('/api/feature', payload);
 
 		const { error, message, data } = response.data;
@@ -89,22 +77,30 @@ export default class EditFeature extends Component {
 		route('/');
 	}
 
-	render({ add_notification }, { ident, name, long_description }) {
+	render({ add_notification }, { ident, long_description }) {
 		if (!ident) return;
 
 		const featureProps = {
 			feature: this.state,
-			submit: this.submit,
-			delete: this.delete,
+			submit: this.submit.bind(this),
+			delete: this.delete.bind(this),
 		};
 
 		const feature = h(features[ident].component, featureProps);
 
 		return (
 			<div>
-				<h1 className='subtitle is-4' style='margin-bottom: 2rem' align='center'>{name}
+				<h1
+					className='subtitle is-4'
+					syle={{ marginBottom: '2rem' }}
+					align='center'
+				>
+					{this.props[`lang_feature_${ident}`]}
 					{long_description &&
-						<a class='has-text-black' onClick={ e => add_notification(long_description, 'info') }>
+						<a
+							class='has-text-black'
+							onClick={ () => add_notification(long_description, 'info') }
+						>
 							<span class='icon is-large'>
 								<i class='fas fa-info'></i>
 							</span>

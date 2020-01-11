@@ -8,7 +8,6 @@ import { storeKeys } from '../language';
 @connect(storeKeys)
 export default class Adventure extends Component {
 	state = {
-		name: 'auto adventure',
 		type: 0,
 		min_health: '',
 		error_input: false,
@@ -26,7 +25,7 @@ export default class Adventure extends Component {
 		this.props.submit({ ...this.state });
 	}
 
-	render(props, { name, type, min_health, error_input }) {
+	render(props, { type, min_health, error_input }) {
 		const input_class = classNames({
 			input: true,
 			'is-danger': error_input,

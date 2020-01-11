@@ -4,6 +4,7 @@ import Router from 'preact-router';
 
 import { Provider, connect } from 'unistore/preact';
 import createStore from 'unistore';
+import axios from 'axios';
 
 import NavBar from './navbar';
 import Notifications from './components/notifications';
@@ -17,6 +18,10 @@ import lang, { languages } from './language';
 
 const store = createStore({ notifications: [], ...languages.en });
 lang.store = store;
+
+// get stored language from server
+axios.get('/api/data?ident=language')
+	.then(({ data }) => lang.changeLanguage(data.language, false));
 
 const App = () => (
 	<div>
