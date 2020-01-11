@@ -3,30 +3,28 @@ import classNames from 'classnames';
 import axios from 'axios';
 import { route } from 'preact-router';
 import uniqid from 'uniqid';
-
 import { connect } from 'unistore/preact';
 
-const actions = store => ({
-	add_notification(state, message, level) {
-		const noti = {
-			id: uniqid.time(),
-			message,
-			level
-		};
+import features from './features';
+import lang, { storeKeys } from './language';
+import actions from './actions';
 
-		return { notifications: [...state.notifications, noti] };
-	}
-});
-
-@connect('notifications', actions)
+@connect('notifications,' + storeKeys, actions)
 export default class NavBar extends Component {
+	navbarFeatures = [];
 	state = {
 		burger: false
+	};
+
+	componentWillMount() {
+		this.availableLanguages = lang.availableLanguages.map(x =>
+			<a className='navbar-item' onClick={ () => lang.changeLanguage(x) }>{x}</a>
+		);
 	}
 
 	show_burger = e => {
 		this.setState({
-			burger: !this.state.burger
+			burger: !this.state.burger,
 		});
 	}
 
@@ -35,9 +33,7 @@ export default class NavBar extends Component {
 
 		const payload = {
 			action: 'new',
-			feature: {
-				ident
-			}
+			feature: { ident },
 		};
 
 		const res = await axios.post('/api/feature', payload);
@@ -60,15 +56,24 @@ export default class NavBar extends Component {
 	}
 
 	render() {
+		this.navbarFeatures = Object.keys(features).filter(x => features[x].navbar)
+			.map(feature =>
+				h(
+					'a',
+					{ className: 'navbar-item', onClick: () => this.get_new(feature) },
+					this.props['lang_feature_' + feature],
+				)
+			);
+
 		const burger_class = classNames({
 			'navbar-burger': true,
 			'burger': true,
-			'is-active': this.state.burger
+			'is-active': this.state.burger,
 		});
 
 		const menue_class = classNames({
 			'navbar-menu': true,
-			'is-active': this.state.burger
+			'is-active': this.state.burger,
 		});
 
 		return (
@@ -76,7 +81,7 @@ export default class NavBar extends Component {
 				<div class="container">
 					<div class="navbar-brand">
 						<a class="navbar-item" target="_blank" href="https://github.com/breuerfelix/king-bot-api">
-							king-bot-api
+							{this.props.lang_navbar_king_bot_api}
 						</a>
 						<a role="button" onClick={ this.show_burger } class={ burger_class } aria-label="menu" aria-expanded="false">
 							<span aria-hidden="true"></span>
@@ -87,82 +92,79 @@ export default class NavBar extends Component {
 					<div class={ menue_class }>
 						<div class="navbar-start">
 							<a class="navbar-item" onClick={ e => this.route('/') }>
-								home
+								{this.props.lang_navbar_home}
 							</a>
 
 							<div class="navbar-item has-dropdown is-hoverable">
 								<a class="navbar-link is-arrowless">
-									add feature
+									{this.props.lang_navbar_add_feature}
 								</a>
 
-								<div class="navbar-dropdown is-radiusless">
-									<a className="navbar-item" onClick={ e => this.get_new('farming') }>
-										send farmlist
-									</a>
-									<a className="navbar-item" onClick={ e => this.get_new('queue') }>
-										building queue
-									</a>
-									<a className="navbar-item" onClick={ e => this.get_new('raise_fields') }>
-										raise fields
-									</a>
-									<a className="navbar-item" onClick={ e => this.get_new('trade_route') }>
-										trade route
-									</a>
-									<a className="navbar-item" onClick={ e => this.get_new('timed_attack') }>
-										timed attack
-									</a>
+								<div class='navbar-dropdown is-radiusless'>
+									{this.navbarFeatures}
 								</div>
 							</div>
 
-							<div class="navbar-item has-dropdown is-hoverable">
-								<a class="navbar-link is-arrowless">
-									extras
+							<div class='navbar-item has-dropdown is-hoverable'>
+								<a class='navbar-link is-arrowless'>
+									{this.props.lang_navbar_extras}
 								</a>
 
 								<div class="navbar-dropdown is-radiusless">
 									<a className="navbar-item" onClick={ e => this.route('/easy_scout') }>
-										easy scout
+										{this.props.lang_navbar_easy_scout}
 									</a>
 									<a className="navbar-item" onClick={ e => this.route('/inactive_finder') }>
-										inactive finder
+										{this.props.lang_navbar_inactive_finder}
 									</a>
 									<a className="navbar-item" onClick={ e => this.route('/logger') }>
-										logger
+										{this.props.lang_navbar_logger}
 									</a>
 									<a className="navbar-item" onClick={ e => this.route('/login') }>
-										change login
+										{this.props.lang_navbar_change_login}
 									</a>
 								</div>
 							</div>
 
 						</div>
 						<div class="navbar-end">
+
 							<div class="navbar-item has-dropdown is-hoverable">
 								<a class="navbar-link is-arrowless">
-									links
+									{this.props.lang_navbar_language}
 								</a>
 
-								<div class="navbar-dropdown is-radiusless">
-									<a className="navbar-item" target="__blank" href="http://kingbot.felixbreuer.me">
-										landing page
+								<div class='navbar-dropdown is-radiusless'>
+									{this.availableLanguages}
+								</div>
+							</div>
+
+							<div class="navbar-item has-dropdown is-hoverable">
+								<a class="navbar-link is-arrowless">
+									{this.props.lang_navbar_links}
+								</a>
+
+								<div class='navbar-dropdown is-radiusless'>
+									<a className='navbar-item' target='__blank' href='http://kingbot.felixbreuer.me'>
+										{this.props.lang_navbar_landing_page}
 									</a>
-									<a className="navbar-item" target="__blank" href="http://github.com/breuerfelix/king-bot-api">
-										github
+									<a className='navbar-item' target='__blank' href='http://github.com/breuerfelix/king-bot-api'>
+										{this.props.lang_navbar_github}
 									</a>
-									<a className="navbar-item" target="__blank" href="http://github.com/breuerfelix/king-bot-api/issues">
-										report a bug
+									<a className='navbar-item' target='__blank' href='http://github.com/breuerfelix/king-bot-api/issues'>
+										{this.props.lang_navbar_report_bug}
 									</a>
-									<a className="navbar-item" target="__blank" href="http://github.com/breuerfelix/king-bot-api/releases">
-										releases
+									<a className='navbar-item' target='__blank' href='http://github.com/breuerfelix/king-bot-api/releases'>
+										{this.props.lang_navbar_releases}
 									</a>
-									<a className="navbar-item" target="__blank" href="http://scriptworld.net">
-										felixbreuer
+									<a className='navbar-item' target='__blank' href='http://breuer.dev'>
+										{this.props.lang_navbar_felixbreuer}
 									</a>
 								</div>
 							</div>
 
-							<a class="navbar-item" target="_blank" href="https://ko-fi.com/Y8Y6KZHJ">
-								donate
+							<a class='navbar-item' target='_blank' href='https://ko-fi.com/Y8Y6KZHJ'>
+								{this.props.lang_navbar_donate}
 							</a>
 						</div>
 					</div>

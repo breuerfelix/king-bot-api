@@ -15,6 +15,7 @@ import {
 	trade_route, timed_attack
 } from './features';
 import { farming, village, player } from './gamedata';
+import database from './database';
 
 class server {
 	app: any = null;
@@ -26,7 +27,7 @@ class server {
 		building_queue,
 		raise_fields,
 		trade_route,
-		timed_attack
+		timed_attack,
 	];
 
 	constructor() {
@@ -144,9 +145,20 @@ class server {
 				return;
 			}
 
+			if (ident == 'language') {
+				const language = database.get('language').value();
+				res.send({ language });
+				return;
+			}
+
 			res.send('error');
 		});
 
+		this.app.post('/api/language', async (req: any, res: any) => {
+			const { language } = req.body;
+			database.set('language', language).write();
+			res.send({ status: 'ok' });
+		});
 
 		this.app.post('/api/findvillage', async (req: any, res: any) => {
 			const response = await api.get_cache(req.body);

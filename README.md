@@ -3,13 +3,11 @@
 this is a really high performance based bot for [travian kingdoms](https://www.kingdoms.com/) written in typescript.  
 it's designed to run in a console for better server support.
 
-feel free to join the [official discord channel](https://discord.gg/5n2btF7) or **[contact me! (:](mailto:i@felixbreuer.me)**
+feel free to join the [official discord channel](https://discord.gg/5n2btF7) or **[contact me! (:](mailto:f.breuer94@gmail.com)**
 
 i made a video tutorial on how to setup the bot with it's features ! **[click me !](https://youtu.be/h6XJ56CT6XQ)**
 
-you want to run the bot **24/7**, but don't want to use your computer? **[contact me aswell! (:](mailto:i@felixbreuer.me)**
-
-never miss a new update ! **[sign up for the newsletter here (:](https://mailchi.mp/c32c561b162e/scriptworld)**
+you want to run the bot **24/7**, but don't want to use your computer? **[contact me aswell! (:](mailto:f.breuer94@gmail.com)**
 
 [![ko-fi](https://img.shields.io/badge/buy%20me%20a-coffee-yellowgreen.svg)](https://ko-fi.com/Y8Y6KZHJ)
 [![Build Status](https://travis-ci.org/breuerfelix/king-bot-api.svg?branch=master)](https://travis-ci.org/breuerfelix/king-bot-api)
@@ -74,6 +72,7 @@ after configuring you can close the browser window and the bot keeps running unt
 -   easy scout
 -   custom trade routes
 -   timed attack
+-   available in different languages
 
 ## screenshots
 
@@ -123,8 +122,8 @@ programming trade routes / timed attack **[@tmfoltz](https://github.com/tmfoltz)
 
 # contact
 
-__discord:__ _felixbreuer#9641_  
-__email:__ _i@felixbreuer.me_
+**discord:** _felixbreuer#9641_  
+**email:** _f.breuer94@gmail.com_
 
 ---
 

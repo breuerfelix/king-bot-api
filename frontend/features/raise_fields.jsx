@@ -2,11 +2,14 @@ import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
 import classNames from 'classnames';
 import axios from 'axios';
-import Input from '../components/input';
+import { connect } from 'unistore/preact';
 
+import Input from '../components/input';
+import { storeKeys } from '../language';
+
+@connect(storeKeys)
 export default class RaiseFields extends Component {
 	state = {
-		name: 'raise fields',
 		all_villages: [],
 		village_name: '',
 		village_id: 0,
@@ -14,18 +17,16 @@ export default class RaiseFields extends Component {
 		crop: 0,
 		wood: 0,
 		clay: 0,
-		iron: 0
+		iron: 0,
 	}
 
 	componentWillMount() {
-		this.setState({
-			...this.props.feature
-		});
+		this.setState({ ...this.props.feature });
 
 		axios.get('/api/data?ident=villages').then(res => this.setState({ all_villages: res.data }));
 	}
 
-	submit = async (e) => {
+	async submit() {
 		this.setState({ error_village: (this.state.village_id == 0) });
 
 		if (this.state.error_village) return;
@@ -34,62 +35,72 @@ export default class RaiseFields extends Component {
 		this.props.submit({ ident, uuid, village_name, village_id, crop, wood, clay, iron });
 	}
 
-	delete = async e => {
+	async delete() {
 		const { ident, uuid, village_name, village_id, crop, wood, clay, iron } = this.state;
 		this.props.delete({ ident, uuid, village_name, village_id, crop, wood, clay, iron });
 	}
 
-	cancel = async e => {
+	async cancel() {
 		route('/');
 	}
 
-	render() {
-		const { all_villages, village_name, village_id, error_village, crop, iron, wood, clay } = this.state;
+	render(props) {
+		const {
+			all_villages, village_name, village_id,
+			error_village, crop, iron, wood, clay,
+		} = this.state;
 
 		const village_select_class = classNames({
 			select: true,
 			'is-radiusless': true,
-			'is-danger': error_village
+			'is-danger': error_village,
 		});
 
-		const villages = all_villages.map(village => <option value={ village.data.villageId } village_name={ village.data.name } >({village.data.coordinates.x}|{village.data.coordinates.y}) {village.data.name}</option>);
+		const villages = all_villages.map(village =>
+			<option
+				value={ village.data.villageId }
+				village_name={ village.data.name }
+			>
+				({village.data.coordinates.x}|{village.data.coordinates.y}) {village.data.name}
+			</option>
+		);
 
 		return (
 			<div>
-				<div className="columns">
+				<div className='columns'>
 
-					<div className="column">
+					<div className='column'>
 						<Input
-							label='wood'
-							placeholder='level'
+							label={ props.lang_queue_wood }
+							placeholder={ props.lang_queue_level }
 							value={ wood }
 							onChange={ e => this.setState({ wood: e.target.value }) }
 						/>
 						<Input
-							label='clay'
-							placeholder='level'
+							label={ props.lang_queue_clay }
+							placeholder={ props.lang_queue_level }
 							value={ clay }
 							onChange={ e => this.setState({ clay: e.target.value }) }
 						/>
 						<Input
-							label='iron'
-							placeholder='level'
+							label={ props.lang_queue_iron }
+							placeholder={ props.lang_queue_level }
 							value={ iron }
 							onChange={ e => this.setState({ iron: e.target.value }) }
 						/>
 					</div>
 
-					<div className="column">
-						<div class="field">
-							<label class="label">select village</label>
-							<div class="control">
+					<div className='column'>
+						<div class='field'>
+							<label class='label'>{props.lang_combo_box_select_village}</label>
+							<div class='control'>
 								<div class={ village_select_class }>
 									<select
-										class="is-radiusless"
+										class='is-radiusless'
 										value={ village_id }
-										onChange={ (e) => this.setState({
+										onChange={ e => this.setState({
 											village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
-											village_id: e.target.value
+											village_id: e.target.value,
 										})
 										}
 									>
@@ -100,8 +111,8 @@ export default class RaiseFields extends Component {
 						</div>
 
 						<Input
-							label='crop'
-							placeholder='level'
+							label={ props.lang_queue_crop }
+							placeholder={ props.lang_queue_level }
 							value={ crop }
 							onChange={ e => this.setState({ crop: e.target.value }) }
 						/>
@@ -109,20 +120,31 @@ export default class RaiseFields extends Component {
 
 				</div>
 
-				<div className="columns">
-					<div className="column">
-						<button className="button is-success is-radiusless" onClick={ this.submit } style='margin-right: 1rem'>
-							submit
+				<div className='columns'>
+					<div className='column'>
+						<button
+							className='button is-success is-radiusless'
+							onClick={ this.submit.bind(this) }
+							style={{ marginRight: '1rem' }}
+						>
+							{props.lang_button_submit}
 						</button>
-						<button className="button is-radiusless" onClick={ this.cancel } style='margin-right: 1rem'>
-							cancel
+						<button
+							className='button is-radiusless'
+							onClick={ this.cancel.bind(this) }
+							style={{ marginRight: '1rem' }}
+						>
+							{props.lang_button_cancel}
 						</button>
 
-						<button className="button is-danger is-radiusless" onClick={ this.delete }>
-							delete
+						<button
+							className='button is-danger is-radiusless'
+							onClick={ this.delete.bind(this) }
+						>
+							{props.lang_button_delete}
 						</button>
 					</div>
-					<div className="column">
+					<div className='column'>
 					</div>
 				</div>
 

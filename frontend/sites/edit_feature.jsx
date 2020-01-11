@@ -1,33 +1,18 @@
 import { h, render, Component } from 'preact';
 import { route } from 'preact-router';
 import axios from 'axios';
-import Adventure from '../features/adventure';
-import SendFarmlist from '../features/send_farmlist';
-import BuildingQueue from '../features/building_queue';
-import RaiseFields from '../features/raise_fields';
-import TradeRoute from '../features/trade_route';
-import TimedAttack from '../features/timed_attack';
 import uniqid from 'uniqid';
-
 import { connect } from 'unistore/preact';
 
-const actions = store => ({
-	add_notification(state, message, level) {
-		const noti = {
-			id: uniqid.time(),
-			message,
-			level
-		};
+import actions from '../actions';
+import features from '../features';
+import { storeKeys } from '../language';
 
-		return { notifications: [...state.notifications, noti] };
-	}
-});
-
-@connect('notifications', actions)
+@connect(`notifications,${storeKeys}`, actions)
 export default class EditFeature extends Component {
 	state = {
 		ident: '',
-		show_tips: false
+		show_tips: false,
 	}
 
 	componentWillMount() {
@@ -43,7 +28,7 @@ export default class EditFeature extends Component {
 			action: 'get',
 			feature: {
 				ident,
-				uuid
+				uuid,
 			}
 		};
 
@@ -55,34 +40,31 @@ export default class EditFeature extends Component {
 				return;
 			}
 
-			this.setState({
-				...data
-			});
+			this.setState({ ...data });
 		});
 	}
 
-	submit = async feature => {
+	async submit(feature) {
 		const { uuid, ident } = this.state;
 		const payload = {
 			action: 'update',
-			feature: { uuid, ident, ...feature }
+			feature: { uuid, ident, ...feature },
 		};
 
 		this.send_request(payload);
 	}
 
-	delete = async feature => {
+	async delete(feature) {
 		const { uuid, ident } = this.state;
 		const payload = {
 			action: 'delete',
-			feature: { ident, uuid, ...feature }
+			feature: { ident, uuid, ...feature },
 		};
 
 		this.send_request(payload);
-
 	}
 
-	send_request = async payload => {
+	async send_request(payload) {
 		const response = await axios.post('/api/feature', payload);
 
 		const { error, message, data } = response.data;
@@ -95,42 +77,37 @@ export default class EditFeature extends Component {
 		route('/');
 	}
 
-	render({ }, { ident, name, long_description }) {
-		let feat = null;
+	render({ add_notification }, { ident, long_description }) {
+		if (!ident) return;
 
-		switch (ident) {
-			case 'hero':
-				feat = <Adventure feature={ this.state } submit={ this.submit } />;
-				break;
-			case 'farming':
-				feat = <SendFarmlist feature={ this.state } submit={ this.submit } delete={ this.delete } />;
-				break;
-			case 'queue':
-				feat = <BuildingQueue feature={ this.state } submit={ this.submit } delete={ this.delete } />;
-				break;
-			case 'raise_fields':
-				feat = <RaiseFields feature={ this.state } submit={ this.submit } delete={ this.delete } />;
-				break;
-			case 'trade_route':
-				feat = <TradeRoute feature={ this.state } submit={ this.submit } delete={ this.delete } />;
-				break;
-			case 'timed_attack':
-				feat = <TimedAttack feature={ this.state } submit={ this.submit } delete={ this.delete } />;
-				break;
-		}
+		const featureProps = {
+			feature: this.state,
+			submit: this.submit.bind(this),
+			delete: this.delete.bind(this),
+		};
+
+		const feature = h(features[ident].component, featureProps);
 
 		return (
 			<div>
-				<h1 className="subtitle is-4" style='margin-bottom: 2rem' align="center">{name}
-					{this.state.long_description &&
-						<a class="has-text-black" onClick={ e => this.props.add_notification(this.state.long_description, 'info') }>
-							<span class="icon is-large">
-								<i class="fas fa-info"></i>
+				<h1
+					className='subtitle is-4'
+					syle={{ marginBottom: '2rem' }}
+					align='center'
+				>
+					{this.props[`lang_feature_${ident}`]}
+					{long_description &&
+						<a
+							class='has-text-black'
+							onClick={ () => add_notification(long_description, 'info') }
+						>
+							<span class='icon is-large'>
+								<i class='fas fa-info'></i>
 							</span>
 						</a>
 					}
 				</h1>
-				{feat}
+				{feature}
 			</div>
 		);
 	}

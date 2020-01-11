@@ -3,10 +3,16 @@ import { route } from 'preact-router';
 import axios from 'axios';
 import classNames from 'classnames';
 import arrayMove from 'array-move';
+import { connect } from 'unistore/preact';
+import { storeKeys } from '../language';
 
+const headerStyle = {
+	textAlign: 'center',
+};
+
+@connect(storeKeys)
 export default class BuildingQueue extends Component {
 	state = {
-		name: 'building queue',
 		village_name: '',
 		village_id: 0,
 		all_villages: [],
@@ -14,12 +20,12 @@ export default class BuildingQueue extends Component {
 		error_village: false,
 		buildings: [],
 		resources: [],
-		buildings_dict: null
+		buildings_dict: null,
 	}
 
 	componentWillMount() {
 		this.setState({
-			...this.props.feature
+			...this.props.feature,
 		});
 	}
 
@@ -30,9 +36,9 @@ export default class BuildingQueue extends Component {
 		axios.get('/api/data?ident=buildingdata').then(res => this.setState({ buildings_dict: res.data }));
 	}
 
-	submit = async e => {
+	async submit() {
 		this.setState({
-			error_village: (this.state.village_id == 0)
+			error_village: (this.state.village_id == 0),
 		});
 
 		if (this.state.error_village) return;
@@ -41,21 +47,21 @@ export default class BuildingQueue extends Component {
 		this.props.submit({ ident, uuid, village_name, village_id, queue });
 	}
 
-	delete = async e => {
+	async delete() {
 		const { ident, uuid, village_name, village_id, queue } = this.state;
 		this.props.delete({ ident, uuid, village_name, village_id, queue });
 	}
 
-	cancel = async e => {
+	async cancel() {
 		route('/');
 	}
 
-	village_changes = async e => {
+	async village_changes(e) {
 		if (!e.target.value) return;
 
 		this.setState({
 			village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
-			village_id: e.target.value
+			village_id: e.target.value,
 		});
 		let response = await axios.get(`/api/data?ident=buildings&village_id=${this.state.village_id}`);
 		let res = [];
@@ -75,25 +81,25 @@ export default class BuildingQueue extends Component {
 
 		this.setState({
 			buildings: bd,
-			resources: res
+			resources: res,
 		});
 	}
 
-	upgrade = building => {
+	upgrade(building) {
 		const { buildingType, lvl, locationId } = building;
 		const queue_item = {
 			type: buildingType,
 			location: locationId,
 			costs: {
-				...building.upgradeCosts
+				...building.upgradeCosts,
 			},
-			upgrade_time: building.upgradeTime
+			upgrade_time: building.upgradeTime,
 		};
 
 		this.setState({ queue: [ ...this.state.queue, queue_item ] });
 	}
 
-	delete_item = building => {
+	delete_item(building) {
 		const queues = this.state.queue;
 		var idx = queues.indexOf(building);
 		if (idx != -1) {
@@ -103,7 +109,7 @@ export default class BuildingQueue extends Component {
 		this.setState({ queue: [ ...queues ] });
 	}
 
-	move_up = building => {
+	move_up(building) {
 		const queues = this.state.queue;
 		var idx = queues.indexOf(building);
 		if (idx != -1) {
@@ -113,7 +119,7 @@ export default class BuildingQueue extends Component {
 		this.setState({ queue: [ ...queues ] });
 	}
 
-	move_down = building => {
+	move_down(building) {
 		const queues = this.state.queue;
 		var idx = queues.indexOf(building);
 		if (idx != -1) {
@@ -123,27 +129,23 @@ export default class BuildingQueue extends Component {
 		this.setState({ queue: [ ...queues ] });
 	}
 
-	render({}, { name, all_villages, village_name, village_id, queue, buildings, resources, buildings_dict }) {
+	render(props, { name, all_villages, village_name, village_id, queue, buildings, resources, buildings_dict }) {
 		const village_select_class = classNames({
 			select: true,
-			'is-danger': this.state.error_village
+			'is-danger': this.state.error_village,
 		});
-
-		const header_style = {
-			textAlign: 'center'
-		};
 
 		let buildings_options = [];
 		if (buildings_dict) {
 			buildings_options = buildings.map(building =>
 				<tr>
-					<td style={ header_style }>{ building.locationId }</td>
+					<td style={ headerStyle }>{ building.locationId }</td>
 					<td>{ buildings_dict[building.buildingType] }</td>
-					<td style={ header_style }>{ building.lvl }</td>
-					<td style={ header_style }>
-						<a class="has-text-black" onClick={ e => this.upgrade(building) }>
-							<span class="icon is-medium">
-								<i class="far fa-lg fa-arrow-alt-circle-up"></i>
+					<td style={ headerStyle }>{ building.lvl }</td>
+					<td style={ headerStyle }>
+						<a class='has-text-black' onClick={ () => this.upgrade(building) }>
+							<span class='icon is-medium'>
+								<i class='far fa-lg fa-arrow-alt-circle-up'></i>
 							</span>
 						</a>
 					</td>
@@ -155,13 +157,13 @@ export default class BuildingQueue extends Component {
 		if (buildings_dict) {
 			resource_options = resources.map(building =>
 				<tr>
-					<td style={ header_style }>{ building.locationId }</td>
+					<td style={ headerStyle }>{ building.locationId }</td>
 					<td>{ buildings_dict[building.buildingType] }</td>
-					<td style={ header_style }>{ building.lvl }</td>
-					<td style={ header_style }>
-						<a class="has-text-black" onClick={ e => this.upgrade(building) }>
-							<span class="icon is-medium">
-								<i class="far fa-lg fa-arrow-alt-circle-up"></i>
+					<td style={ headerStyle }>{ building.lvl }</td>
+					<td style={ headerStyle }>
+						<a class='has-text-black' onClick={ () => this.upgrade(building) }>
+							<span class='icon is-medium'>
+								<i class='far fa-lg fa-arrow-alt-circle-up'></i>
 							</span>
 						</a>
 					</td>
@@ -173,27 +175,27 @@ export default class BuildingQueue extends Component {
 		if (buildings_dict) {
 			queue_options = queue.map((building, index) =>
 				<tr>
-					<td style={ header_style }>{ index + 1 }</td>
-					<td style={ header_style }>{ building.location }</td>
+					<td style={ headerStyle }>{ index + 1 }</td>
+					<td style={ headerStyle }>{ building.location }</td>
 					<td>{ buildings_dict[building.type] }</td>
-					<td style={ header_style }>
-						<a class="has-text-black" onClick={ e => this.move_up(building) }>
-							<span class="icon is-medium">
-								<i class="fas fa-lg fa-long-arrow-alt-up"></i>
+					<td style={ headerStyle }>
+						<a class='has-text-black' onClick={ () => this.move_up(building) }>
+							<span class='icon is-medium'>
+								<i class='fas fa-lg fa-long-arrow-alt-up'></i>
 							</span>
 						</a>
 					</td>
-					<td style={ header_style }>
-						<a class="has-text-black" onClick={ e => this.move_down(building) }>
-							<span class="icon is-medium">
-								<i class="fas fa-lg fa-long-arrow-alt-down"></i>
+					<td style={ headerStyle }>
+						<a class='has-text-black' onClick={ () => this.move_down(building) }>
+							<span class='icon is-medium'>
+								<i class='fas fa-lg fa-long-arrow-alt-down'></i>
 							</span>
 						</a>
 					</td>
-					<td style={ header_style }>
-						<a class="has-text-black" onClick={ e => this.delete_item(building) }>
-							<span class="icon is-medium">
-								<i class="far fa-lg fa-trash-alt"></i>
+					<td style={ headerStyle }>
+						<a class='has-text-black' onClick={ () => this.delete_item(building) }>
+							<span class='icon is-medium'>
+								<i class='far fa-lg fa-trash-alt'></i>
 							</span>
 						</a>
 					</td>
@@ -202,85 +204,94 @@ export default class BuildingQueue extends Component {
 		}
 
 		const villages = all_villages.map(village =>
-			<option value={ village.data.villageId } village_name={ village.data.name } >({village.data.coordinates.x}|{village.data.coordinates.y}) {village.data.name}</option>
+			<option value={ village.data.villageId } village_name={ village.data.name } >
+				({village.data.coordinates.x}|{village.data.coordinates.y}) {village.data.name}
+			</option>
 		);
 
 
 		return (
 			<div>
-				<div className="columns">
-					<div className="column">
-						<div class="field">
-							<label class="label">select village</label>
-							<div class="control">
+				<div className='columns'>
+					<div className='column'>
+						<div class='field'>
+							<label class='label'>{props.lang_combo_box_select_village}</label>
+							<div class='control'>
 								<div class={ village_select_class }>
 									<select
 										class='is-radiusless'
 										value={ village_id }
-										onChange={ this.village_changes }
+										onChange={ this.village_changes.bind(this) }
 									>
 										{ villages }
 									</select>
 								</div>
-								<a className="button is-success is-radiusless" style="margin-left: 3rem; margin-right: 1rem" onClick={ this.submit }>submit</a>
-								<a className="button is-danger is-radiusless" onClick={ this.delete }>delete</a>
+								<a
+									className='button is-success is-radiusless'
+									style={{ marginLeft: '3rem', marginRight: '1rem' }}
+									onClick={ this.submit.bind(this) }
+								>{props.lang_button_submit}</a>
+								<a
+									className='button is-danger is-radiusless'
+									onClick={ this.delete.bind(this) }
+								>{props.lang_button_delete}</a>
 
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<div className="columns" style="margin-top: 2rem">
+				<div className='columns' style={{ marginTop: '2rem' }} >
 
-					<div className="column" align="center">
-						<strong>resource fields</strong>
+					<div className='column' align='center'>
+						<strong>{props.lang_queue_res_fields}</strong>
 						<table className="table is-striped">
 							<thead>
 								<tr>
-									<td style={ header_style }><strong>id</strong></td>
-									<td><strong>name</strong></td>
-									<td style={ header_style }><strong>lvl</strong></td>
-									<td style={ header_style }><strong></strong></td>
+									<td style={ headerStyle }><strong>{props.lang_table_id}</strong></td>
+									<td><strong>{props.lang_table_name}</strong></td>
+									<td style={ headerStyle }><strong>{props.lang_table_lvl}</strong></td>
+									<td style={ headerStyle }><strong></strong></td>
 								</tr>
 							</thead>
 							<tbody>
-								{ resource_options }
+								{resource_options}
 							</tbody>
 						</table>
 					</div>
 
-					<div className="column" align="center">
-						<strong>buildings</strong>
-						<table className="table is-striped">
+					<div className='column' align='center'>
+						<strong>{props.lang_queue_buildings}</strong>
+						<table className='table is-striped'>
 							<thead>
 								<tr>
-									<td style={ header_style }><strong>id</strong></td>
-									<td><strong>name</strong></td>
-									<td style={ header_style }><strong>lvl</strong></td>
-									<td style={ header_style }><strong></strong></td>
+									<td style={ headerStyle }><strong>{props.lang_table_id}</strong></td>
+									<td><strong>{props.lang_table_name}</strong></td>
+									<td style={ headerStyle }><strong>{props.lang_table_lvl}</strong></td>
+									<td style={ headerStyle }><strong></strong></td>
 								</tr>
 							</thead>
 							<tbody>
-								{ buildings_options }
+								{buildings_options}
 							</tbody>
 						</table>
 					</div>
 
-					<div className="column" align="center">
-						<strong>queue</strong>
-						<table className="table is-striped">
+					<div className='column' align='center'>
+						<strong>{props.lang_queue_queue}</strong>
+						<table className='table is-striped'>
 							<thead>
 								<tr>
-									<td style={ header_style }><strong>pos</strong></td>
-									<td style={ header_style }><strong>id</strong></td>
-									<td><strong>name</strong></td>
-									<td style={ header_style }><strong></strong></td>
-									<td style={ header_style }><strong></strong></td>
-									<td style={ header_style }><strong></strong></td>
+									<td style={ headerStyle }><strong>{props.lang_table_pos}</strong></td>
+									<td style={ headerStyle }><strong>{props.lang_table_id}</strong></td>
+									<td><strong>{props.lang_table_name}</strong></td>
+									<td style={ headerStyle }><strong></strong></td>
+									<td style={ headerStyle }><strong></strong></td>
+									<td style={ headerStyle }><strong></strong></td>
 								</tr>
 							</thead>
 							<tbody>
-								{ queue_options }
+								{queue_options}
 							</tbody>
 						</table>
 					</div>
