@@ -1,22 +1,18 @@
-import { h, render, Component } from 'preact';
+import { h } from 'preact';
 
-export default class Input extends Component {
-	render({ label, placeholder, value, onChange }) {
-		return (
-			<div style='margin-top: 1rem; margin-bottom: 1rem'>
-				<label class="label">{ label }</label>
-				<div class="field has-addons">
-					<p class="control">
-						<input
-							class="input"
-							type="text"
-							placeholder={ placeholder }
-							value={ value }
-							onChange={ onChange }
-						/>
-					</p>
-				</div>
-			</div>
-		);
-	}
-}
+export default ({ label, placeholder, value, onChange }) => (
+	<div style={{ margin: '1rem 0' }}>
+		<label className='label'>{ label }</label>
+		<div className='field has-addons'>
+			<p className='control'>
+				<input
+					className='input'
+					type='text'
+					placeholder={ placeholder }
+					value={ value }
+					onChange={ onChange }
+				/>
+			</p>
+		</div>
+	</div>
+);

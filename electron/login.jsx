@@ -147,7 +147,7 @@ class Login extends Component {
 										<br />
 
 										<Input
-											label='ingame name'
+											label='ingame name (only when sitter or dual)'
 											placeholder='IrockThisServer'
 											value={ ingameName }
 											onChange={ e => this.setState({ ingameName: e.target.value }) }

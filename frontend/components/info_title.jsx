@@ -1,21 +1,14 @@
-import { h, render, Component } from 'preact';
+import { h } from 'preact';
 import { connect } from 'unistore/preact';
-import { add_notification } from '../actions';
+import actions from '../actions';
 
-@connect('', add_notification)
-export default class InfoTitle extends Component {
+export default connect('', actions)(({ title, description, add_notification }) => (
+	<h1 className='subtitle is-4' style={{ marginBottom: '2rem' }} align='center'>{ title }
+		<a class='has-text-black' onClick={ e => add_notification(description, 'info') }>
+			<span class='icon is-large'>
+				<i class='fas fa-info'></i>
+			</span>
+		</a>
 
-	render({ title, description }) {
-
-		return	(
-			<h1 className="subtitle is-4" style='margin-bottom: 2rem' align="center">{ title }
-				<a class="has-text-black" onClick={ e => this.props.add_notification(description, 'info')  }>
-					<span class="icon is-large">
-						<i class="fas fa-info"></i>
-					</span>
-				</a>
-
-			</h1>
-		);
-	}
-}
+	</h1>
+));
