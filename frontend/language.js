@@ -36,6 +36,7 @@ const languages = {
 
 		lang_easy_scout_title: 'easy scout',
 		lang_easy_scout_description: 'send 1 scout to every farm in the given farmlist',
+		lang_easy_scout_amount: 'amount',
 
 		lang_combo_box_select_farmlist: 'select farmlist',
 		lang_combo_box_select_village: 'select village',

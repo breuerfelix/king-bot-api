@@ -30,13 +30,13 @@ export default connect(storeKeys)(props => {
 	);
 });
 
-const Farmlist = ({ content: { farmlist, village_name }, clicked }) => (
+const Farmlist = ({ content, clicked }) => (
 	<tr>
 		<td style={ rowStyle }>
-			{farmlist}
+			{content.farmlist}
 		</td>
 		<td style={ rowStyle }>
-			{village_name}
+			{content.village_name}
 		</td>
 		<td style={ rowStyle }>
 			<a class='has-text-black' onClick={ () => clicked(content) }>

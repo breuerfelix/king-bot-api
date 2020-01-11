@@ -37,14 +37,14 @@ export default class EasyScout extends Component {
 			.then(res => this.setState({ all_farmlists: res.data }));
 	}
 
-	handle_multi = e => {
+	handle_multi(e) {
 		this.setState({
 			selected_farmlist: e.target.value,
 			farmlists: [ e.target.value ],
 		});
 	}
 
-	submit = async e => {
+	async submit() {
 		this.setState({
 			error_farmlist: (this.state.selected_farmlist == ''),
 			error_village: (this.state.village_id == 0),
@@ -64,7 +64,7 @@ export default class EasyScout extends Component {
 		if (response.data == 'success') route('/');
 	}
 
-	cancel = async e => {
+	async cancel() {
 		route('/');
 	}
 
@@ -115,7 +115,7 @@ export default class EasyScout extends Component {
 									<select
 										class='is-radiusless'
 										value={ selected_farmlist }
-										onChange={ this.handle_multi }
+										onChange={ this.handle_multi.bind(this) }
 									>
 										{ farmlist_opt }
 									</select>
@@ -152,7 +152,7 @@ export default class EasyScout extends Component {
 										value={ village_id }
 										onChange={ e => this.setState({
 											village_name: e.target[e.target.selectedIndex].attributes.village_name.value,
-											village_id: e.target.value
+											village_id: e.target.value,
 										}) }
 									>
 										{ villages }
@@ -162,8 +162,8 @@ export default class EasyScout extends Component {
 						</div>
 
 						<Input
-							label='amount'
-							placeholder='default: 1'
+							label={ props.lang_easy_scout_amount }
+							placeholder={ props.lang_finder_default + ': 1' }
 							value={ amount }
 							onChange={ e => this.setState({ amount: e.target.value }) }
 						/>
@@ -176,15 +176,15 @@ export default class EasyScout extends Component {
 					<div className='column'>
 						<button
 							className='button is-success is-radiusless'
-							onClick={ this.submit }
-							style='margin-right: 1rem'
+							onClick={ this.submit.bind(this) }
+							style={{ marginRight: '1rem' }}
 						>
 							{this.props.lang_button_submit}
 						</button>
 						<button
 							className='button is-radiusless'
-							onClick={ this.cancel }
-							style='margin-right: 1rem'
+							onClick={ this.cancel.bind(this) }
+							style={{ marginRight: '1rem' }}
 						>
 							{this.props.lang_button_cancel}
 						</button>

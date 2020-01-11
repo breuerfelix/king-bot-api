@@ -143,7 +143,7 @@ export default class BuildingQueue extends Component {
 					<td>{ buildings_dict[building.buildingType] }</td>
 					<td style={ headerStyle }>{ building.lvl }</td>
 					<td style={ headerStyle }>
-						<a class='has-text-black' onClick={ () => this.upgrade(building).bind(this) }>
+						<a class='has-text-black' onClick={ () => this.upgrade(building) }>
 							<span class='icon is-medium'>
 								<i class='far fa-lg fa-arrow-alt-circle-up'></i>
 							</span>
@@ -161,7 +161,7 @@ export default class BuildingQueue extends Component {
 					<td>{ buildings_dict[building.buildingType] }</td>
 					<td style={ headerStyle }>{ building.lvl }</td>
 					<td style={ headerStyle }>
-						<a class='has-text-black' onClick={ () => this.upgrade(building).bind(this) }>
+						<a class='has-text-black' onClick={ () => this.upgrade(building) }>
 							<span class='icon is-medium'>
 								<i class='far fa-lg fa-arrow-alt-circle-up'></i>
 							</span>
@@ -179,21 +179,21 @@ export default class BuildingQueue extends Component {
 					<td style={ headerStyle }>{ building.location }</td>
 					<td>{ buildings_dict[building.type] }</td>
 					<td style={ headerStyle }>
-						<a class='has-text-black' onClick={ () => this.move_up(building).bind(this) }>
+						<a class='has-text-black' onClick={ () => this.move_up(building) }>
 							<span class='icon is-medium'>
 								<i class='fas fa-lg fa-long-arrow-alt-up'></i>
 							</span>
 						</a>
 					</td>
 					<td style={ headerStyle }>
-						<a class='has-text-black' onClick={ () => this.move_down(building).bind(this) }>
+						<a class='has-text-black' onClick={ () => this.move_down(building) }>
 							<span class='icon is-medium'>
 								<i class='fas fa-lg fa-long-arrow-alt-down'></i>
 							</span>
 						</a>
 					</td>
 					<td style={ headerStyle }>
-						<a class='has-text-black' onClick={ () => this.delete_item(building).bind(this) }>
+						<a class='has-text-black' onClick={ () => this.delete_item(building) }>
 							<span class='icon is-medium'>
 								<i class='far fa-lg fa-trash-alt'></i>
 							</span>
