@@ -27,6 +27,12 @@ const languages = {
 		lang_feature_trade_route: 'trade route',
 		lang_feature_timed_attack: 'timed attack',
 
+		lang_feature_desc_hero: 'this feature sends the hero automaticly on an adventure if the health is above given percentage.',
+		lang_feature_desc_queue: 'this is an endless building queue. don\'t change the village once it\'s set. if you want to change the village, just do another building queue feature with your desired village',
+		lang_feature_desc_raise_fields: 'this feature will raise all your fields to a given level on it\'s own. it will always upgrade the type which got the lowest storage.',
+		lang_feature_desc_farming: 'this feature will just send the farmlist in a given interval.',
+		lang_feature_desc_trade_route: 'sends merchants from the origin village to the desination at a given interval.',
+
 		lang_home_features: 'your features',
 		lang_home_name: 'feature name',
 		lang_home_description: 'description',
@@ -69,10 +75,8 @@ const languages = {
 		lang_adventure_short: 'short',
 		lang_adventure_long: 'long',
 		lang_adventure_min_health: 'minimum health',
-		lang_adventure_min: 'min',
 		lang_adventure_max: 'max',
 		lang_adventure_health: 'health',
-		lang_adventure_prov_number: 'provide a number',
 
 		lang_queue_res_fields: 'ressource fields',
 		lang_queue_buildings: 'buildings',
@@ -96,10 +100,33 @@ const languages = {
 		lang_finder_add_list: 'add to farmlist',
 		lang_finder_inactive_for: 'inactive for',
 		lang_finder_days: 'days',
+		lang_finder_description: 'searches for inactive players and displays their villages based on distance. once you added them to your farmlist, you can use the easy scout feature to spy them.',
 
 		lang_log_level: 'level',
 		lang_log_group: 'group',
 		lang_log_message: 'message',
+
+		lang_login_notification: 'the bot is going to shut down.... restart it, so the changes take effect.',
+		lang_login_reset_features: 'this will reset all features you configured!',
+		lang_login_login: 'login',
+		lang_login_gameworld: 'gameworld',
+		lang_login_email: 'email',
+		lang_login_password: 'password',
+		lang_login_sitter_dual: 'sitter / dual ?',
+		lang_login_optional: '(optional)',
+		lang_login_sitter_description: 'if you play as a sitter or dual we need the ingame nick to identify the correct gameworld id',
+		lang_login_ingame_name: 'ingame name (only when sitter or dual)',
+
+		lang_trade_source_village: 'select source village',
+		lang_trade_dest_village: 'select destination village',
+		lang_trade_interval: 'interval in seconds (min / max)',
+		lang_trade_send_ress: 'send (wood|clay|iron|crop)',
+		lang_trade_source_greater: 'when source is greater than (wood|clay|iron|crop)',
+		lang_trade_dest_less: 'and destination is less than (wood|clay|iron|crop)',
+
+		lang_common_min: 'min',
+		lang_common_max: 'max',
+		lang_common_prov_number: 'provide a number',
 	},
 	ar: {
 		lang_navbar_king_bot_api: 'مساعد المالك السحابي',
@@ -170,10 +197,8 @@ const languages = {
 		lang_adventure_short: 'قصيرة',
 		lang_adventure_long: 'طويلة',
 		lang_adventure_min_health: 'أدنى نسبة صحة',
-		lang_adventure_min: 'أدنى',
 		lang_adventure_max: 'أقصى',
 		lang_adventure_health: 'الصحة',
-		lang_adventure_prov_number: 'إدخل رقم صحيح',
 
 		lang_queue_res_fields: 'حقول الموارد',
 		lang_queue_buildings: 'المباني',

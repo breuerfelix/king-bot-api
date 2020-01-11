@@ -32,9 +32,6 @@ export default class InactiveFinder extends Component {
 		message: '',
 	}
 
-	description = 'searches for inactive players and displays their villages based on distance. \
-		once you added them to your farmlist, you can use the easy scout feature to spy them.';
-
 	componentDidMount() {
 		axios.get('/api/data?ident=villages').then(res => {
 			this.setState({
@@ -175,7 +172,7 @@ export default class InactiveFinder extends Component {
 			<div>
 				<InfoTitle
 					title={ props.lang_finder_name }
-					description={ this.description }
+					description={ props.lang_finder_description }
 				/>
 
 				<div className='columns'>
