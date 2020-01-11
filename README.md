@@ -122,8 +122,8 @@ programming trade routes / timed attack **[@tmfoltz](https://github.com/tmfoltz)
 
 # contact
 
-__discord:__ _felixbreuer#9641_  
-__email:__ _f.breuer94@gmail.com_
+**discord:** _felixbreuer#9641_  
+**email:** _f.breuer94@gmail.com_
 
 ---
 
