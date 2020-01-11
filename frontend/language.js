@@ -156,6 +156,12 @@ const languages = {
 		lang_feature_trade_route: 'الطريق التجاري',
 		lang_feature_timed_attack: 'إرسال الهجمات',
 
+		lang_feature_desc_hero: 'هذة الميزة تمكنك من ارسال البطل للغامرات بشكل تلقائي في حال كانت صحة البطل فوق النسبة المدخلة.',
+		lang_feature_desc_queue: 'نقدم لك قائمة مهام لا نهائيه. اذا كنت تريد تغير القرية المراد تطويرها فقط قم بإدخال امر بناء إضافي في قائمة الإنتظار.',
+		lang_feature_desc_raise_fields: 'هذه الميزة سوف ترفع جميع الحقول الخاصة بك إلى مستوى معين. سيقوم دائمًا بترقية أقل انتاج لديك.',
+		lang_feature_desc_farming: 'هذه الميزة سوف ترسل قوائم المزارع حسب الفترات المدخلة.',
+		lang_feature_desc_trade_route: 'هذه الميزه تمكنك من ارسال الموارد لقريتك او لقرية أخرى حسب الفترة الزمنيه المدخلة.',
+
 		lang_home_features: 'الأوامر الخاصه بك',
 		lang_home_name: 'الأمر',
 		lang_home_description: 'وصف',
@@ -222,10 +228,33 @@ const languages = {
 		lang_finder_add_list: 'إضف للقائمة',
 		lang_finder_inactive_for: 'غير نشط منذ',
 		lang_finder_days: 'أيام',
+		lang_finder_description: 'البحث عن الاعبين الخاملين واستعراض قراهم بالنسبه للمسافه بينكم. تستطيع استخدام ميزة التجسس عند إضافتهم لقوائم المزارع.',
 
 		lang_log_level: 'المستوى',
 		lang_log_group: 'المجموعة',
 		lang_log_message: 'رسالة',
+
+		lang_login_notification: 'سيتم إعادة تشغيل البوت لتحديث التعييرات.',
+		lang_login_reset_features: 'سؤدي هذا الأمر لإعادة جميع الميزات التي قمت بإنشائها.',
+		lang_login_login: 'دخول',
+		lang_login_gameworld: 'عالم اللعب',
+		lang_login_email: 'الإيميل',
+		lang_login_password: 'الباسورد',
+		lang_login_sitter_dual: 'حساب وكيل / شريك ؟',
+		lang_login_optional: '((إختياري))',
+		lang_login_sitter_description: 'فقط إذا كنت وكيل او شريك، نحن نحتاج اسم العضوية لتحديد عالم اللعب الصحيح.',
+		lang_login_ingame_name: 'اسم العضويه ( فقط في حالة وكيل او شريك )',
+
+		lang_trade_source_village: 'إختيار القرية المرسل منها',
+		lang_trade_dest_village: 'إختيار قرية الهدف',
+		lang_trade_interval: 'الفترات بالثواني ( أدنى / أقصى )',
+		lang_trade_send_ress: 'إرسال ( خشب|طين|حديد|قمح)',
+		lang_trade_source_greater: 'عندما تكون موارد القرية المرسل منها أكثر من (إرسال ( خشب|طين|حديد|قمح )',
+		lang_trade_dest_less: 'وقرية الهدف أقل من ( خشب|طين|حديد|قمح )',
+
+		lang_common_min: 'أدنى',
+		lang_common_max: 'أقصى',
+		lang_common_prov_number: 'أدخل رقم صحيح',
 	},
 };
 
