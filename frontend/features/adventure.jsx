@@ -62,7 +62,7 @@ export default class Adventure extends Component {
 						<div class='field has-addons'>
 							<p class='control'>
 								<a class='button is-static is-radiusless'>
-									{props.lang_adventure_min}
+									{props.lang_common_min}
 								</a>
 							</p>
 							<div class='control'>
@@ -78,7 +78,7 @@ export default class Adventure extends Component {
 								<a class='button is-static is-radiusless'>%</a>
 							</p>
 						</div>
-						<p class='help'>{props.lang_adventure_prov_number}</p>
+						<p class='help'>{props.lang_common_prov_number}</p>
 					</div>
 
 				</div>

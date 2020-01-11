@@ -1,7 +1,10 @@
 import { h, render, Component } from 'preact';
 import classNames from 'classnames';
+import { connect } from 'unistore/preact';
+import { storeKeys } from '../language';
 
-class Login extends Component {
+@connect(storeKeys)
+export default class Login extends Component {
 	state = {
 		gameworld: '',
 		email: '',
@@ -10,23 +13,23 @@ class Login extends Component {
 
 		errorGameworld: false,
 		errorEmail: false,
-		errorPassword: false
+		errorPassword: false,
 	}
 
-	submit = _ => {
+	submit() {
 		const { gameworld, email, password, ingameName } = this.state;
 
 		this.setState({
 			errorGameworld: !gameworld,
 			errorEmail: !email,
-			errorPassword: !password
+			errorPassword: !password,
 		});
 
 		const { errorGameworld, errorEmail, errorPassword } = this.state;
 
 		if (errorGameworld || errorEmail || errorPassword) return;
 
-		alert('the bot is going to shut down.... restart it, so the changes take effect.');
+		alert(this.props.lang_login_notification);
 		fetch('/api/login', {
 			method: 'POST',
 			headers: {
@@ -37,7 +40,7 @@ class Login extends Component {
 				gameworld,
 				email,
 				password,
-				ingameName
+				ingameName,
 			})
 		});
 	}
@@ -49,45 +52,45 @@ class Login extends Component {
 		ingameName,
 		errorGameworld,
 		errorEmail,
-		errorPassword
+		errorPassword,
 	}) {
 
 		const gameworldClass = classNames({
 			'input': true,
 			'is-radiusless': true,
-			'is-danger': errorGameworld
+			'is-danger': errorGameworld,
 		});
 
 		const emailClass = classNames({
 			'input': true,
 			'is-radiusless': true,
-			'is-danger': errorEmail
+			'is-danger': errorEmail,
 		});
 
 		const passwordClass = classNames({
 			'input': true,
 			'is-radiusless': true,
-			'is-danger': errorPassword
+			'is-danger': errorPassword,
 		});
 
 		return (
-			<div class="columns is-centered">
-				<div className="column is-half">
+			<div class='columns is-centered'>
+				<div className='column is-half'>
 
-					<div class="notification is-info">
-						this will reset all features you configured!
+					<div class='notification is-info'>
+						{props.lang_login_reset_features}
 					</div>
 
-					<div class="box is-radiusless">
-						<article class="media">
-							<div class="media-content">
-								<div class="content">
-									<strong>login</strong>
+					<div class='box is-radiusless'>
+						<article class='media'>
+							<div class='media-content'>
+								<div class='content'>
+									<strong>{props.lang_login_login}</strong>
 									<br />
 									<br />
 
 									<Input
-										label='gameworld'
+										label={ props.lang_login_gameworld }
 										placeholder='com1'
 										value={ gameworld }
 										onChange={ e => this.setState({ gameworld: e.target.value }) }
@@ -95,7 +98,7 @@ class Login extends Component {
 									/>
 
 									<Input
-										label='email'
+										label={ props.lang_login_email }
 										placeholder='fairplay@gmail.com'
 										value={ email }
 										onChange={ e => this.setState({ email: e.target.value }) }
@@ -103,7 +106,7 @@ class Login extends Component {
 									/>
 
 									<Input
-										label='password'
+										label={ props.lang_login_password }
 										placeholder='topsecret123'
 										type='password'
 										value={ password }
@@ -112,24 +115,28 @@ class Login extends Component {
 									/>
 
 									<br />
-									<strong>sitter / dual ?</strong><i style='padding-left: 10px'>(optional)</i>
+									<strong>{props.lang_login_sitter_dual}</strong>
+									<i style={{ paddingLeft: '10px' }} >{props.lang_login_optional}</i>
 
 									<br />
-									<small>if you play as a sitter or dual we need the ingame nick to identify the correct gameworld id</small>
+									<small>{props.lang_login_sitter_description}</small>
 									<br />
 									<br />
 
 									<Input
-										label='ingame name (only when sitter or dual)'
+										label={ props.lang_login_ingame_name }
 										placeholder='IrockThisServer'
 										value={ ingameName }
 										onChange={ e => this.setState({ ingameName: e.target.value }) }
 									/>
 
 									<br />
-									<div className="control">
-										<button className="button is-radiusless is-success" onClick={ this.submit }>
-											submit
+									<div className='control'>
+										<button
+											className='button is-radiusless is-success'
+											onClick={ this.submit.bind(this) }
+										>
+											{props.lang_button_submit}
 										</button>
 									</div>
 								</div>
@@ -162,5 +169,3 @@ const Input = ({
 		</div>
 	</div>
 );
-
-export default Login;

@@ -99,7 +99,7 @@ export default class EditFeature extends Component {
 					{long_description &&
 						<a
 							class='has-text-black'
-							onClick={ () => add_notification(long_description, 'info') }
+							onClick={ () => add_notification(this.props[`lang_feature_desc_${long_description}`], 'info') }
 						>
 							<span class='icon is-large'>
 								<i class='fas fa-info'></i>
