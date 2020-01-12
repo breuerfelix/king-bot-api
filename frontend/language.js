@@ -411,7 +411,7 @@ const languages = {
 
 		lang_feature_desc_hero: 'Ši funkcija automatiškai siunčia herojų į nuotykį, kai sveikata viršija nurodytą procentą.',
 		lang_feature_desc_queue: 'Ši funkcija yra nesibaigianti statybų eilė. Pasirinkę kaimą, jo nekeiskite. Jei norite pakeisti kaimą, pridekite dar vieną pastato eilės funkciją su norimu kaimu.',
-        	lang_feature_desc_raise_fields: 'Ši funkcija padidins visus jūsų laukus iki nurodyto lygio. Ši funkcija visada pakels resursu rūši, kurio yra mažiausia saugykloje.',
+		lang_feature_desc_raise_fields: 'Ši funkcija padidins visus jūsų laukus iki nurodyto lygio. Ši funkcija visada pakels resursu rūši, kurio yra mažiausia saugykloje.',
 		lang_feature_desc_farming: 'Ši funkcija tiesiog paleis farmlist tam tikru intervalu.',
 		lang_feature_desc_trade_route: 'Ši funkcija siunčia prekeivius iš kilmės kaimo į paskirties kaima pasirinktu intervalu.',
 
