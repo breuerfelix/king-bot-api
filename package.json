@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scriptworld-git/king-bot-api.git"
+    "url": "git+https://github.com/breuerfelix/king-bot-api.git"
   },
   "keywords": [
     "bot",
@@ -37,9 +37,9 @@
   "author": "Felix Breuer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/scriptworld-git/king-bot-api/issues"
+    "url": "https://github.com/breuerfelix/king-bot-api/issues"
   },
-  "homepage": "https://github.com/scriptworld-git/king-bot-api#readme",
+  "homepage": "https://github.com/breuerfelix/king-bot-api#readme",
   "dependencies": {
     "@babel/polyfill": "^7.6.0",
     "array-move": "^1.0.0",
