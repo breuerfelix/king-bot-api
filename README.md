@@ -76,8 +76,8 @@ after configuring you can close the browser window and the bot keeps running unt
 
 ## screenshots
 
-![interface](https://scriptworld.net/assets/king-bot-api/home.png)  
-![farming](https://scriptworld.net/assets/king-bot-api/farmlist.png)
+![interface](https://breuer.dev/assets/king-bot-api/home.png)  
+![farming](https://breuer.dev/assets/king-bot-api/farmlist.png)
 
 # docker
 
