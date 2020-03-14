@@ -75,7 +75,8 @@ class building_queue {
 					const rest_time: number = finished - now;
 
 					// finish building instant
-					if (rest_time <= five_minutes) {
+					// add 2 seconds for safety
+					if (rest_time <= (five_minutes - 2)) {
 						const res = await api.finish_now(vill.villageId, qu);
 						console.log(`finished building earlier for free in village ${vill.name}`);
 						continue;
