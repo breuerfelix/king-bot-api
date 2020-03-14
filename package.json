@@ -77,7 +77,7 @@
     "@types/uniqid": "^4.1.2",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^1.13.0",
-    "acorn": "^6.3.0",
+    "acorn": "^6.4.1",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "eslint": "^5.12.1",
