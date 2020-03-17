@@ -49,6 +49,7 @@
     "deepmerge": "^2.2.1",
     "esm": "^3.2.25",
     "express": "^4.17.1",
+    "https-proxy-agent": "^5.0.0",
     "logform": "^2.1.0",
     "lowdb": "^1.0.0",
     "preact": "^8.5.3",

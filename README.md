@@ -73,6 +73,7 @@ after configuring you can close the browser window and the bot keeps running unt
 -   custom trade routes
 -   timed attack
 -   available in different languages
+-   proxy support
 
 ## screenshots
 
@@ -84,10 +85,12 @@ after configuring you can close the browser window and the bot keeps running unt
 there is also a docker image for this bot.  
 create a folder for the database and a file (`cred.txt`) with your credentials in this folder that can be mounted to the docker container.  
 `sitter_type` could be 'sitter' or 'dual'. `sitter_name` should be the ingame avatar nickname of the target gameworld.  
-sitter information is optional.
+sitter information is optional.  
+proxy is also optional and has to be in the second line if present.
 
 ```csv
 your_email;your_password;your_gameworld;sitter_type;sitter_name
+http://username:password@yourproxy:port
 ```
 
 pull image and start the container mounting the file:
@@ -107,6 +110,7 @@ you can also create a file names `cred.txt` in the root folder which contains yo
 
 ```csv
 your_email@mail.com;your_password;your_gameworld
+http://proxy:inthe@secondlineis:optional
 ```
 
 this file will be ignored by git so you don't have to be scared to accidentally commit your credentials.

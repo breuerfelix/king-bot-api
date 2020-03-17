@@ -7,5 +7,6 @@ const password = '';
 const sitter_type = ''; // 'sitter' or 'dual'
 const sitter_name = ''; // ingame avatar name
 const port = 3000;
+const proxy = null; // proxy as string ''
 
-kingbot.start_server(gameworld, email, password, sitter_type, sitter_name, port);
+kingbot.start_server(gameworld, email, password, sitter_type, sitter_name, port, proxy);
