@@ -6,10 +6,10 @@ __disclaimer:__ please note that this is a research project. i am by no means re
 
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/breuerfelix/king-bot/blob/master/LICENSE)
 
-travian games threatened to sue me if i will not remove the bot from github.  
-since i live in germany i have to take this seriously. you would be save in any other country tho.
+travian games stumbled across my bot and wanted me to remove it because it harms the gameplay.  
+since i live in germany i have to take this request seriously. i do not wanna get sued for a project like this.  
 
-i removed a lot of core files as being told to, so the bot will not work anymore.  
+i removed a lot of core files, so the bot will not work anymore. i am really sorry for this!  
 
 __a big thanks to everyone who is part of the awesome community i got on discord due to this bot <3__
 
