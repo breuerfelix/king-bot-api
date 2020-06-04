@@ -13,7 +13,7 @@ i removed a lot of core files as being told to, so the bot will not work anymore
 
 __a big thanks to everyone who is part of the awesome community i got on discord due to this bot <3__
 
-# thank you for
+## thank you for
 
 beeing active since the first day of this project **[@didadadida93](https://github.com/didadadida93)**  
 keeping the issue page alive **[@OneManDevz](https://github.com/OneManDevz)**  
@@ -22,7 +22,7 @@ programming trade routes / timed attack **[@tmfoltz](https://github.com/tmfoltz)
 
 you guys don't have to worry. contributing is not a big deal. spreading the bot is what got me into trouble here.
 
-# old features
+## old features
 
 - login as normal player, dual or sitter
 - send farmlist in interval
@@ -37,7 +37,7 @@ you guys don't have to worry. contributing is not a big deal. spreading the bot 
 - available in different languages
 - proxy support
 
-# old screenshots
+## old screenshots
 
 ![interface](https://breuer.dev/assets/king-bot-api/home.png)  
 ![farming](https://breuer.dev/assets/king-bot-api/farmlist.png)
